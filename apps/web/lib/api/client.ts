@@ -1,0 +1,59 @@
+import axios from 'axios';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+
+export const apiClient = axios.create({
+  baseURL: API_URL,
+  timeout: 15_000,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+// Client-side only: attach access token from memory (not localStorage — XSS risk)
+// Token is stored in memory via auth store; refresh uses httpOnly cookie
+if (typeof window !== 'undefined') {
+  apiClient.interceptors.request.use((config) => {
+    const token = window.__unitreeAccessToken;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+
+  apiClient.interceptors.response.use(
+    (res) => res,
+    async (error) => {
+      const original = error.config;
+
+      if (error.response?.status === 401 && !original._retry) {
+        original._retry = true;
+        try {
+          const res = await axios.post(
+            `${API_URL}/auth/refresh`,
+            {},
+            { withCredentials: true },
+          );
+          const { accessToken } = res.data.data;
+          window.__unitreeAccessToken = accessToken;
+          original.headers.Authorization = `Bearer ${accessToken}`;
+          return apiClient(original);
+        } catch {
+          window.__unitreeAccessToken = undefined;
+          window.location.href = '/login';
+        }
+      }
+
+      return Promise.reject(error);
+    },
+  );
+}
+
+declare global {
+  interface Window {
+    __unitreeAccessToken?: string;
+  }
+}
+
+// Allow Next.js ISR `next` option to be passed via Axios config
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    next?: { revalidate?: number | false; tags?: string[] };
+  }
+}
