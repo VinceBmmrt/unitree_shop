@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+
+# Logs
+*.log
+logs/
+
+# Turborepo
+.turbo/
+
+# Deployment
+.vercel/
+.fly/
+
+# Testing & coverage
+coverage/
+playwright-report/
+test-results/
+
+# Generated files
+prisma/generated/
+*.tsbuildinfo
+
+# Local dev artifacts
+screenshots/
+.playwright-mcp/
+
+# Claude Code local settings (not project config)
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
