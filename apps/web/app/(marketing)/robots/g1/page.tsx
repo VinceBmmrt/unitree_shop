@@ -1,7 +1,18 @@
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, Zap, FlaskConical, Cpu, GraduationCap } from 'lucide-react';
+import Image from 'next/image';
+
+const G1ModelViewer = dynamic(
+  () => import('@/components/3d/g1-model-dynamic').then((m) => ({ default: m.G1ModelViewer })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[480px] rounded-2xl bg-[#07071a] animate-pulse" />
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: 'Unitree G1 — Plateforme de Recherche Humanoïde',
@@ -110,17 +121,10 @@ export default function G1Page() {
             </div>
           </div>
 
-          {/* Product image */}
-          <div className="relative flex items-center justify-center">
-            <div className="absolute w-80 h-80 rounded-full bg-blue-600/10 blur-[80px]" />
-            <Image
-              src="https://shop.unitree.com/cdn/shop/files/1_968fd08b-9aaf-4f32-b895-5c786285ee52.jpg?v=1717575256"
-              alt="Unitree G1 — Robot humanoïde compact"
-              width={500}
-              height={500}
-              className="relative z-10 object-contain drop-shadow-2xl"
-              priority
-            />
+          {/* 3D viewer */}
+          <div className="relative">
+            <div className="absolute -inset-4 rounded-3xl bg-blue-600/8 blur-[60px] pointer-events-none" />
+            <G1ModelViewer className="w-full min-h-[480px]" />
           </div>
         </div>
       </section>
