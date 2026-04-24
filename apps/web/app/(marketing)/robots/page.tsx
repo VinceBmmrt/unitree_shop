@@ -7,14 +7,42 @@ import { FeaturedProducts } from '@/components/product/featured-products';
 export const metadata: Metadata = { title: 'Robots — Unitree Robotics' };
 export const revalidate = 300;
 
+const STATIC_ROBOTS = [
+  {
+    id: 'unitree-g1',
+    slug: 'unitree-g1',
+    name: 'Unitree G1',
+    shortDescription: 'Plateforme de recherche humanoïde compacte — 23 DoF, 2 m/s, NVIDIA Orin NX.',
+    basePrice: 0,
+    category: 'HUMANOID_ROBOT',
+    requiresQuote: true,
+    inStock: true,
+    images: [{ url: 'https://shop.unitree.com/cdn/shop/files/1_968fd08b-9aaf-4f32-b895-5c786285ee52.jpg?v=1717575256', altText: 'Unitree G1' }],
+    tags: [{ tag: 'Recherche' }, { tag: '23 DoF' }],
+  },
+  {
+    id: 'unitree-h1',
+    slug: 'unitree-h1',
+    name: 'Unitree H1',
+    shortDescription: 'Robot humanoïde industriel full-size — 43 DoF, 3.3 m/s, 30 kg de charge utile.',
+    basePrice: 0,
+    category: 'HUMANOID_ROBOT',
+    requiresQuote: true,
+    inStock: true,
+    images: [{ url: 'https://www.unitree.com/images/fdff7695f62b42b89b2459a3a4405118_400x400.png', altText: 'Unitree H1' }],
+    tags: [{ tag: 'Industriel' }, { tag: '43 DoF' }],
+  },
+];
+
 async function getProducts(category?: string) {
   try {
     const res = await apiClient.get('/products', {
       params: { category, limit: 20, isActive: true },
     });
-    return res.data.data.data ?? [];
+    const data = res.data.data.data ?? [];
+    return data.length > 0 ? data : STATIC_ROBOTS;
   } catch {
-    return [];
+    return STATIC_ROBOTS;
   }
 }
 
