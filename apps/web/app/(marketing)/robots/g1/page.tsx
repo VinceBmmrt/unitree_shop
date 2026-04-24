@@ -124,7 +124,7 @@ export default function G1Page() {
           {/* 3D viewer */}
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-blue-600/8 blur-[60px] pointer-events-none" />
-            <G1ModelViewer className="w-full min-h-[480px]" />
+            <G1ModelViewer className="w-full" />
           </div>
         </div>
       </section>
