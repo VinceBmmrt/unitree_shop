@@ -3,13 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
 import { PrismaService } from '../../prisma/prisma.service';
-
-export interface JwtPayload {
-  sub: string;
-  role: string;
-  iat?: number;
-  exp?: number;
-}
+import { JwtPayload } from '@unitree/types';
 
 @Injectable()
 export class TokenService {

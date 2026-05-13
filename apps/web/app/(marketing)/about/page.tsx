@@ -57,7 +57,7 @@ export default function AboutPage() {
               { value: '200k+', label: 'Robots déployés' },
               { value: '500+', label: 'Ingénieurs' },
             ].map(({ value, label }) => (
-              <div key={label} className="p-4 rounded-xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] text-center">
+              <div key={label} className="p-4 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] text-center">
                 <p className="font-display font-bold text-2xl text-white">{value}</p>
                 <p className="text-xs text-slate-400 dark:text-zinc-500 mt-1">{label}</p>
               </div>
@@ -75,7 +75,7 @@ export default function AboutPage() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {values.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="p-6 rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 transition-all">
+              <div key={title} className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 transition-all">
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 w-fit mb-4">
                   <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
@@ -126,7 +126,7 @@ export default function AboutPage() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/12 text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/[0.08] text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
             >
               Nous contacter
             </Link>

@@ -89,7 +89,7 @@ export default async function RobotsPage({
               className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
                 category === key
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'border-slate-300 dark:border-white/12 text-slate-500 dark:text-zinc-400 hover:border-blue-500/50 hover:text-blue-400'
+                  : 'border-slate-300 dark:border-white/[0.08] text-slate-500 dark:text-zinc-400 hover:border-blue-500/50 hover:text-blue-400'
               }`}
             >
               {label}
@@ -103,7 +103,7 @@ export default async function RobotsPage({
         {products.length > 0 ? (
           <FeaturedProducts products={products} />
         ) : (
-          <div className="text-center py-24 border border-dashed border-slate-200 dark:border-white/8 rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
+          <div className="text-center py-24 border border-dashed border-slate-200 dark:border-border rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
             <p className="text-zinc-400 text-lg">Aucun produit disponible pour le moment.</p>
             <p className="text-zinc-600 text-sm mt-2">Revenez bientôt ou contactez notre équipe commerciale.</p>
             <Link

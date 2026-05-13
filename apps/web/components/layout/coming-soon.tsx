@@ -24,7 +24,7 @@ export function ComingSoon({ title, description, label = 'Page' }: ComingSoonPro
       </div>
 
       <div className="relative max-w-7xl mx-auto">
-        <div className="text-center py-24 border border-dashed border-slate-200 dark:border-white/8 rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
+        <div className="text-center py-24 border border-dashed border-slate-200 dark:border-border rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
           <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 flex items-center justify-center mx-auto mb-4">
             <div className="w-5 h-5 rounded bg-blue-200 dark:bg-blue-500/40" />
           </div>
@@ -34,7 +34,7 @@ export function ComingSoon({ title, description, label = 'Page' }: ComingSoonPro
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-white/12 text-slate-600 dark:text-zinc-400 text-sm font-medium hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/25 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+            className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.08] text-slate-600 dark:text-zinc-400 text-sm font-medium hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/25 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
           >
             Retour à l&apos;accueil <ArrowRight className="w-4 h-4" />
           </Link>

@@ -37,7 +37,7 @@ export default function CookiesPage() {
 
         <div className="mt-12 space-y-6">
           {cookies.map(({ name, required, desc, examples }) => (
-            <div key={name} className="p-6 rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02]">
+            <div key={name} className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02]">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="font-semibold text-white">{name}</h2>
                 <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${required ? 'bg-blue-500/15 text-blue-300 border border-blue-500/25' : 'bg-white/5 text-slate-500 dark:text-zinc-400 border border-white/10'}`}>

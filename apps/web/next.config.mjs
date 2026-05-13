@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'www.unitree.com' },
       { protocol: 'https', hostname: 'oss-global-cdn.unitree.com' },
       { protocol: 'https', hostname: 'shop.unitree.com' },
+      { protocol: 'https', hostname: 'www.realsenseai.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'plus.unsplash.com' },

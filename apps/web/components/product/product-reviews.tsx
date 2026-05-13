@@ -1,14 +1,5 @@
 import { Star } from 'lucide-react';
-
-interface Review {
-  id: string;
-  authorName: string;
-  rating: number;
-  title?: string;
-  body?: string;
-  createdAt: string;
-  verified?: boolean;
-}
+import { Review } from '@unitree/types';
 
 interface ProductReviewsProps {
   reviews?: Review[];

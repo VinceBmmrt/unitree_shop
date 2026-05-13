@@ -23,7 +23,7 @@ const LINKS = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-white/8 bg-white dark:bg-[#04040a] mt-0">
+    <footer className="border-t border-slate-200 dark:border-border bg-white dark:bg-[#04040a] mt-0">
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
@@ -59,7 +59,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-slate-100 dark:border-white/6 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="border-t border-slate-100 dark:border-border mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-400 dark:text-zinc-600">
             © {new Date().getFullYear()} Unitree Robotics France. Tous droits réservés.
           </p>

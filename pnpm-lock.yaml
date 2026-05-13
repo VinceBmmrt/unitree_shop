@@ -77,6 +77,9 @@ importers:
       '@prisma/client':
         specifier: ^5.13.0
         version: 5.22.0(prisma@5.22.0)
+      '@unitree/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       axios:
         specifier: ^1.7.0
         version: 1.15.1
@@ -169,7 +172,7 @@ importers:
   apps/web:
     dependencies:
       '@hookform/resolvers':
-        specifier: ^3.9.0
+        specifier: ^3.3.4
         version: 3.10.0(react-hook-form@7.73.1(react@18.3.1))
       '@radix-ui/react-dialog':
         specifier: ^1.1.1
@@ -210,6 +213,9 @@ importers:
       '@tanstack/react-query-devtools':
         specifier: ^5.40.0
         version: 5.99.2(@tanstack/react-query@5.99.2(react@18.3.1))(react@18.3.1)
+      '@unitree/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       axios:
         specifier: ^1.7.0
         version: 1.15.1
@@ -285,6 +291,12 @@ importers:
         version: 3.4.19
       typescript:
         specifier: ^5.4.5
+        version: 5.9.3
+
+  packages/types:
+    devDependencies:
+      typescript:
+        specifier: ^5.4.0
         version: 5.9.3
 
 packages:

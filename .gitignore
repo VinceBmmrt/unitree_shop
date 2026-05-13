@@ -40,6 +40,12 @@ screenshots/
 # Claude Code local settings (not project config)
 .claude/settings.local.json
 
+# AI context files (Gemini, etc.)
+GEMINI.md
+
+# Compiled output for workspace packages (built on install via prepare)
+packages/*/dist/
+
 # OS
 .DS_Store
 Thumbs.db

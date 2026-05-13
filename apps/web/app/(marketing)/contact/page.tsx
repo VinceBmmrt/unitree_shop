@@ -29,7 +29,7 @@ export default function ContactPage() {
               { icon: MapPin, label: 'Siège social', value: 'Paris, France' },
               { icon: Clock, label: 'Horaires', value: 'Lun–Ven, 9h–18h CET' },
             ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 hover:bg-slate-100 dark:bg-white/[0.04] transition-all">
+              <div key={label} className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 hover:bg-slate-100 dark:bg-white/[0.04] transition-all">
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 h-fit shrink-0">
                   <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
@@ -53,7 +53,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact form */}
-          <div className="p-6 rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02]">
+          <div className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02]">
             <p className="font-semibold text-white mb-6">Message général</p>
             <div className="space-y-4">
               {['Nom complet', 'Email professionnel', 'Société'].map((label) => (
@@ -61,7 +61,7 @@ export default function ContactPage() {
                   <label className="block text-xs font-medium text-slate-400 dark:text-zinc-500 mb-1.5">{label}</label>
                   <input
                     type="text"
-                    className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-white/8 bg-slate-100 dark:bg-white/[0.04] text-sm text-slate-700 dark:text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition"
+                    className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-border bg-slate-100 dark:bg-white/[0.04] text-sm text-slate-700 dark:text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition"
                     placeholder={label}
                   />
                 </div>
@@ -70,7 +70,7 @@ export default function ContactPage() {
                 <label className="block text-xs font-medium text-slate-400 dark:text-zinc-500 mb-1.5">Message</label>
                 <textarea
                   rows={4}
-                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-white/8 bg-slate-100 dark:bg-white/[0.04] text-sm text-slate-700 dark:text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition resize-none"
+                  className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-border bg-slate-100 dark:bg-white/[0.04] text-sm text-slate-700 dark:text-zinc-200 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/50 transition resize-none"
                   placeholder="Décrivez votre projet..."
                 />
               </div>

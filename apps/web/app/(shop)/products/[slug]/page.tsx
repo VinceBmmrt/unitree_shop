@@ -4,12 +4,10 @@ import { Suspense } from 'react';
 import { apiClient } from '@/lib/api/client';
 import { ProductGallery } from '@/components/product/product-gallery';
 import { ProductInfo } from '@/components/product/product-info';
-import { ProductConfigurator } from '@/components/product/product-configurator';
+import { ProductActions } from '@/components/product/product-actions';
 import { Product3DViewer } from '@/components/3d/product-3d-viewer';
 import { ProductReviews } from '@/components/product/product-reviews';
 import { RelatedProducts } from '@/components/product/related-products';
-import { AddToCartButton } from '@/components/product/add-to-cart-button';
-import { QuoteRequestButton } from '@/components/product/quote-request-button';
 
 interface Props {
   params: { slug: string };
@@ -82,21 +80,7 @@ export default async function ProductPage({ params }: Props) {
         <div className="flex flex-col gap-8">
           <ProductInfo product={product} />
 
-          {product.isConfigurable && (
-            <ProductConfigurator
-              productId={product.id}
-              options={product.options}
-              basePrice={product.basePrice}
-            />
-          )}
-
-          <div className="flex flex-col gap-3">
-            {product.requiresQuote ? (
-              <QuoteRequestButton product={product} />
-            ) : (
-              <AddToCartButton product={product} />
-            )}
-          </div>
+          <ProductActions product={product} />
         </div>
       </div>
 

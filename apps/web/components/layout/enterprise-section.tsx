@@ -46,7 +46,7 @@ export function EnterpriseSection() {
               </Link>
               <Link
                 href="/enterprise"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-200 dark:border-white/12 text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/25 hover:bg-slate-50 dark:hover:bg-white/5 transition-all font-semibold"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/25 hover:bg-slate-50 dark:hover:bg-white/5 transition-all font-semibold"
               >
                 Enterprise overview
               </Link>
@@ -57,7 +57,7 @@ export function EnterpriseSection() {
             {features.map(({ icon: Icon, title, body }) => (
               <div
                 key={title}
-                className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-white/8 bg-white dark:bg-white/[0.03] hover:bg-slate-50 dark:hover:bg-white/[0.05] hover:border-blue-300 dark:hover:border-blue-500/20 transition-all group"
+                className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-white/[0.03] hover:bg-slate-50 dark:hover:bg-white/[0.05] hover:border-blue-300 dark:hover:border-blue-500/20 transition-all group"
               >
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 h-fit shrink-0 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
                   <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />

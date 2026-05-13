@@ -3,11 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-interface ProductImage {
-  url: string;
-  altText?: string;
-}
+import { ProductImage } from '@unitree/types';
 
 interface ProductGalleryProps {
   images: ProductImage[];

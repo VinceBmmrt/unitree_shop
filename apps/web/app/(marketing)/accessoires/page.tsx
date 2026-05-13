@@ -43,7 +43,7 @@ export default async function AccessoiresPage() {
         {products.length > 0 ? (
           <FeaturedProducts products={products} />
         ) : (
-          <div className="text-center py-24 border border-dashed border-slate-200 dark:border-white/8 rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
+          <div className="text-center py-24 border border-dashed border-slate-200 dark:border-border rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
             <p className="text-zinc-400 text-lg">Aucun accessoire disponible pour le moment.</p>
             <p className="text-zinc-600 text-sm mt-2">Notre catalogue s&apos;enrichit régulièrement. Contactez-nous pour vos besoins spécifiques.</p>
             <Link

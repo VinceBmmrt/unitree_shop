@@ -13,16 +13,14 @@ interface ProductConfiguratorProps {
   productId: string;
   options: Option[];
   basePrice: number;
+  selected: Record<string, string>;
+  onSelectionChange: (optionId: string, choiceId: string) => void;
 }
 
 const formatEur = (n: number) =>
   new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 
-export function ProductConfigurator({ options, basePrice }: ProductConfiguratorProps) {
-  const [selected, setSelected] = useState<Record<string, string>>(() =>
-    Object.fromEntries((options ?? []).map((o) => [o.id, o.values[0]?.id ?? ''])),
-  );
-
+export function ProductConfigurator({ options, basePrice, selected, onSelectionChange }: ProductConfiguratorProps) {
   if (!options?.length) return null;
 
   const totalModifier = options.reduce((sum, opt) => {
@@ -47,7 +45,7 @@ export function ProductConfigurator({ options, basePrice }: ProductConfiguratorP
               return (
                 <button
                   key={val.id}
-                  onClick={() => setSelected((s) => ({ ...s, [option.id]: val.id }))}
+                  onClick={() => onSelectionChange(option.id, val.id)}
                   className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm transition-all ${
                     isActive
                       ? 'border-primary bg-primary/10 text-primary font-medium'

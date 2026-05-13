@@ -11,8 +11,9 @@ import { EmailService } from '../email/email.service';
 import { templates } from '../email/templates';
 import { CreateQuoteRequestDto } from './dto/create-quote-request.dto';
 import { UpdateQuoteDto } from './dto/update-quote.dto';
-import { QuoteStatus } from '@prisma/client';
+import { QuoteStatus, Prisma } from '@prisma/client';
 import { addDays } from 'date-fns';
+import { TAX_RATE, TAX_LABEL } from '../../common/constants/tax.constants';
 
 @Injectable()
 export class QuotesService {
@@ -52,18 +53,29 @@ export class QuotesService {
     }
 
     // Build quote items with list price as initial estimate
-    const items = dto.items.map((item) => {
+    const items = await Promise.all(dto.items.map(async (item) => {
       const product = products.find((p) => p.id === item.productId)!;
-      const unitPrice = Number(product.basePrice);
+      let unitPrice = Number(product.basePrice);
+
+      if (item.configurationId) {
+        const config = await this.prisma.configuration.findUnique({
+          where: { id: item.configurationId },
+        });
+        if (config) {
+          unitPrice = Number(config.totalPrice);
+        }
+      }
+
       return {
         productId: item.productId,
+        configurationId: item.configurationId,
         quantity: item.quantity,
         unitPrice,
         discount: 0,
         totalPrice: unitPrice * item.quantity,
         notes: item.notes,
       };
-    });
+    }));
 
     const subtotal = items.reduce((sum, i) => sum + i.totalPrice, 0);
 
@@ -100,8 +112,8 @@ export class QuotesService {
         currency: 'EUR',
         subtotal,
         discount: 0,
-        taxTotal: subtotal * 0.20, // TVA 20% — indicative, final on invoice
-        total: subtotal * 1.20,
+        taxTotal: subtotal * TAX_RATE, // TVA 20% — indicative, final on invoice
+        total: subtotal * (1 + TAX_RATE),
         validUntil: addDays(new Date(), 30),
         notes: [
           dto.useCase && `Cas d'usage: ${dto.useCase}`,
@@ -314,7 +326,7 @@ export class QuotesService {
 
         const subtotal = newItems.reduce((sum, i) => sum + i.totalPrice, 0);
         const discountTotal = dto.discount ?? Number(quote.discount);
-        const taxTotal = (subtotal - discountTotal) * 0.20;
+        const taxTotal = (subtotal - discountTotal) * TAX_RATE;
         const total = subtotal - discountTotal + taxTotal;
 
         await tx.quote.update({
@@ -362,7 +374,7 @@ export class QuotesService {
     const quote = await this.prisma.quote.findUnique({
       where: { id: quoteId },
       include: {
-        items: true,
+        items: { include: { product: { include: { inventoryItems: true } } } },
         customer: { select: { id: true, addresses: { where: { isDefault: true }, take: 1 } } },
       },
     });
@@ -375,6 +387,42 @@ export class QuotesService {
     const defaultAddress = quote.customer.addresses[0];
 
     const order = await this.prisma.$transaction(async (tx) => {
+      const lineItems: any[] = [];
+
+      for (const qi of quote.items) {
+        // Find warehouse with sufficient stock
+        const suitableInventory = qi.product.inventoryItems.find(
+          (inv) => inv.quantityOnHand - inv.quantityReserved >= qi.quantity
+        );
+
+        if (!suitableInventory) {
+          const totalAvailable = qi.product.inventoryItems.reduce(
+            (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
+            0,
+          );
+          throw new BadRequestException(
+            `Insufficient stock for "${qi.product.name}" (available: ${totalAvailable})`,
+          );
+        }
+
+        lineItems.push({
+          productId: qi.productId,
+          sku: qi.product.sku,
+          name: qi.product.name,
+          configurationId: qi.configurationId,
+          quantity: qi.quantity,
+          unitPrice: qi.unitPrice,
+          totalPrice: qi.totalPrice,
+          taxAmount: Number(qi.totalPrice) * TAX_RATE,
+        });
+
+        // Reserve inventory
+        await tx.inventoryItem.update({
+          where: { id: suitableInventory.id },
+          data: { quantityReserved: { increment: qi.quantity } },
+        });
+      }
+
       const newOrder = await tx.order.create({
         data: {
           orderNumber: `UT-${Date.now()}-${nanoid(4).toUpperCase()}`,
@@ -384,30 +432,14 @@ export class QuotesService {
           subtotal: quote.subtotal,
           taxTotal: quote.taxTotal,
           total: quote.total,
-          taxRate: 0.20,
-          taxLabel: 'TVA 20%',
+          taxRate: TAX_RATE,
+          taxLabel: TAX_LABEL,
           quoteId: quote.id,
           shippingAddressId: defaultAddress?.id,
           billingAddressId: defaultAddress?.id,
           confirmedAt: new Date(),
           items: {
-            create: await Promise.all(
-              quote.items.map(async (qi) => {
-                const product = await tx.product.findUniqueOrThrow({
-                  where: { id: qi.productId },
-                  select: { name: true, sku: true },
-                });
-                return {
-                  productId: qi.productId,
-                  sku: product.sku,
-                  name: product.name,
-                  quantity: qi.quantity,
-                  unitPrice: qi.unitPrice,
-                  totalPrice: qi.totalPrice,
-                  taxAmount: Number(qi.totalPrice) * 0.20,
-                };
-              }),
-            ),
+            create: lineItems,
           },
         },
       });
@@ -418,6 +450,9 @@ export class QuotesService {
       });
 
       return newOrder;
+    }, {
+      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+      timeout: 15_000,
     });
 
     return order;

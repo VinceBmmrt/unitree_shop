@@ -34,10 +34,10 @@ export function SpecsComparison() {
           </h2>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02]">
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02]">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-white/8">
+              <tr className="border-b border-slate-200 dark:border-border">
                 <th className="text-left px-6 py-5 text-slate-400 dark:text-zinc-600 font-normal text-sm w-44">
                   Spécification
                 </th>
@@ -50,7 +50,7 @@ export function SpecsComparison() {
             </thead>
             <tbody>
               {specs.map(({ key, label }, i) => (
-                <tr key={key} className={`border-b border-slate-100 dark:border-white/5 last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/80 dark:bg-white/[0.015]'}`}>
+                <tr key={key} className={`border-b border-slate-100 dark:border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/80 dark:bg-white/[0.015]'}`}>
                   <td className="px-6 py-4 text-sm text-slate-400 dark:text-zinc-500 font-medium">{label}</td>
                   {robots.map((r) => (
                     <td key={r.name} className="px-6 py-4 text-center font-semibold text-sm text-slate-700 dark:text-zinc-200">

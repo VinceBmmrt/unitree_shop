@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
+    "setup": "pnpm install && pnpm db:generate && pnpm db:migrate",
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",

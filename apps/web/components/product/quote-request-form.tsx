@@ -48,9 +48,10 @@ interface Product {
 interface Props {
   products: Product[];
   preselectedProductId?: string;
+  preselectedConfigId?: string;
 }
 
-export function QuoteRequestForm({ products, preselectedProductId }: Props) {
+export function QuoteRequestForm({ products, preselectedProductId, preselectedConfigId }: Props) {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [quoteNumber, setQuoteNumber] = useState<string>('');
 
@@ -66,7 +67,9 @@ export function QuoteRequestForm({ products, preselectedProductId }: Props) {
     defaultValues: {
       country: 'France',
       requestsFinancing: false,
-      items: preselectedProductId ? [{ productId: preselectedProductId, quantity: 1 }] : [],
+      items: preselectedProductId
+        ? [{ productId: preselectedProductId, quantity: 1, configurationId: preselectedConfigId } as any]
+        : [],
     },
   });
 

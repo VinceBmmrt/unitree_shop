@@ -36,7 +36,7 @@ if (typeof window !== 'undefined') {
           return apiClient(original);
         } catch {
           window.__unitreeAccessToken = undefined;
-          window.location.href = '/login';
+          window.location.href = '/compte/connexion';
         }
       }
 

@@ -17,6 +17,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { EmailModule } from './modules/email/email.module';
 import { GdprModule } from './modules/gdpr/gdpr.module';
+import { StorageModule } from './modules/storage/storage.module';
 import { validate } from './config/env.validation';
 
 @Module({
@@ -52,6 +53,7 @@ import { validate } from './config/env.validation';
     AdminModule,
     EmailModule,
     GdprModule,
+    StorageModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

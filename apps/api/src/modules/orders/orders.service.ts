@@ -8,6 +8,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { nanoid } from 'nanoid';
 import { OrderStatus, Prisma } from '@prisma/client';
+import { TAX_RATE, TAX_LABEL } from '../../common/constants/tax.constants';
 
 @Injectable()
 export class OrdersService {
@@ -70,14 +71,18 @@ export class OrdersService {
           throw new NotFoundException(`Variant not found: ${item.variantId}`);
         }
 
-        // Check stock
-        const availableStock = product.inventoryItems.reduce(
-          (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
-          0,
+        // Find warehouse with sufficient stock
+        const suitableInventory = product.inventoryItems.find(
+          (inv) => inv.quantityOnHand - inv.quantityReserved >= item.quantity
         );
-        if (availableStock < item.quantity) {
+
+        if (!suitableInventory) {
+          const totalAvailable = product.inventoryItems.reduce(
+            (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
+            0,
+          );
           throw new BadRequestException(
-            `Insufficient stock for "${product.name}" (available: ${availableStock})`,
+            `Insufficient stock for "${product.name}" (available: ${totalAvailable})`,
           );
         }
 
@@ -96,18 +101,14 @@ export class OrdersService {
         });
         subtotal += totalPrice;
 
-        // Reserve inventory (deducted on shipment, released on cancel)
-        for (const inv of product.inventoryItems) {
-          await tx.inventoryItem.update({
-            where: { id: inv.id },
-            data: { quantityReserved: { increment: item.quantity } },
-          });
-        }
+        // Reserve inventory in the selected warehouse
+        await tx.inventoryItem.update({
+          where: { id: suitableInventory.id },
+          data: { quantityReserved: { increment: item.quantity } },
+        });
       }
 
-      // French TVA — 20% standard rate on all goods
-      // Only accessories go through checkout; robots require quote flow
-      const TAX_RATE = 0.20;
+      // French TVA
       const taxTotal = subtotal * TAX_RATE;
       const shippingTotal = this.calculateShipping(subtotal);
       const total = subtotal + taxTotal + shippingTotal;
@@ -120,7 +121,7 @@ export class OrdersService {
           currency: 'EUR',
           subtotal,
           taxRate: TAX_RATE,
-          taxLabel: 'TVA 20%',
+          taxLabel: TAX_LABEL,
           taxTotal,
           shippingTotal,
           total,

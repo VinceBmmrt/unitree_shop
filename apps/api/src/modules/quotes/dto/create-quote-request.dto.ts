@@ -24,6 +24,11 @@ export class QuoteItemRequestDto {
   @IsString()
   variantId?: string;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  configurationId?: string;
+
   @ApiProperty({ minimum: 1 })
   @IsNumber()
   @Min(1)

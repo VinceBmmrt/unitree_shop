@@ -312,15 +312,27 @@ async function main() {
         create: [
           {
             url: 'https://shop.unitree.com/cdn/shop/files/4_2d908cf1-3a7c-4a5a-95d4-e46f46a8a5fd.jpg?v=1687230151',
-            altText: 'Kit LiDAR L1 pour robots Unitree',
+            altText: 'Unitree 4D LiDAR L1 — vue principale',
             isPrimary: true,
             sortOrder: 0,
           },
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/1_15075c4f-a64a-4ef0-a2df-bbbf6ab46f06.jpg?v=1687230151',
-            altText: 'Kit LiDAR L1 — vue de côté',
+            url: 'https://shop.unitree.com/cdn/shop/files/2_089bc6e9-77bf-4427-860c-cff9d8414e2e.jpg?v=1687230151',
+            altText: 'Unitree 4D LiDAR L1 — vue de côté',
             isPrimary: false,
             sortOrder: 1,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/3_82f76f3f-b175-4392-86e1-db9a87594402.jpg?v=1687230151',
+            altText: 'Unitree 4D LiDAR L1 — détail connectique',
+            isPrimary: false,
+            sortOrder: 2,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/1_15075c4f-a64a-4ef0-a2df-bbbf6ab46f06.jpg?v=1687230151',
+            altText: 'Unitree 4D LiDAR L1 — vue arrière',
+            isPrimary: false,
+            sortOrder: 3,
           },
         ],
       },
@@ -355,10 +367,22 @@ async function main() {
       images: {
         create: [
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/4_2d908cf1-3a7c-4a5a-95d4-e46f46a8a5fd.jpg?v=1687230151',
-            altText: 'Batterie longue durée Unitree Go2',
+            url: 'https://shop.unitree.com/cdn/shop/files/168.jpg?v=1702375329',
+            altText: 'Batterie longue durée Unitree Go2 — vue principale',
             isPrimary: true,
             sortOrder: 0,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/169_c6ad4b4c-1d1a-4169-9691-4d377fbeaba9.jpg?v=1702375329',
+            altText: 'Batterie longue durée Unitree Go2 — vue de côté',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/170_5ee6504e-0174-47e4-b8e2-d5c8103c40a7.jpg?v=1702375328',
+            altText: 'Batterie longue durée Unitree Go2 — connecteur',
+            isPrimary: false,
+            sortOrder: 2,
           },
         ],
       },
@@ -393,8 +417,8 @@ async function main() {
       images: {
         create: [
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/1_15075c4f-a64a-4ef0-a2df-bbbf6ab46f06.jpg?v=1687230151',
-            altText: 'Module caméra Intel RealSense D435i',
+            url: 'https://www.realsenseai.com/wp-content/uploads/2025/07/D435i.png',
+            altText: 'Intel RealSense D435i — caméra de profondeur RGB-D',
             isPrimary: true,
             sortOrder: 0,
           },
@@ -431,10 +455,22 @@ async function main() {
       images: {
         create: [
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/4_2d908cf1-3a7c-4a5a-95d4-e46f46a8a5fd.jpg?v=1687230151',
-            altText: 'Housse de transport rigide Unitree Go2',
+            url: 'https://shop.unitree.com/cdn/shop/files/150.jpg?v=1702375597',
+            altText: 'Housse de transport rigide Unitree Go2 — vue fermée',
             isPrimary: true,
             sortOrder: 0,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/151_def9c78e-d9a4-4b36-bdf6-d2c256ceba0d.jpg?v=1702375597',
+            altText: 'Housse de transport rigide Unitree Go2 — intérieur mousse',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/152_2c52c2a2-98ba-4a23-bdb7-ce416cd52c9b.jpg?v=1702375596',
+            altText: 'Housse de transport rigide Unitree Go2 — détail verrou',
+            isPrimary: false,
+            sortOrder: 2,
           },
         ],
       },
@@ -470,10 +506,22 @@ async function main() {
       images: {
         create: [
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/1_15075c4f-a64a-4ef0-a2df-bbbf6ab46f06.jpg?v=1687230151',
-            altText: 'Chargeur rapide universel Unitree',
+            url: 'https://shop.unitree.com/cdn/shop/files/145.jpg?v=1702435004',
+            altText: 'Chargeur rapide Unitree — vue principale',
             isPrimary: true,
             sortOrder: 0,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/146.jpg?v=1702435004',
+            altText: 'Chargeur rapide Unitree — vue câble',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/147.jpg?v=1702435005',
+            altText: 'Chargeur rapide Unitree — connecteur',
+            isPrimary: false,
+            sortOrder: 2,
           },
         ],
       },
@@ -507,10 +555,16 @@ async function main() {
       images: {
         create: [
           {
-            url: 'https://shop.unitree.com/cdn/shop/files/4_2d908cf1-3a7c-4a5a-95d4-e46f46a8a5fd.jpg?v=1687230151',
-            altText: 'Plan support développeur Unitree',
+            url: 'https://shop.unitree.com/cdn/shop/files/5_46eb6952-db91-4878-b6e5-1749ea14135d.jpg?v=1732264669',
+            altText: 'Plan support développeur Unitree SDK',
             isPrimary: true,
             sortOrder: 0,
+          },
+          {
+            url: 'https://shop.unitree.com/cdn/shop/files/2_fae5c893-a636-4708-89fc-3b4aa78b6d81.jpg?v=1732264752',
+            altText: 'Plan support développeur — accès documentation avancée',
+            isPrimary: false,
+            sortOrder: 1,
           },
         ],
       },

@@ -20,8 +20,14 @@ async function getQuotableProducts() {
   }
 }
 
-export default async function DevisPage() {
+export default async function DevisPage({
+  searchParams,
+}: {
+  searchParams: { product?: string; config?: string };
+}) {
   const products = await getQuotableProducts();
+  const preselectedProductId = searchParams.product;
+  const preselectedConfigId = searchParams.config;
 
   return (
     <div className="bg-white dark:bg-[#04040a] text-slate-900 dark:text-white min-h-screen pt-32 pb-16 relative overflow-hidden">
@@ -48,7 +54,7 @@ export default async function DevisPage() {
             ].map((item) => (
               <div
                 key={item.label}
-                className="flex flex-col items-center gap-1 p-3 rounded-xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] text-center"
+                className="flex flex-col items-center gap-1 p-3 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] text-center"
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="text-xs text-slate-400 dark:text-zinc-500">{item.label}</span>
@@ -57,7 +63,11 @@ export default async function DevisPage() {
           </div>
         </div>
 
-        <QuoteRequestForm products={products} />
+        <QuoteRequestForm
+          products={products}
+          preselectedProductId={preselectedProductId}
+          preselectedConfigId={preselectedConfigId}
+        />
       </div>
     </div>
   );

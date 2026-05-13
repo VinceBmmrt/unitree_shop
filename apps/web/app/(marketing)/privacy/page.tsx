@@ -47,7 +47,7 @@ export default function PrivacyPage() {
 
         <div className="mt-12 space-y-8">
           {sections.map(({ title, body }) => (
-            <div key={title} className="border-b border-slate-200 dark:border-white/6 pb-8 last:border-0">
+            <div key={title} className="border-b border-slate-200 dark:border-border pb-8 last:border-0">
               <h2 className="font-semibold text-white mb-3">{title}</h2>
               <p className="text-zinc-400 leading-relaxed">{body}</p>
             </div>

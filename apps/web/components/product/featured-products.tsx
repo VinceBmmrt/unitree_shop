@@ -1,22 +1,7 @@
 'use client';
 
+import { Product } from '@unitree/types';
 import { ProductCard } from './product-card';
-
-interface Product {
-  id: string;
-  slug: string;
-  name: string;
-  shortDescription?: string;
-  basePrice: number;
-  compareAtPrice?: number;
-  leasePriceMonth?: number;
-  category: string;
-  isFeatured?: boolean;
-  requiresQuote?: boolean;
-  images?: { url: string; altText?: string }[];
-  tags?: { tag: string }[];
-  inStock?: boolean;
-}
 
 interface FeaturedProductsProps {
   products: Product[];
@@ -36,20 +21,10 @@ export function FeaturedProducts({ products }: FeaturedProductsProps) {
       {products.map((product) => (
         <ProductCard
           key={product.id}
-          id={product.id}
-          slug={product.slug}
-          name={product.name}
-          shortDescription={product.shortDescription}
-          basePrice={product.basePrice}
-          compareAtPrice={product.compareAtPrice}
-          leasePriceMonth={product.leasePriceMonth}
-          category={product.category}
-          requiresQuote={product.requiresQuote ?? false}
-          inStock={product.inStock ?? true}
-          image={product.images?.[0]}
-          tags={product.tags}
+          product={product}
         />
       ))}
     </div>
   );
-}
+  }
+

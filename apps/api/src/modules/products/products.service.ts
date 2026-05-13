@@ -210,7 +210,7 @@ export class ProductsService {
     });
   }
 
-  async buildConfiguration(productId: string, selections: Record<string, string>, userId: string) {
+  async buildConfiguration(productId: string, selections: Record<string, string>, userId?: string) {
     const product = await this.prisma.product.findUniqueOrThrow({
       where: { id: productId },
       include: { options: { include: { choices: true } } },
@@ -244,7 +244,7 @@ export class ProductsService {
 
     return this.prisma.configuration.create({
       data: {
-        userId,
+        userId: userId ?? null,
         productId,
         selections: validatedSelections,
         totalPrice,

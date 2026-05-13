@@ -49,12 +49,12 @@ export class ProductsController {
   }
 
   @Post(':id/configure')
-  @ApiBearerAuth()
+  @Public()
   @ApiOperation({ summary: 'Save a custom robot configuration' })
   configure(
     @Param('id') productId: string,
     @Body() body: { selections: Record<string, string> },
-    @CurrentUser('id') userId: string,
+    @CurrentUser('id') userId?: string,
   ) {
     return this.productsService.buildConfiguration(productId, body.selections, userId);
   }

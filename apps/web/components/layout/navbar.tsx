@@ -26,11 +26,13 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
   const { itemCount, openCart, isOpen: isCartOpen } = useCartStore();
   const { theme, setTheme } = useTheme();
   const count = itemCount();
 
   useEffect(() => {
+    setMounted(true);
     const handler = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
@@ -44,7 +46,7 @@ export function Navbar() {
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-white/95 dark:bg-[#04040a]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/8 shadow-lg shadow-black/10 dark:shadow-black/40'
+            ? 'bg-white/95 dark:bg-[#04040a]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-border shadow-lg shadow-black/10 dark:shadow-black/40'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
@@ -65,7 +67,7 @@ export function Navbar() {
                   <button
                     onMouseEnter={() => setOpenDropdown(link.label)}
                     onMouseLeave={() => setOpenDropdown(null)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/80 dark:hover:bg-white/8"
+                    className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/80 dark:hover:bg-zinc-800"
                   >
                     {link.label}
                     <ChevronDown className="w-3.5 h-3.5" />
@@ -91,15 +93,15 @@ export function Navbar() {
                       onMouseLeave={() => setOpenDropdown(null)}
                       className="absolute top-full left-0 pt-2"
                     >
-                      <div className="glass-dark rounded-xl p-2 min-w-[220px] shadow-2xl border border-white/8">
+                      <div className="bg-white dark:bg-[#10101e] rounded-xl p-2 min-w-[220px] shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07] backdrop-blur-xl">
                         {link.children.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}
-                            className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors"
+                            className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
                           >
-                            <span className="text-sm font-medium">{child.label}</span>
-                            <span className="text-xs text-muted-foreground mt-0.5">{child.desc}</span>
+                            <span className="text-sm font-medium text-slate-900 dark:text-white">{child.label}</span>
+                            <span className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">{child.desc}</span>
                           </Link>
                         ))}
                       </div>
@@ -130,7 +132,7 @@ export function Navbar() {
               className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors text-slate-500 dark:text-zinc-400"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {mounted && (theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
             </button>
 
             <button
@@ -185,7 +187,7 @@ export function Navbar() {
                 <Link
                   href="/compte/connexion"
                   onClick={() => setIsMobileOpen(false)}
-                  className="block mt-2 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 text-sm font-medium text-center hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                  className="block mt-2 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/[0.07] text-slate-700 dark:text-zinc-300 text-sm font-medium text-center hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
                 >
                   Connexion
                 </Link>

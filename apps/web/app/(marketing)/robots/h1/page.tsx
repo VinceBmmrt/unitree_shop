@@ -72,7 +72,7 @@ export default function H1Page() {
                 { value: '43 DoF', label: 'Liberté' },
                 { value: '30 kg', label: 'Charge' },
               ].map(({ value, label }) => (
-                <div key={label} className="p-3 rounded-xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.03] text-center">
+                <div key={label} className="p-3 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.03] text-center">
                   <p className="font-display font-bold text-lg text-slate-900 dark:text-white">{value}</p>
                   <p className="text-[11px] text-slate-400 dark:text-zinc-500 mt-0.5">{label}</p>
                 </div>
@@ -88,7 +88,7 @@ export default function H1Page() {
               </Link>
               <Link
                 href="/products/unitree-h1"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/12 text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/[0.08] text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
               >
                 Voir la fiche produit
               </Link>
@@ -119,7 +119,7 @@ export default function H1Page() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="p-6 rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 hover:bg-slate-100 dark:bg-white/[0.04] transition-all">
+              <div key={title} className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] hover:border-blue-200 dark:border-blue-500/20 hover:bg-slate-100 dark:bg-white/[0.04] transition-all">
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 w-fit mb-4">
                   <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
@@ -138,11 +138,11 @@ export default function H1Page() {
             <p className="text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">Spécifications</p>
             <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Caractéristiques techniques</h2>
           </div>
-          <div className="rounded-2xl border border-slate-200 dark:border-white/8 bg-slate-50 dark:bg-white/[0.02] overflow-hidden">
+          <div className="rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] overflow-hidden">
             {specs.map(({ label, value }, i) => (
               <div
                 key={label}
-                className={`flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-white/5 last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/50 dark:bg-white/[0.015]'}`}
+                className={`flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/50 dark:bg-white/[0.015]'}`}
               >
                 <span className="text-sm text-slate-400 dark:text-zinc-500 font-medium">{label}</span>
                 <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">{value}</span>
@@ -167,7 +167,7 @@ export default function H1Page() {
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/12 text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-slate-300 dark:border-white/[0.08] text-slate-600 dark:text-zinc-300 hover:text-white hover:border-white/25 hover:bg-white/5 transition-all font-semibold"
             >
               Parler à un expert
             </Link>
