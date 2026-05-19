@@ -17,6 +17,10 @@ if (typeof window !== 'undefined') {
     return config;
   });
 
+  // Single in-flight refresh promise — prevents concurrent 401s from each
+  // triggering their own refresh, which would rotate the token multiple times.
+  let refreshPromise: Promise<string> | null = null;
+
   apiClient.interceptors.response.use(
     (res) => res,
     async (error) => {
@@ -25,12 +29,20 @@ if (typeof window !== 'undefined') {
       if (error.response?.status === 401 && !original._retry) {
         original._retry = true;
         try {
-          const res = await axios.post(
-            `${API_URL}/auth/refresh`,
-            {},
-            { withCredentials: true },
-          );
-          const { accessToken } = res.data.data;
+          if (!refreshPromise) {
+            refreshPromise = axios
+              .post(`${API_URL}/auth/refresh`, {}, { withCredentials: true })
+              .then((res) => {
+                const token: string =
+                  res.data?.data?.accessToken ?? res.data?.accessToken;
+                if (!token) throw new Error('No token in refresh response');
+                return token;
+              })
+              .finally(() => {
+                refreshPromise = null;
+              });
+          }
+          const accessToken = await refreshPromise;
           window.__unitreeAccessToken = accessToken;
           original.headers.Authorization = `Bearer ${accessToken}`;
           return apiClient(original);

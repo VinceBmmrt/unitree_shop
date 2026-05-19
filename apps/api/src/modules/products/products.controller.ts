@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Patch,
   Body,
   Param,
@@ -37,8 +36,9 @@ export class ProductsController {
   @Get('compare')
   @Public()
   @ApiOperation({ summary: 'Compare up to 4 products side-by-side' })
-  compare(@Query('ids') ids: string) {
-    return this.productsService.compareProducts(ids.split(','));
+  compare(@Query('ids') ids?: string) {
+    if (!ids) return [];
+    return this.productsService.compareProducts(ids.split(',').slice(0, 4));
   }
 
   @Get(':slug')

@@ -8,7 +8,7 @@ French-market robotics e-commerce platform. Sells Unitree humanoid robots (G1, H
 
 ```
 apps/web         — Next.js 14 App Router  → deployed on Vercel
-apps/api         — NestJS + Fastify        → deployed on Fly.io (cdg, Paris)
+apps/api         — NestJS + Fastify        → deployed on Render (Frankfurt, Docker)
 packages/types   — shared TypeScript types (@unitree/types)
 ```
 
@@ -20,6 +20,15 @@ packages/types   — shared TypeScript types (@unitree/types)
 
 ---
 
+## Production URLs
+
+- Frontend: `https://unitree-shop-web.vercel.app`
+- API: `https://unitree-shop-api.onrender.com`
+- Vercel project: `unitree-shop-web` (project ID `prj_haQWso8wG4caDhbDMT11QzAiZUed`)
+- Render service: `unitree-shop-api`
+
+---
+
 ## Key Stack
 
 | Layer | Tech |
@@ -27,7 +36,7 @@ packages/types   — shared TypeScript types (@unitree/types)
 | Frontend | Next.js 14 App Router, Tailwind CSS, Framer Motion |
 | Backend | NestJS, Fastify, Prisma ORM |
 | Database | PostgreSQL via Supabase |
-| Auth | JWT (access token in memory, refresh in httpOnly cookie) |
+| Auth | JWT (access token in memory, refresh in httpOnly cookie) + Google/GitHub OAuth |
 | Payments | Stripe (PaymentIntent + webhook) |
 | Email | Resend + BullMQ queue |
 | Cache | Redis via Upstash |
@@ -63,9 +72,17 @@ The `packages/types` workspace package is the single source of truth for all sha
 
 ### Auth token
 - Access token lives in **`window.__unitreeAccessToken`** (memory only — not localStorage, not sessionStorage)
-- Refresh token is in an **httpOnly cookie** — used automatically by `/auth/refresh`
+- Refresh token is in an **httpOnly cookie** (`SameSite=None; Secure` in production for cross-origin Vercel → Render)
 - On 401: the `apiClient` interceptor in `lib/api/client.ts` auto-refreshes; on failure it redirects to **`/compte/connexion`** (NOT `/login` — that route does not exist)
+- The interceptor uses a **shared refresh promise** to prevent concurrent 401s from each triggering their own refresh rotation
 - Login page: `/compte/connexion` | Register: `/compte/inscription`
+- `initialize()` in `auth.store.ts` is skipped on `/auth/callback` — the OAuth callback page owns its own initialization via `setUser`
+
+### OAuth flow
+- Google and GitHub OAuth — API exchanges code server-side, sets refresh cookie, redirects to `${FRONTEND_URL}/auth/callback#token=ACCESS_TOKEN`
+- The `#token=` hash is extracted client-side in `app/auth/callback/page.tsx`, then `setUser` is called to store it
+- `API_URL` env var on Render: `https://unitree-shop-api.onrender.com` (no `/api/v1` suffix — that's added by routes)
+- GitHub profile ID (`profile.id`) must be cast to `String` — GitHub returns it as a number, Prisma expects String
 
 ### Data fetching
 - Server components + ISR: `export const revalidate = 300` for catalog pages
@@ -80,6 +97,7 @@ app/(shop)/         — product pages, cart, checkout
 app/(account)/      — /compte/** (auth required, client-side guard)
 app/(admin)/        — /admin/** (ADMIN role required)
 app/devis/          — quote request form
+app/auth/callback/  — OAuth token exchange landing page
 ```
 
 ### Pages — fused / redirected
@@ -110,16 +128,41 @@ When a user configures a robot and requests a quote:
 
 - All responses wrapped: `{ success, data, message }`
 - TVA 20%: **always use `TAX_RATE` / `TAX_LABEL`** from `src/common/constants/tax.constants.ts` — never hardcode `0.20` or `'TVA 20%'`
-- Stripe webhook at `POST /api/v1/payments/webhook` — verify signature, idempotent
+- Stripe webhook at `POST /api/v1/payments/webhook` — signature verified, idempotent (guarded by order status check before processing)
 - Admin endpoints decorated with `@Roles(Role.ADMIN)` guard
 - Quotes: `PENDING → REVIEWING → SENT → ACCEPTED → CONVERTED` (no skipping states)
 - `convertToOrder` uses **`Prisma.TransactionIsolationLevel.Serializable`** with a 15s timeout — prevents double-reservation races
 - Inventory reservation: always find a **single warehouse** with `quantityOnHand - quantityReserved >= quantity` before reserving — never spread across multiple warehouses
+- Order creation always re-fetches prices from the DB — never trust client-provided prices
+- `GET /products/compare` returns `[]` if `ids` param is missing (no crash)
 
 ### StorageModule
 - Located at `src/modules/storage/`
 - Admin-only endpoint: `POST /api/v1/admin/storage/upload-url` — returns a presigned R2 URL
 - The service is currently a **stub** (returns mock URL, logs a warning). To activate: install `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` and implement `getSignedUrl`
+
+---
+
+## Deployment
+
+### Render (API)
+- Blueprint at `render.yaml` — free tier, Docker, Frankfurt
+- **`API_URL`** must be `https://unitree-shop-api.onrender.com` (no `/api/v1` — routes add that)
+- **`FRONTEND_URL`** must be `https://unitree-shop-web.vercel.app`
+- **`ALLOWED_ORIGINS`** must include `https://unitree-shop-web.vercel.app`
+- Render auto-deploys on push to `main` from GitHub
+
+### Vercel (Frontend)
+- `vercel.json` at repo root — monorepo build targeting `@unitree/web`
+- `rootDirectory` set via Vercel REST API to `apps/web` (cannot be set in `vercel.json`)
+- **`NEXT_PUBLIC_API_URL`** must be `https://unitree-shop-api.onrender.com/api/v1` (with `/api/v1`)
+- Vercel auto-deploys on push to `main`
+
+### Docker (API image)
+- Multi-stage Alpine build — OpenSSL 3 required (`apk add openssl` in both stages)
+- Prisma binary target: `linux-musl-openssl-3.0.x` in `schema.prisma`
+- `WORKDIR /app/apps/api` in runner so Node.js resolution finds pnpm workspace `node_modules`
+- Health check: `GET /api/health`
 
 ---
 
@@ -162,6 +205,7 @@ A feature is done when:
 - **Don't hardcode `0.20` or `'TVA 20%'`** — import from `tax.constants.ts`
 - **Don't re-declare types** that already exist in `@unitree/types`
 - **Don't run `prisma migrate dev`** — use the manual migration workflow above
+- **Don't set `API_URL` with `/api/v1`** on Render — routes add the prefix, double-prefixing breaks OAuth redirect_uri
 
 ---
 
@@ -179,7 +223,10 @@ Pages that must stay complete and accurate:
 
 Minimum to run locally:
 ```
+# apps/web
 NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+
+# apps/api
 DATABASE_URL=postgresql://...
 JWT_ACCESS_SECRET=...
 JWT_REFRESH_SECRET=...
@@ -187,31 +234,13 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 RESEND_API_KEY=re_...
 REDIS_HOST=...
-```
-
-## Image hostnames
-
-External image domains must be allowlisted in `apps/web/next.config.mjs` under `images.remotePatterns`. Currently allowed:
-- `shop.unitree.com`, `oss-global-cdn.unitree.com`, `www.unitree.com`, `assets.unitreerobotics.com`
-- `www.realsenseai.com`
-- `*.supabase.co`, `images.unsplash.com`, `plus.unsplash.com`
-
-When adding a new external image source in the seed or anywhere else, add its hostname here first or the `next/image` component will throw at runtime.
-
----
-
-## Environment variables
-
-Minimum to run locally:
-```
-NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
-DATABASE_URL=postgresql://...
-JWT_ACCESS_SECRET=...
-JWT_REFRESH_SECRET=...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-RESEND_API_KEY=re_...
-REDIS_HOST=...
+API_URL=http://localhost:3001
+FRONTEND_URL=http://localhost:3000
+ALLOWED_ORIGINS=http://localhost:3000
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
 ```
 
 For R2 storage (StorageModule — currently stub):
@@ -222,6 +251,15 @@ R2_PUBLIC_DOMAIN=https://...
 R2_ACCESS_KEY_ID=...
 R2_SECRET_ACCESS_KEY=...
 ```
+
+## Image hostnames
+
+External image domains must be allowlisted in `apps/web/next.config.mjs` under `images.remotePatterns`. Currently allowed:
+- `shop.unitree.com`, `oss-global-cdn.unitree.com`, `www.unitree.com`, `assets.unitreerobotics.com`
+- `www.realsenseai.com`
+- `*.supabase.co`, `images.unsplash.com`, `plus.unsplash.com`
+
+When adding a new external image source in the seed or anywhere else, add its hostname here first or the `next/image` component will throw at runtime.
 
 ---
 

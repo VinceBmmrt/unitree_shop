@@ -189,7 +189,6 @@ export class AuthController {
       throw new RedirectException(`${frontend}/auth/callback#token=${accessToken}`);
     } catch (e) {
       if (e instanceof RedirectException) throw e;
-      console.error('[GitHub OAuth] exchange failed:', e);
       throw new RedirectException(`${frontend}/compte/connexion?error=oauth_failed`);
     }
   }

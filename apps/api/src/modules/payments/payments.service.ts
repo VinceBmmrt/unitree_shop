@@ -251,6 +251,12 @@ export class PaymentsService {
     const orderId = intent.metadata.orderId;
     if (!orderId) return;
 
+    const order = await this.prisma.order.findUnique({
+      where: { id: orderId },
+      select: { status: true },
+    });
+    if (order?.status === 'CONFIRMED') return; // already processed — Stripe retry
+
     await this.prisma.$transaction([
       this.prisma.payment.updateMany({
         where: { stripePaymentIntentId: intent.id },
