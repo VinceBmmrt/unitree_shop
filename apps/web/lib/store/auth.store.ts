@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     if (typeof window !== 'undefined' && accessToken) {
       window.__unitreeAccessToken = accessToken;
     }
-    set({ user });
+    set({ user, isInitialized: true });
   },
 
   logout: async () => {
@@ -46,6 +46,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   initialize: async () => {
     if (get().isInitialized) return;
+    // Skip refresh on OAuth callback page — the page extracts the token from the hash itself
+    if (typeof window !== 'undefined' && window.location.pathname === '/auth/callback') return;
     set({ isLoading: true });
     try {
       const refreshRes = await axios.post(

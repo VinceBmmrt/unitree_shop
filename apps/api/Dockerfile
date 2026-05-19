@@ -1,37 +1,30 @@
-# Multi-stage build — final image ~200MB, no dev deps
-FROM node:20-alpine AS base
-RUN corepack enable pnpm
-
-FROM base AS deps
+# Build stage
+FROM node:20-alpine AS builder
+RUN corepack enable pnpm && apk add --no-cache openssl
 WORKDIR /app
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
-COPY apps/api/package.json apps/api/
-COPY packages/database/package.json packages/database/
-RUN pnpm install --frozen-lockfile
 
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN pnpm --filter @unitree/api run db:generate
-RUN pnpm --filter @unitree/api run build
+RUN pnpm install --frozen-lockfile
+RUN pnpm --dir apps/api run db:generate
+RUN pnpm --dir apps/api run build
 
-FROM base AS runner
-WORKDIR /app
+# Runtime stage
+FROM node:20-alpine AS runner
+RUN apk add --no-cache openssl
 ENV NODE_ENV=production
 
-# Only copy what's needed at runtime
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/apps/api/node_modules /app/apps/api/node_modules
+COPY --from=builder /app/apps/api/dist /app/apps/api/dist
+COPY --from=builder /app/apps/api/prisma /app/apps/api/prisma
+COPY --from=builder /app/packages/types/dist /app/packages/types/dist
 
-# Non-root user for security
 RUN addgroup -g 1001 -S nodejs && adduser -S nestjs -u 1001
 USER nestjs
 
+WORKDIR /app/apps/api
 EXPOSE 3001
 HEALTHCHECK --interval=15s --timeout=3s --start-period=10s \
   CMD wget -qO- http://localhost:3001/api/health || exit 1
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]

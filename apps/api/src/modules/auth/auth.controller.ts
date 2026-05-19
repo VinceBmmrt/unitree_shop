@@ -24,11 +24,12 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { RedirectException } from '../../common/exceptions/redirect.exception';
 
+const isProd = process.env.NODE_ENV === 'production';
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'lax' as const,
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  secure: isProd,
+  sameSite: (isProd ? 'none' : 'lax') as 'none' | 'lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000,
   path: '/api/v1/auth',
 };
 
@@ -188,6 +189,7 @@ export class AuthController {
       throw new RedirectException(`${frontend}/auth/callback#token=${accessToken}`);
     } catch (e) {
       if (e instanceof RedirectException) throw e;
+      console.error('[GitHub OAuth] exchange failed:', e);
       throw new RedirectException(`${frontend}/compte/connexion?error=oauth_failed`);
     }
   }

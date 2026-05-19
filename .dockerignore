@@ -1,0 +1,14 @@
+node_modules
+apps/web/node_modules
+apps/web/.next
+apps/api/node_modules
+apps/api/dist
+packages/*/node_modules
+packages/*/dist
+.git
+.env
+.env.local
+apps/api/.env
+apps/web/.env.local
+screenshots
+infra

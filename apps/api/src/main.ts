@@ -85,6 +85,10 @@ async function bootstrap() {
     });
   }
 
+  app.getHttpAdapter().get('/api/health', (_req: any, reply: any) => {
+    reply.send({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
   const port = config.get<number>('PORT', 3001);
   await app.listen(port, '0.0.0.0');
   console.log(`API running on http://0.0.0.0:${port}`);

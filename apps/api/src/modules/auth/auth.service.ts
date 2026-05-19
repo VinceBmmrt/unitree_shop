@@ -280,7 +280,7 @@ export class AuthService {
     return this.handleOAuthCallback(
       'GITHUB',
       {
-        providerId: profile.id,
+        providerId: String(profile.id),
         email,
         firstName: nameParts[0] || profile.login || 'User',
         lastName: nameParts.slice(1).join(' ') ?? '',
