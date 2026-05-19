@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
+import { ShoppingCart, Menu, X, ChevronDown, Sun, Moon, User, LogOut, Settings } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart.store';
+import { useAuthStore } from '@/lib/store/auth.store';
 import { CartDrawer } from '@/components/product/cart-drawer';
+import { useRouter } from 'next/navigation';
 
 const NAV_LINKS = [
   {
@@ -22,13 +24,97 @@ const NAV_LINKS = [
   { label: 'Documentation', href: '/docs' },
 ];
 
+function UserMenu() {
+  const { user, logout } = useAuthStore();
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  if (!user) return null;
+
+  const initials = `${user.firstName[0]}${user.lastName?.[0] ?? ''}`.toUpperCase();
+
+  const handleLogout = async () => {
+    setOpen(false);
+    await logout();
+    router.push('/');
+    router.refresh();
+  };
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 px-2 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/[0.06] transition-colors"
+        aria-label="Menu utilisateur"
+      >
+        <span className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white shrink-0">
+          {initials}
+        </span>
+        <span className="hidden lg:block text-sm font-medium text-slate-700 dark:text-zinc-300 max-w-[100px] truncate">
+          {user.firstName}
+        </span>
+        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+            <motion.div
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.96 }}
+              transition={{ duration: 0.15 }}
+              className="absolute right-0 top-full mt-2 z-50 w-56"
+            >
+              <div className="bg-white dark:bg-[#10101e] rounded-xl p-1.5 shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07]">
+                <div className="px-3 py-2 border-b border-slate-100 dark:border-white/[0.05] mb-1">
+                  <p className="text-xs font-medium text-slate-900 dark:text-white truncate">{user.firstName} {user.lastName}</p>
+                  <p className="text-xs text-slate-400 dark:text-zinc-500 truncate mt-0.5">{user.email}</p>
+                </div>
+                <Link
+                  href="/compte"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
+                >
+                  <User className="w-4 h-4 text-slate-400" />
+                  Mon compte
+                </Link>
+                {user.role === 'ADMIN' && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
+                  >
+                    <Settings className="w-4 h-4 text-slate-400" />
+                    Administration
+                  </Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors mt-1"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Se déconnecter
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const { itemCount, openCart, isOpen: isCartOpen } = useCartStore();
+  const { user, isInitialized, logout } = useAuthStore();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const count = itemCount();
 
   useEffect(() => {
@@ -37,6 +123,13 @@ export function Navbar() {
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
   }, []);
+
+  const handleMobileLogout = async () => {
+    setIsMobileOpen(false);
+    await logout();
+    router.push('/');
+    router.refresh();
+  };
 
   return (
     <>
@@ -112,14 +205,24 @@ export function Navbar() {
             ))}
           </ul>
 
-          {/* Right: CTA + cart */}
-          <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href="/compte/connexion"
-              className="hidden md:block text-sm px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8 transition-colors font-medium"
-            >
-              Connexion
-            </Link>
+          {/* Right: auth + theme + cart */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Auth area — skeleton while initializing to avoid flash */}
+            {!mounted || !isInitialized ? (
+              <div className="hidden md:block w-24 h-8 rounded-xl bg-slate-100 dark:bg-white/[0.04] animate-pulse" />
+            ) : user ? (
+              <div className="hidden md:block">
+                <UserMenu />
+              </div>
+            ) : (
+              <Link
+                href="/compte/connexion"
+                className="hidden md:block text-sm px-3 py-2 rounded-lg text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8 transition-colors font-medium"
+              >
+                Connexion
+              </Link>
+            )}
+
             <Link
               href="/devis"
               className="hidden md:block text-sm px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-md shadow-blue-600/20 hover:shadow-blue-500/30"
@@ -184,13 +287,48 @@ export function Navbar() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
-                  href="/compte/connexion"
-                  onClick={() => setIsMobileOpen(false)}
-                  className="block mt-2 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/[0.07] text-slate-700 dark:text-zinc-300 text-sm font-medium text-center hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
-                >
-                  Connexion
-                </Link>
+
+                {user ? (
+                  <>
+                    <div className="pt-2 border-t border-border/50 mt-2">
+                      <div className="px-3 py-2">
+                        <p className="text-xs font-medium text-foreground">{user.firstName} {user.lastName}</p>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                      </div>
+                      <Link
+                        href="/compte"
+                        onClick={() => setIsMobileOpen(false)}
+                        className="block px-3 py-2.5 rounded-lg hover:bg-muted/50 text-sm"
+                      >
+                        Mon compte
+                      </Link>
+                      {user.role === 'ADMIN' && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsMobileOpen(false)}
+                          className="block px-3 py-2.5 rounded-lg hover:bg-muted/50 text-sm"
+                        >
+                          Administration
+                        </Link>
+                      )}
+                      <button
+                        onClick={handleMobileLogout}
+                        className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10 text-sm text-red-600 dark:text-red-400"
+                      >
+                        Se déconnecter
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href="/compte/connexion"
+                    onClick={() => setIsMobileOpen(false)}
+                    className="block mt-2 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/[0.07] text-slate-700 dark:text-zinc-300 text-sm font-medium text-center hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
+                  >
+                    Connexion
+                  </Link>
+                )}
+
                 <Link
                   href="/devis"
                   onClick={() => setIsMobileOpen(false)}

@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { RedirectException } from '../exceptions/redirect.exception';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -16,6 +17,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const reply = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
+
+    if (exception instanceof RedirectException) {
+      reply.status(exception.statusCode).header('Location', exception.url).send('');
+      return;
+    }
 
     const isHttpException = exception instanceof HttpException;
     const status = isHttpException

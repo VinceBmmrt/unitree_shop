@@ -1,5 +1,8 @@
-import type { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
   FileText,
@@ -8,9 +11,9 @@ import {
   BarChart2,
   Users,
   Settings,
+  Loader2,
 } from 'lucide-react';
-
-export const metadata: Metadata = { title: { template: '%s — Admin', default: 'Admin' } };
+import { useAuthStore } from '@/lib/store/auth.store';
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -23,6 +26,26 @@ const NAV = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { user, isInitialized } = useAuthStore();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (isInitialized && (!user || user.role !== 'ADMIN')) {
+      router.replace('/compte/connexion');
+    }
+  }, [user, isInitialized, router]);
+
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
+    );
+  }
+
+  if (!user || user.role !== 'ADMIN') return null;
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -35,20 +58,37 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-0.5">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-            >
-              <item.icon className="w-4 h-4" />
-              {item.label}
-            </Link>
-          ))}
+          {NAV.map((item) => {
+            const isActive = item.exact
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  isActive
+                    ? 'bg-blue-600/10 text-blue-600 dark:text-blue-400 font-medium'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="px-5 py-4 border-t border-border">
-          <p className="text-xs text-muted-foreground">v1.0 · Unitree Robotics</p>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
+              {user.firstName[0]}{user.lastName?.[0] ?? ''}
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-foreground truncate">{user.firstName} {user.lastName}</p>
+              <p className="text-[10px] text-muted-foreground">v1.0 · Admin</p>
+            </div>
+          </div>
         </div>
       </aside>
 

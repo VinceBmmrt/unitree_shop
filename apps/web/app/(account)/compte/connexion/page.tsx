@@ -1,18 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
+import { useAuthStore } from '@/lib/store/auth.store';
 
-export default function ConnexionPage() {
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+
+const OAUTH_ERRORS: Record<string, string> = {
+  google_not_configured: 'La connexion Google n\'est pas configurée.',
+  github_not_configured: 'La connexion GitHub n\'est pas configurée.',
+  oauth_cancelled: 'Connexion annulée.',
+  oauth_failed: 'La connexion OAuth a échoué. Veuillez réessayer.',
+};
+
+function ConnexionForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { setUser } = useAuthStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const oauthError = searchParams.get('error');
+    if (oauthError && OAUTH_ERRORS[oauthError]) {
+      setError(OAUTH_ERRORS[oauthError]);
+    }
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -20,7 +39,8 @@ export default function ConnexionPage() {
     setError('');
     try {
       const res = await apiClient.post('/auth/login', { email, password });
-      window.__unitreeAccessToken = res.data.data.accessToken;
+      const { accessToken, user } = res.data.data;
+      setUser(user, accessToken);
       router.push('/');
       router.refresh();
     } catch (err: any) {
@@ -54,7 +74,7 @@ export default function ConnexionPage() {
           {/* OAuth buttons */}
           <div className="grid grid-cols-2 gap-3 mb-6">
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}
+              href={`${API_URL}/auth/google`}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -66,7 +86,7 @@ export default function ConnexionPage() {
               Google
             </a>
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github`}
+              href={`${API_URL}/auth/github`}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -163,5 +183,13 @@ export default function ConnexionPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function ConnexionPage() {
+  return (
+    <Suspense>
+      <ConnexionForm />
+    </Suspense>
   );
 }

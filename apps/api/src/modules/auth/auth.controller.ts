@@ -5,23 +5,24 @@ import {
   Req,
   Res,
   Get,
+  Query,
   UseGuards,
   HttpCode,
   HttpStatus,
-  Version,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import '@fastify/cookie';
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
-import { GoogleAuthGuard } from './guards/google-auth.guard';
-import { GitHubAuthGuard } from './guards/github-auth.guard';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { RedirectException } from '../../common/exceptions/redirect.exception';
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -105,51 +106,90 @@ export class AuthController {
     res.clearCookie('refresh_token', { path: '/api/v1/auth' });
   }
 
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Throttle({ global: { limit: 5, ttl: 60000 } })
+  @ApiOperation({ summary: 'Request a password reset email' })
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    await this.authService.forgotPassword(dto.email);
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Throttle({ global: { limit: 5, ttl: 60000 } })
+  @ApiOperation({ summary: 'Reset password using token from email' })
+  async resetPassword(@Body() dto: ResetPasswordDto) {
+    await this.authService.resetPassword(dto.token, dto.password);
+  }
+
   @Get('google')
-  @UseGuards(GoogleAuthGuard)
   @ApiOperation({ summary: 'Initiate Google OAuth flow' })
-  googleAuth() {}
+  googleAuth() {
+    const frontend = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    try {
+      const url = this.authService.getGoogleOAuthUrl();
+      throw new RedirectException(url);
+    } catch (e) {
+      if (e instanceof RedirectException) throw e;
+      throw new RedirectException(`${frontend}/compte/connexion?error=google_not_configured`);
+    }
+  }
 
   @Get('google/callback')
-  @UseGuards(GoogleAuthGuard)
+  @ApiOperation({ summary: 'Google OAuth callback' })
   async googleCallback(
-    @Req() req: FastifyRequest & { user: any },
+    @Query('code') code: string,
+    @Query('error') _error: string,
+    @Req() req: FastifyRequest,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    const { accessToken, refreshToken } =
-      await this.authService.handleOAuthCallback(
-        'GOOGLE',
-        req.user,
-        req.ip,
-      );
-    res.setCookie('refresh_token', refreshToken, COOKIE_OPTIONS);
-    // Redirect to frontend with token in URL fragment (SPA picks it up, never logs it)
-    res.redirect(
-      `${process.env.FRONTEND_URL}/auth/callback#token=${accessToken}`,
-    );
+    const frontend = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    if (!code) {
+      throw new RedirectException(`${frontend}/compte/connexion?error=oauth_cancelled`);
+    }
+    try {
+      const { accessToken, refreshToken } = await this.authService.exchangeGoogleCode(code, req.ip);
+      res.setCookie('refresh_token', refreshToken, COOKIE_OPTIONS);
+      throw new RedirectException(`${frontend}/auth/callback#token=${accessToken}`);
+    } catch (e) {
+      if (e instanceof RedirectException) throw e;
+      throw new RedirectException(`${frontend}/compte/connexion?error=oauth_failed`);
+    }
   }
 
   @Get('github')
-  @UseGuards(GitHubAuthGuard)
   @ApiOperation({ summary: 'Initiate GitHub OAuth flow' })
-  githubAuth() {}
+  githubAuth() {
+    const frontend = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    try {
+      const url = this.authService.getGitHubOAuthUrl();
+      throw new RedirectException(url);
+    } catch (e) {
+      if (e instanceof RedirectException) throw e;
+      throw new RedirectException(`${frontend}/compte/connexion?error=github_not_configured`);
+    }
+  }
 
   @Get('github/callback')
-  @UseGuards(GitHubAuthGuard)
+  @ApiOperation({ summary: 'GitHub OAuth callback' })
   async githubCallback(
-    @Req() req: FastifyRequest & { user: any },
+    @Query('code') code: string,
+    @Query('error') _error: string,
+    @Req() req: FastifyRequest,
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
-    const { accessToken, refreshToken } =
-      await this.authService.handleOAuthCallback(
-        'GITHUB',
-        req.user,
-        req.ip,
-      );
-    res.setCookie('refresh_token', refreshToken, COOKIE_OPTIONS);
-    res.redirect(
-      `${process.env.FRONTEND_URL}/auth/callback#token=${accessToken}`,
-    );
+    const frontend = process.env.FRONTEND_URL ?? 'http://localhost:3000';
+    if (!code) {
+      throw new RedirectException(`${frontend}/compte/connexion?error=oauth_cancelled`);
+    }
+    try {
+      const { accessToken, refreshToken } = await this.authService.exchangeGitHubCode(code, req.ip);
+      res.setCookie('refresh_token', refreshToken, COOKIE_OPTIONS);
+      throw new RedirectException(`${frontend}/auth/callback#token=${accessToken}`);
+    } catch (e) {
+      if (e instanceof RedirectException) throw e;
+      throw new RedirectException(`${frontend}/compte/connexion?error=oauth_failed`);
+    }
   }
 
   @Get('me')

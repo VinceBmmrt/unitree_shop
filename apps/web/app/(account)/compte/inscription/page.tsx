@@ -5,9 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
+import { useAuthStore } from '@/lib/store/auth.store';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
 
 export default function InscriptionPage() {
   const router = useRouter();
+  const { setUser } = useAuthStore();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -33,7 +37,8 @@ export default function InscriptionPage() {
         password,
         consentGdpr: true,
       });
-      window.__unitreeAccessToken = res.data.data.accessToken;
+      const { accessToken, user } = res.data.data;
+      setUser(user, accessToken);
       router.push('/');
       router.refresh();
     } catch (err: any) {
@@ -68,7 +73,7 @@ export default function InscriptionPage() {
           {/* OAuth buttons */}
           <div className="grid grid-cols-2 gap-3 mb-6">
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}
+              href={`${API_URL}/auth/google`}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -80,7 +85,7 @@ export default function InscriptionPage() {
               Google
             </a>
             <a
-              href={`${process.env.NEXT_PUBLIC_API_URL}/auth/github`}
+              href={`${API_URL}/auth/github`}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">

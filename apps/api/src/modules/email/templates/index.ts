@@ -144,10 +144,31 @@ export function welcomeEmail(data: {
   };
 }
 
+export function passwordResetEmail(data: {
+  email: string;
+  firstName: string;
+  resetUrl: string;
+}): { to: string; subject: string; html: string } {
+  return {
+    to: data.email,
+    subject: 'Réinitialisation de votre mot de passe',
+    html: wrap(`
+      <h2 style="font-size: 22px; font-weight: 600; margin: 0 0 16px;">Bonjour ${data.firstName},</h2>
+      <p>Vous avez demandé la réinitialisation de votre mot de passe Unitree Robotics.</p>
+      <p>Ce lien est valable pendant <strong>1 heure</strong>. Si vous n'avez pas effectué cette demande, ignorez cet email.</p>
+      ${btn('Réinitialiser mon mot de passe', data.resetUrl)}
+      <p style="margin-top: 24px; font-size: 13px; color: #666;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br/>
+        <span style="color: #888; word-break: break-all;">${data.resetUrl}</span>
+      </p>
+    `),
+  };
+}
+
 export const templates = {
   quoteReceivedCustomer,
   quoteReceivedTeam,
   quoteSentCustomer,
   orderConfirmation,
   welcomeEmail,
+  passwordResetEmail,
 };
