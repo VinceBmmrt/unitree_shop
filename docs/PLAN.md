@@ -19,32 +19,32 @@ Each step is self-contained and can be done in isolation. When you **complete a 
 
 ## Phase 1 — Bug Fixes (< 30 min total)
 
-- [ ] **Step 1** — Fix broken `db:studio` script
+- [x] **Step 1** — Fix broken `db:studio` script
   - **File:** `package.json` (root), line 15
   - **Problem:** `cd packages/database` — that directory does not exist.
   - **Fix:** Change to `pnpm --filter @unitree/api exec prisma studio`
 
-- [ ] **Step 2** — Fix Turbo global dependency watching
+- [x] **Step 2** — Fix Turbo global dependency watching
   - **File:** `turbo.json`
   - **Problem:** `globalDependencies: [".env"]` — API loads `.env.local` first; Turbo never invalidates cache when `.env.local` changes.
   - **Fix:** Change to `[".env", ".env.local"]`
 
-- [ ] **Step 3** — Remove dead Express middleware from the API
+- [x] **Step 3** — Remove dead Express middleware from the API
   - **File:** `apps/api/package.json`
   - **Problem:** `compression` and `helmet` are Express-only; `@fastify/compress` and `@fastify/helmet` already cover both.
   - **Fix:** `pnpm --filter @unitree/api remove compression helmet @types/compression`
 
-- [ ] **Step 4** — Remove unused WebSocket packages from the API
+- [x] **Step 4** — Remove unused WebSocket packages from the API
   - **File:** `apps/api/package.json`
   - **Problem:** `@nestjs/websockets` and `@nestjs/platform-socket.io` — no WebSocket module exists, V2 item.
   - **Fix:** `pnpm --filter @unitree/api remove @nestjs/websockets @nestjs/platform-socket.io`
 
-- [ ] **Step 5** — Remove `next-auth` from the frontend
+- [x] **Step 5** — Remove `next-auth` from the frontend
   - **File:** `apps/web/package.json`
   - **Problem:** `next-auth` (~220 KB) installed but the project uses its own JWT auth. Completely unused.
   - **Fix:** `pnpm --filter @unitree/web remove next-auth`
 
-- [ ] **Step 6** — Move React Query devtools to devDependencies
+- [x] **Step 6** — Move React Query devtools to devDependencies
   - **File:** `apps/web/package.json`
   - **Problem:** `@tanstack/react-query-devtools` is in `dependencies` — ships to production.
   - **Fix:** Move it to `devDependencies`.
@@ -99,7 +99,7 @@ Each step is self-contained and can be done in isolation. When you **complete a 
     2. Detect missing `node_modules` → suggest `pnpm setup`
     3. Print service URLs once dev server starts (`:3000`, `:3001/api/v1`, `:3001/api/docs`)
 
-- [ ] **Step 12** — Add missing root-level scripts
+- [x] **Step 12** — Add missing root-level scripts
   - **File:** `package.json` (root)
   - **Add/fix:**
     ```json
