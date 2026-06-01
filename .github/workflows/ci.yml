@@ -76,6 +76,13 @@ jobs:
 
       - run: pnpm --filter @unitree/api run db:generate
 
+      - name: Create auth schema stub (Supabase-only schema, required by RLS migration)
+        run: |
+          psql postgresql://postgres:postgres@localhost:5432/unitree_test -c "
+            CREATE SCHEMA IF NOT EXISTS auth;
+            CREATE OR REPLACE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS \$\$ SELECT NULL::uuid \$\$;
+          "
+
       - name: Run migrations on test DB
         run: pnpm --filter @unitree/api exec prisma migrate deploy
 
@@ -89,20 +96,16 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   deploy-api:
-    name: Deploy API (Fly.io)
+    name: Deploy API (Render)
     needs: [lint-typecheck, test]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-
-      - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only --config apps/api/fly.toml
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Trigger Render deploy
+        run: |
+          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" | \
+          python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('id','triggered'))"
 
   deploy-web:
     name: Deploy Web (Vercel)
@@ -111,19 +114,5 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment: production
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Deploy to Vercel
-        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
-        env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      - name: Trigger Vercel deploy
+        run: echo "Vercel auto-deploys on push to main via GitHub integration"

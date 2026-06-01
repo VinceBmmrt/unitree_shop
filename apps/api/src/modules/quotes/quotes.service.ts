@@ -289,7 +289,7 @@ export class QuotesService {
     return quote;
   }
 
-  async update(id: string, dto: UpdateQuoteDto, adminId: string) {
+  async update(id: string, dto: UpdateQuoteDto, _adminId: string) {
     const quote = await this.prisma.quote.findUnique({ where: { id } });
     if (!quote) throw new NotFoundException('Quote not found');
 
@@ -370,7 +370,7 @@ export class QuotesService {
     });
   }
 
-  async convertToOrder(quoteId: string, adminId: string) {
+  async convertToOrder(quoteId: string, _adminId: string) {
     const quote = await this.prisma.quote.findUnique({
       where: { id: quoteId },
       include: {
