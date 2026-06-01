@@ -14,7 +14,7 @@ When you finish a feature or step:
 3. Update `Last updated` date at the top
 4. Create a changelog entry in `docs/changelogs/YYYY-MM-DD-description.md`
 
-**Last updated:** 2026-06-01 — Phase 1 bug fixes done (Steps 1–6, 12)
+**Last updated:** 2026-06-01 — Sprint 4 checkout done (PR #3 open)
 
 ---
 
