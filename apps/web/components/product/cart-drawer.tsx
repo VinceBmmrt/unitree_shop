@@ -98,9 +98,7 @@ export function CartDrawer() {
 
                     {/* Info */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium leading-tight line-clamp-2">
-                        {item.name}
-                      </p>
+                      <p className="text-sm font-medium leading-tight line-clamp-2">{item.name}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {formatEur(item.unitPrice)}
                       </p>
@@ -153,11 +151,11 @@ export function CartDrawer() {
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>TVA 20%</span>
-                    <span>{formatEur(total * 0.20)}</span>
+                    <span>{formatEur(total * 0.2)}</span>
                   </div>
                   <div className="flex justify-between font-semibold text-base pt-1 border-t border-border mt-2">
                     <span>Total TTC</span>
-                    <span>{formatEur(total * 1.20)}</span>
+                    <span>{formatEur(total * 1.2)}</span>
                   </div>
                 </div>
 

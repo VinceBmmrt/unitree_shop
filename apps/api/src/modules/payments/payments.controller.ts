@@ -73,9 +73,6 @@ export class PaymentsController {
     @Req() req: RawBodyRequest<FastifyRequest>,
     @Headers('stripe-signature') signature: string,
   ) {
-    return this.paymentsService.handleWebhook(
-      req.rawBody as Buffer,
-      signature,
-    );
+    return this.paymentsService.handleWebhook(req.rawBody as Buffer, signature);
   }
 }

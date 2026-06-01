@@ -13,10 +13,19 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { ProductCategory } from '@prisma/client';
 
 export class ProductFilterDto {
-  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsNumber() @Min(1)
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
   page?: number;
 
-  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsNumber() @Min(1) @Max(100)
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(1)
+  @Max(100)
   limit?: number;
 
   @ApiPropertyOptional({ enum: ProductCategory })
@@ -24,13 +33,22 @@ export class ProductFilterDto {
   @IsEnum(ProductCategory)
   category?: ProductCategory;
 
-  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsNumber() @Min(0)
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
   minPrice?: number;
 
-  @ApiPropertyOptional() @IsOptional() @Type(() => Number) @IsNumber()
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
   maxPrice?: number;
 
-  @ApiPropertyOptional() @IsOptional() @IsString()
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
   search?: string;
 
   @ApiPropertyOptional({ enum: ['basePrice', 'name', 'createdAt'] })

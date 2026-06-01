@@ -39,11 +39,15 @@ export function quoteReceivedCustomer(data: {
       <p>Notre équipe commerciale l'étudiera et vous contactera <strong>dans les 48 heures ouvrées</strong>.</p>
       <h3 style="margin-top: 32px; font-size: 16px; color: #aaa;">Produits demandés</h3>
       <table style="width: 100%; border-collapse: collapse; margin-top: 8px;">
-        ${data.items.map((i) => `
+        ${data.items
+          .map(
+            (i) => `
           <tr style="border-bottom: 1px solid #222;">
             <td style="padding: 8px 0; color: #ddd;">${i.name}</td>
             <td style="padding: 8px 0; text-align: right; color: #aaa;">×${i.quantity}</td>
-          </tr>`).join('')}
+          </tr>`,
+          )
+          .join('')}
       </table>
     `),
   };
@@ -114,12 +118,16 @@ export function orderConfirmation(data: {
       <h2 style="font-size: 22px; font-weight: 600; margin: 0 0 16px;">Merci pour votre commande, ${data.firstName} !</h2>
       <p>Votre commande <strong>${data.orderNumber}</strong> a été confirmée.</p>
       <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
-        ${data.items.map((i) => `
+        ${data.items
+          .map(
+            (i) => `
           <tr style="border-bottom: 1px solid #222;">
             <td style="padding: 8px 0; color: #ddd;">${i.name}</td>
             <td style="padding: 8px 0; color: #aaa;">×${i.quantity}</td>
             <td style="padding: 8px 0; text-align: right;">€${(i.unitPrice * i.quantity).toLocaleString('fr-FR')}</td>
-          </tr>`).join('')}
+          </tr>`,
+          )
+          .join('')}
         <tr>
           <td colspan="2" style="padding: 12px 0; font-weight: 600;">Total TTC</td>
           <td style="padding: 12px 0; text-align: right; font-weight: 600;">€${Number(data.total).toLocaleString('fr-FR')}</td>
@@ -129,10 +137,11 @@ export function orderConfirmation(data: {
   };
 }
 
-export function welcomeEmail(data: {
-  email: string;
-  firstName: string;
-}): { to: string; subject: string; html: string } {
+export function welcomeEmail(data: { email: string; firstName: string }): {
+  to: string;
+  subject: string;
+  html: string;
+} {
   return {
     to: data.email,
     subject: 'Bienvenue chez Unitree Robotics',
@@ -144,11 +153,11 @@ export function welcomeEmail(data: {
   };
 }
 
-export function passwordResetEmail(data: {
-  email: string;
-  firstName: string;
-  resetUrl: string;
-}): { to: string; subject: string; html: string } {
+export function passwordResetEmail(data: { email: string; firstName: string; resetUrl: string }): {
+  to: string;
+  subject: string;
+  html: string;
+} {
   return {
     to: data.email,
     subject: 'Réinitialisation de votre mot de passe',

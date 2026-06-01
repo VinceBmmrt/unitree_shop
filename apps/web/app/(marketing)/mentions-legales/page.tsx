@@ -7,7 +7,9 @@ export default function MentionsLegalesPage() {
     <main className="bg-white dark:bg-[#04040a] text-slate-900 dark:text-white min-h-screen pt-32 pb-32 px-4">
       <div className="max-w-3xl mx-auto">
         <p className="text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">Légal</p>
-        <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Mentions légales</h1>
+        <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Mentions légales
+        </h1>
 
         <div className="mt-12 space-y-8">
           {[
@@ -32,7 +34,10 @@ export default function MentionsLegalesPage() {
               body: 'Pour toute question : contact@unitree-robotics.fr',
             },
           ].map(({ title, body }) => (
-            <div key={title} className="border-b border-slate-200 dark:border-border pb-8 last:border-0">
+            <div
+              key={title}
+              className="border-b border-slate-200 dark:border-border pb-8 last:border-0"
+            >
               <h2 className="font-semibold text-white mb-3">{title}</h2>
               <p className="text-zinc-400 leading-relaxed whitespace-pre-line">{body}</p>
             </div>

@@ -35,7 +35,6 @@ export default function ComptePage() {
   return (
     <main className="min-h-screen bg-white dark:bg-[#04040a] pt-24 pb-16 px-4">
       <div className="max-w-3xl mx-auto">
-
         {/* Header */}
         <div className="flex items-center gap-5 mb-10">
           <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-xl font-bold text-white shrink-0">
@@ -63,8 +62,12 @@ export default function ComptePage() {
           >
             <FileText className="w-6 h-6 text-blue-500" />
             <div>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">Demander un devis</p>
-              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">Robots & configurations</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                Demander un devis
+              </p>
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
+                Robots & configurations
+              </p>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
           </Link>
@@ -76,7 +79,9 @@ export default function ComptePage() {
             <ShoppingBag className="w-6 h-6 text-blue-500" />
             <div>
               <p className="text-sm font-semibold text-slate-900 dark:text-white">Boutique</p>
-              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">Accessoires & pièces</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
+                Accessoires & pièces
+              </p>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
           </Link>
@@ -85,14 +90,20 @@ export default function ComptePage() {
         {/* Profile card */}
         <div className="bg-white dark:bg-[#06060f] border border-slate-200 dark:border-white/[0.07] rounded-2xl overflow-hidden mb-6">
           <div className="px-6 py-4 border-b border-slate-100 dark:border-white/[0.05] flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Informations du compte</h2>
+            <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
+              Informations du compte
+            </h2>
           </div>
 
           <dl className="divide-y divide-slate-100 dark:divide-white/[0.04]">
             <div className="px-6 py-4 flex items-center gap-3">
               <User className="w-4 h-4 text-slate-400 shrink-0" />
-              <dt className="text-sm text-slate-500 dark:text-zinc-400 w-28 shrink-0">Nom complet</dt>
-              <dd className="text-sm font-medium text-slate-900 dark:text-white">{user.firstName} {user.lastName}</dd>
+              <dt className="text-sm text-slate-500 dark:text-zinc-400 w-28 shrink-0">
+                Nom complet
+              </dt>
+              <dd className="text-sm font-medium text-slate-900 dark:text-white">
+                {user.firstName} {user.lastName}
+              </dd>
             </div>
             <div className="px-6 py-4 flex items-center gap-3">
               <Mail className="w-4 h-4 text-slate-400 shrink-0" />
@@ -118,8 +129,12 @@ export default function ComptePage() {
             <div className="flex items-center gap-3">
               <Shield className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <div>
-                <p className="text-sm font-semibold text-blue-700 dark:text-blue-300">Accès administrateur</p>
-                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Gérer les produits, devis et commandes</p>
+                <p className="text-sm font-semibold text-blue-700 dark:text-blue-300">
+                  Accès administrateur
+                </p>
+                <p className="text-xs text-blue-600/70 dark:text-blue-400/70">
+                  Gérer les produits, devis et commandes
+                </p>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-blue-600 dark:text-blue-400 group-hover:translate-x-1 transition-transform" />

@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { UserRole } from '@prisma/client';
 import { ROLES_KEY } from '../decorators/roles.decorator';
@@ -26,14 +21,11 @@ export class RolesGuard implements CanActivate {
 
     const hasRole = required.some(
       (role) =>
-        user.role === role ||
-        (role === UserRole.ADMIN && user.role === UserRole.SUPER_ADMIN),
+        user.role === role || (role === UserRole.ADMIN && user.role === UserRole.SUPER_ADMIN),
     );
 
     if (!hasRole) {
-      throw new ForbiddenException(
-        `Requires one of: ${required.join(', ')}`,
-      );
+      throw new ForbiddenException(`Requires one of: ${required.join(', ')}`);
     }
 
     return true;

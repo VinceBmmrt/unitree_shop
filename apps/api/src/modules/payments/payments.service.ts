@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -41,9 +36,7 @@ export class PaymentsService {
 
     // Idempotency: if intent already exists, return it
     if (order.stripePaymentIntentId) {
-      const existing = await this.stripe.paymentIntents.retrieve(
-        order.stripePaymentIntentId,
-      );
+      const existing = await this.stripe.paymentIntents.retrieve(order.stripePaymentIntentId);
       return { clientSecret: existing.client_secret };
     }
 
@@ -157,8 +150,7 @@ export class PaymentsService {
 
     // Standard amortization formula
     const monthlyPayment =
-      (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-      (Math.pow(1 + monthlyRate, n) - 1);
+      (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
 
     const customerId = await this.getStripeCustomerId(userId);
 
@@ -194,9 +186,7 @@ export class PaymentsService {
         totalAmount: monthlyPayment * dto.termMonths,
         interestRate: dto.annualRate / 100,
         startDate: new Date(),
-        endDate: new Date(
-          Date.now() + dto.termMonths * 30 * 24 * 60 * 60 * 1000,
-        ),
+        endDate: new Date(Date.now() + dto.termMonths * 30 * 24 * 60 * 60 * 1000),
         stripeScheduleId: schedule.id,
       },
     });
@@ -208,11 +198,7 @@ export class PaymentsService {
     let event: Stripe.Event;
 
     try {
-      event = this.stripe.webhooks.constructEvent(
-        rawBody,
-        signature,
-        this.webhookSecret,
-      );
+      event = this.stripe.webhooks.constructEvent(rawBody, signature, this.webhookSecret);
     } catch (err) {
       this.logger.error(`Webhook signature verification failed: ${(err as Error).message}`);
       throw new BadRequestException('Invalid webhook signature');

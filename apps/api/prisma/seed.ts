@@ -10,7 +10,7 @@ async function main() {
       sku: 'UT-H1-001',
       name: 'Unitree H1',
       slug: 'unitree-h1',
-      shortDescription: 'Robot humanoïde full-size pour la recherche et l\'industrie.',
+      shortDescription: "Robot humanoïde full-size pour la recherche et l'industrie.",
       description: `Le H1 est le robot humanoïde le plus avancé d'Unitree. Avec 43 degrés de liberté, une vitesse de marche de 3,3 m/s et une capacité de charge de 30 kg, il est conçu pour opérer dans des environnements industriels complexes et mener des recherches robotiques de pointe.`,
       category: 'HUMANOID_ROBOT' as const,
       basePrice: 90000,
@@ -45,11 +45,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'humanoïde' },
-          { tag: 'recherche' },
-          { tag: 'industrie' },
-        ],
+        create: [{ tag: 'humanoïde' }, { tag: 'recherche' }, { tag: 'industrie' }],
       },
     },
     {
@@ -91,11 +87,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'humanoïde' },
-          { tag: 'recherche' },
-          { tag: 'université' },
-        ],
+        create: [{ tag: 'humanoïde' }, { tag: 'recherche' }, { tag: 'université' }],
       },
     },
     {
@@ -196,11 +188,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'quadrupède' },
-          { tag: 'éducation' },
-          { tag: 'IA' },
-        ],
+        create: [{ tag: 'quadrupède' }, { tag: 'éducation' }, { tag: 'IA' }],
       },
     },
     {
@@ -234,18 +222,15 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'bras robotique' },
-          { tag: 'manipulation' },
-          { tag: '6 axes' },
-        ],
+        create: [{ tag: 'bras robotique' }, { tag: 'manipulation' }, { tag: '6 axes' }],
       },
     },
     {
       sku: 'UT-GO2-PRO-001',
       name: 'Unitree Go2 Pro',
       slug: 'unitree-go2-pro',
-      shortDescription: 'Robot quadrupède éducatif et de recherche — édition Pro avec 4G/LTE et IA avancée.',
+      shortDescription:
+        'Robot quadrupède éducatif et de recherche — édition Pro avec 4G/LTE et IA avancée.',
       description: `Le Go2 Pro est la version premium du Go2 d'Unitree. Il ajoute la connectivité 4G/LTE embarquée, une caméra avant 4K, et un traitement IA amélioré pour des applications autonomes avancées. Parfait pour les équipes qui ont besoin d'une connectivité permanente sur le terrain.`,
       category: 'QUADRUPED_ROBOT' as const,
       basePrice: 2800,
@@ -282,12 +267,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'quadrupède' },
-          { tag: '4G/LTE' },
-          { tag: 'IA' },
-          { tag: 'pro' },
-        ],
+        create: [{ tag: 'quadrupède' }, { tag: '4G/LTE' }, { tag: 'IA' }, { tag: 'pro' }],
       },
     },
     {
@@ -337,18 +317,15 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'lidar' },
-          { tag: 'capteur' },
-          { tag: 'ROS2' },
-        ],
+        create: [{ tag: 'lidar' }, { tag: 'capteur' }, { tag: 'ROS2' }],
       },
     },
     {
       sku: 'UT-BAT-GO2-001',
       name: 'Batterie longue durée Go2',
       slug: 'batterie-longue-duree-go2',
-      shortDescription: 'Batterie de remplacement haute capacité pour Unitree Go2 / Go2 Pro — autonomie 4h.',
+      shortDescription:
+        'Batterie de remplacement haute capacité pour Unitree Go2 / Go2 Pro — autonomie 4h.',
       description: `Batterie officielle haute capacité pour les robots Unitree Go2 et Go2 Pro. Double l'autonomie standard à 4 heures en usage continu. Chargeur inclus. Remplacement en 30 secondes sans outil.`,
       category: 'ACCESSORY' as const,
       basePrice: 320,
@@ -387,11 +364,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'batterie' },
-          { tag: 'Go2' },
-          { tag: 'accessoire' },
-        ],
+        create: [{ tag: 'batterie' }, { tag: 'Go2' }, { tag: 'accessoire' }],
       },
     },
     {
@@ -425,19 +398,15 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'caméra' },
-          { tag: 'RGB-D' },
-          { tag: 'perception' },
-          { tag: 'ROS2' },
-        ],
+        create: [{ tag: 'caméra' }, { tag: 'RGB-D' }, { tag: 'perception' }, { tag: 'ROS2' }],
       },
     },
     {
       sku: 'UT-CASE-GO2-001',
       name: 'Housse de transport rigide Go2',
       slug: 'housse-transport-rigide-go2',
-      shortDescription: 'Valise rigide IP67 avec mousse sur-mesure pour le transport du Unitree Go2.',
+      shortDescription:
+        'Valise rigide IP67 avec mousse sur-mesure pour le transport du Unitree Go2.',
       description: `Valise de transport rigide certifiée IP67 spécialement conçue pour le Unitree Go2 et Go2 Pro. Mousse PE sur-mesure, verrous à combinaison TSA, poignées renforcées et roulettes tout-terrain. Protège efficacement le robot lors des déplacements terrain.`,
       category: 'ACCESSORY' as const,
       basePrice: 190,
@@ -475,12 +444,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'transport' },
-          { tag: 'valise' },
-          { tag: 'Go2' },
-          { tag: 'IP67' },
-        ],
+        create: [{ tag: 'transport' }, { tag: 'valise' }, { tag: 'Go2' }, { tag: 'IP67' }],
       },
     },
     {
@@ -526,18 +490,15 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'chargeur' },
-          { tag: 'GaN' },
-          { tag: 'accessoire' },
-        ],
+        create: [{ tag: 'chargeur' }, { tag: 'GaN' }, { tag: 'accessoire' }],
       },
     },
     {
       sku: 'UT-SDK-SUPPORT-001',
       name: 'Plan de support développeur — 1 an',
       slug: 'plan-support-developpeur-1-an',
-      shortDescription: 'Accès prioritaire au support technique Unitree, mises à jour SDK et webinaires mensuels.',
+      shortDescription:
+        'Accès prioritaire au support technique Unitree, mises à jour SDK et webinaires mensuels.',
       description: `Le plan de support développeur vous donne accès à un canal technique prioritaire, aux mises à jour SDK avant leur publication officielle, à la documentation avancée (ROS2, API bas niveau) et à des webinaires mensuels animés par l'équipe d'ingénieurs Unitree. Valable 12 mois, pour 1 robot.`,
       category: 'ACCESSORY' as const,
       basePrice: 990,
@@ -569,12 +530,7 @@ async function main() {
         ],
       },
       tags: {
-        create: [
-          { tag: 'support' },
-          { tag: 'SDK' },
-          { tag: 'développeur' },
-          { tag: 'service' },
-        ],
+        create: [{ tag: 'support' }, { tag: 'SDK' }, { tag: 'développeur' }, { tag: 'service' }],
       },
     },
   ];
@@ -599,9 +555,14 @@ async function main() {
 
   const robots = products.filter((p) => p.category !== 'ACCESSORY').length;
   const accessories = products.filter((p) => p.category === 'ACCESSORY').length;
-  console.log(`\nSeeded ${products.length} products (${robots} robots, ${accessories} accessories).`);
+  console.log(
+    `\nSeeded ${products.length} products (${robots} robots, ${accessories} accessories).`,
+  );
 }
 
 main()
-  .catch((e) => { console.error(e); process.exit(1); })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
   .finally(() => prisma.$disconnect());

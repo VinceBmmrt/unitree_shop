@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -29,9 +24,7 @@ export class QuotesService {
 
   async createRequest(dto: CreateQuoteRequestDto, userId?: string, ipAddress?: string) {
     if (!dto.gdprConsent) {
-      throw new BadRequestException(
-        'GDPR consent is required to submit a quote request',
-      );
+      throw new BadRequestException('GDPR consent is required to submit a quote request');
     }
 
     // Validate all requested products exist and are quotable
@@ -53,29 +46,31 @@ export class QuotesService {
     }
 
     // Build quote items with list price as initial estimate
-    const items = await Promise.all(dto.items.map(async (item) => {
-      const product = products.find((p) => p.id === item.productId)!;
-      let unitPrice = Number(product.basePrice);
+    const items = await Promise.all(
+      dto.items.map(async (item) => {
+        const product = products.find((p) => p.id === item.productId)!;
+        let unitPrice = Number(product.basePrice);
 
-      if (item.configurationId) {
-        const config = await this.prisma.configuration.findUnique({
-          where: { id: item.configurationId },
-        });
-        if (config) {
-          unitPrice = Number(config.totalPrice);
+        if (item.configurationId) {
+          const config = await this.prisma.configuration.findUnique({
+            where: { id: item.configurationId },
+          });
+          if (config) {
+            unitPrice = Number(config.totalPrice);
+          }
         }
-      }
 
-      return {
-        productId: item.productId,
-        configurationId: item.configurationId,
-        quantity: item.quantity,
-        unitPrice,
-        discount: 0,
-        totalPrice: unitPrice * item.quantity,
-        notes: item.notes,
-      };
-    }));
+        return {
+          productId: item.productId,
+          configurationId: item.configurationId,
+          quantity: item.quantity,
+          unitPrice,
+          discount: 0,
+          totalPrice: unitPrice * item.quantity,
+          notes: item.notes,
+        };
+      }),
+    );
 
     const subtotal = items.reduce((sum, i) => sum + i.totalPrice, 0);
 
@@ -92,16 +87,18 @@ export class QuotesService {
 
     // Log GDPR consent for this quote submission
     if (ipAddress) {
-      await this.prisma.gdprConsent.create({
-        data: {
-          userId: resolvedUserId,
-          essential: true,
-          analytics: false,
-          marketing: false,
-          ipAddress,
-          consentedAt: new Date(),
-        },
-      }).catch(() => {}); // non-blocking — consent store failure must not block quote
+      await this.prisma.gdprConsent
+        .create({
+          data: {
+            userId: resolvedUserId,
+            essential: true,
+            analytics: false,
+            marketing: false,
+            ipAddress,
+            consentedAt: new Date(),
+          },
+        })
+        .catch(() => {}); // non-blocking — consent store failure must not block quote
     }
 
     const quote = await this.prisma.quote.create({
@@ -118,7 +115,8 @@ export class QuotesService {
         notes: [
           dto.useCase && `Cas d'usage: ${dto.useCase}`,
           dto.timeline && `Délai: ${dto.timeline}`,
-          dto.budget && `Budget indicatif: ${dto.budget.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}`,
+          dto.budget &&
+            `Budget indicatif: ${dto.budget.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })}`,
           dto.requestsFinancing && 'Financement/leasing souhaité',
           dto.preferredContact && `Contact préféré: ${dto.preferredContact}`,
           dto.additionalNotes,
@@ -133,27 +131,32 @@ export class QuotesService {
     // Send emails (non-blocking)
     const salesEmail = this.config.get<string>('SALES_EMAIL', 'sales@unitree-robotics.fr');
     Promise.all([
-      this.emailService.send(templates.quoteReceivedCustomer({
-        to: dto.email,
-        firstName: dto.firstName,
-        quoteNumber: quote.quoteNumber,
-        items: quote.items.map((i) => ({ name: i.product.name, quantity: i.quantity })),
-      })),
-      this.emailService.send(templates.quoteReceivedTeam({
-        to: salesEmail,
-        quoteId: quote.id,
-        quoteNumber: quote.quoteNumber,
-        customerName: `${dto.firstName} ${dto.lastName}`,
-        customerEmail: dto.email,
-        companyName: dto.companyName,
-        total: Number(quote.total),
-        requestsFinancing: dto.requestsFinancing,
-      })),
+      this.emailService.send(
+        templates.quoteReceivedCustomer({
+          to: dto.email,
+          firstName: dto.firstName,
+          quoteNumber: quote.quoteNumber,
+          items: quote.items.map((i) => ({ name: i.product.name, quantity: i.quantity })),
+        }),
+      ),
+      this.emailService.send(
+        templates.quoteReceivedTeam({
+          to: salesEmail,
+          quoteId: quote.id,
+          quoteNumber: quote.quoteNumber,
+          customerName: `${dto.firstName} ${dto.lastName}`,
+          customerEmail: dto.email,
+          companyName: dto.companyName,
+          total: Number(quote.total),
+          requestsFinancing: dto.requestsFinancing,
+        }),
+      ),
     ]).catch((err) => this.logger.error('Failed to send quote emails', err));
 
     return {
       quoteNumber: quote.quoteNumber,
-      message: 'Votre demande de devis a bien été reçue. Notre équipe vous contactera sous 48h ouvrées.',
+      message:
+        'Votre demande de devis a bien été reçue. Notre équipe vous contactera sous 48h ouvrées.',
     };
   }
 
@@ -165,7 +168,9 @@ export class QuotesService {
         where: { customerId: userId },
         include: {
           items: {
-            include: { product: { select: { name: true, images: { where: { isPrimary: true }, take: 1 } } } },
+            include: {
+              product: { select: { name: true, images: { where: { isPrimary: true }, take: 1 } } },
+            },
           },
         },
         orderBy: { createdAt: 'desc' },
@@ -198,9 +203,7 @@ export class QuotesService {
 
     if (!quote) throw new NotFoundException('Quote not found');
     if (quote.status !== 'SENT' && quote.status !== 'VIEWED') {
-      throw new BadRequestException(
-        `Cannot accept quote in status: ${quote.status}`,
-      );
+      throw new BadRequestException(`Cannot accept quote in status: ${quote.status}`);
     }
     if (quote.validUntil < new Date()) {
       throw new BadRequestException('Quote has expired — please request a new one');
@@ -232,12 +235,7 @@ export class QuotesService {
 
   // ── ADMIN: quote management ───────────────────────────────────────────────
 
-  async findAll(
-    page = 1,
-    limit = 25,
-    status?: QuoteStatus,
-    search?: string,
-  ) {
+  async findAll(page = 1, limit = 25, status?: QuoteStatus, search?: string) {
     const where = {
       ...(status && { status }),
       ...(search && {
@@ -262,7 +260,9 @@ export class QuotesService {
         include: {
           customer: { select: { id: true, email: true, firstName: true, lastName: true } },
           salesRep: { select: { id: true, firstName: true, lastName: true } },
-          items: { select: { quantity: true, totalPrice: true, product: { select: { name: true } } } },
+          items: {
+            select: { quantity: true, totalPrice: true, product: { select: { name: true } } },
+          },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
@@ -355,14 +355,18 @@ export class QuotesService {
         });
 
         if (customer) {
-          this.emailService.send(templates.quoteSentCustomer({
-            to: customer.email,
-            firstName: customer.firstName,
-            quoteNumber: quote.quoteNumber,
-            quoteId: id,
-            total: Number(updated.total),
-            validUntil: updated.validUntil,
-          })).catch((err) => this.logger.error('Email send failed', err));
+          this.emailService
+            .send(
+              templates.quoteSentCustomer({
+                to: customer.email,
+                firstName: customer.firstName,
+                quoteNumber: quote.quoteNumber,
+                quoteId: id,
+                total: Number(updated.total),
+                validUntil: updated.validUntil,
+              }),
+            )
+            .catch((err) => this.logger.error('Email send failed', err));
         }
       }
 
@@ -386,74 +390,77 @@ export class QuotesService {
 
     const defaultAddress = quote.customer.addresses[0];
 
-    const order = await this.prisma.$transaction(async (tx) => {
-      const lineItems: any[] = [];
+    const order = await this.prisma.$transaction(
+      async (tx) => {
+        const lineItems: any[] = [];
 
-      for (const qi of quote.items) {
-        // Find warehouse with sufficient stock
-        const suitableInventory = qi.product.inventoryItems.find(
-          (inv) => inv.quantityOnHand - inv.quantityReserved >= qi.quantity
-        );
+        for (const qi of quote.items) {
+          // Find warehouse with sufficient stock
+          const suitableInventory = qi.product.inventoryItems.find(
+            (inv) => inv.quantityOnHand - inv.quantityReserved >= qi.quantity,
+          );
 
-        if (!suitableInventory) {
-          const totalAvailable = qi.product.inventoryItems.reduce(
-            (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
-            0,
-          );
-          throw new BadRequestException(
-            `Insufficient stock for "${qi.product.name}" (available: ${totalAvailable})`,
-          );
+          if (!suitableInventory) {
+            const totalAvailable = qi.product.inventoryItems.reduce(
+              (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
+              0,
+            );
+            throw new BadRequestException(
+              `Insufficient stock for "${qi.product.name}" (available: ${totalAvailable})`,
+            );
+          }
+
+          lineItems.push({
+            productId: qi.productId,
+            sku: qi.product.sku,
+            name: qi.product.name,
+            configurationId: qi.configurationId,
+            quantity: qi.quantity,
+            unitPrice: qi.unitPrice,
+            totalPrice: qi.totalPrice,
+            taxAmount: Number(qi.totalPrice) * TAX_RATE,
+          });
+
+          // Reserve inventory
+          await tx.inventoryItem.update({
+            where: { id: suitableInventory.id },
+            data: { quantityReserved: { increment: qi.quantity } },
+          });
         }
 
-        lineItems.push({
-          productId: qi.productId,
-          sku: qi.product.sku,
-          name: qi.product.name,
-          configurationId: qi.configurationId,
-          quantity: qi.quantity,
-          unitPrice: qi.unitPrice,
-          totalPrice: qi.totalPrice,
-          taxAmount: Number(qi.totalPrice) * TAX_RATE,
-        });
-
-        // Reserve inventory
-        await tx.inventoryItem.update({
-          where: { id: suitableInventory.id },
-          data: { quantityReserved: { increment: qi.quantity } },
-        });
-      }
-
-      const newOrder = await tx.order.create({
-        data: {
-          orderNumber: `UT-${Date.now()}-${nanoid(4).toUpperCase()}`,
-          userId: quote.customerId,
-          status: 'CONFIRMED',
-          currency: quote.currency,
-          subtotal: quote.subtotal,
-          taxTotal: quote.taxTotal,
-          total: quote.total,
-          taxRate: TAX_RATE,
-          taxLabel: TAX_LABEL,
-          quoteId: quote.id,
-          shippingAddressId: defaultAddress?.id,
-          billingAddressId: defaultAddress?.id,
-          confirmedAt: new Date(),
-          items: {
-            create: lineItems,
+        const newOrder = await tx.order.create({
+          data: {
+            orderNumber: `UT-${Date.now()}-${nanoid(4).toUpperCase()}`,
+            userId: quote.customerId,
+            status: 'CONFIRMED',
+            currency: quote.currency,
+            subtotal: quote.subtotal,
+            taxTotal: quote.taxTotal,
+            total: quote.total,
+            taxRate: TAX_RATE,
+            taxLabel: TAX_LABEL,
+            quoteId: quote.id,
+            shippingAddressId: defaultAddress?.id,
+            billingAddressId: defaultAddress?.id,
+            confirmedAt: new Date(),
+            items: {
+              create: lineItems,
+            },
           },
-        },
-      });
+        });
 
-      await tx.quote.update({
-        where: { id: quoteId },
-        data: { status: 'CONVERTED' },
-      });
+        await tx.quote.update({
+          where: { id: quoteId },
+          data: { status: 'CONVERTED' },
+        });
 
-      return newOrder;
-    }, {
-      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-      timeout: 15_000,
-    });
+        return newOrder;
+      },
+      {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        timeout: 15_000,
+      },
+    );
 
     return order;
   }

@@ -21,9 +21,7 @@ export function CookieBanner() {
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [sessionId] = useState(() =>
-    typeof crypto !== 'undefined'
-      ? crypto.randomUUID()
-      : Math.random().toString(36).slice(2),
+    typeof crypto !== 'undefined' ? crypto.randomUUID() : Math.random().toString(36).slice(2),
   );
 
   useEffect(() => {
@@ -74,8 +72,8 @@ export function CookieBanner() {
               <div className="flex-1">
                 <p className="font-medium text-sm">Vos préférences cookies</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Nous utilisons des cookies pour améliorer votre expérience. Vous
-                  pouvez choisir lesquels accepter (RGPD).
+                  Nous utilisons des cookies pour améliorer votre expérience. Vous pouvez choisir
+                  lesquels accepter (RGPD).
                 </p>
               </div>
               <button
@@ -142,7 +140,9 @@ export function CookieBanner() {
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Personnaliser
-                  <ChevronDown className={`w-3 h-3 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`w-3 h-3 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                  />
                 </button>
                 {expanded && (
                   <button
@@ -156,9 +156,13 @@ export function CookieBanner() {
             </div>
 
             <p className="text-[10px] text-muted-foreground/60 mt-3">
-              <a href="/privacy" className="hover:underline">Politique de confidentialité</a>
+              <a href="/privacy" className="hover:underline">
+                Politique de confidentialité
+              </a>
               {' · '}
-              <a href="/mentions-legales" className="hover:underline">Mentions légales</a>
+              <a href="/mentions-legales" className="hover:underline">
+                Mentions légales
+              </a>
             </p>
           </div>
         </motion.div>

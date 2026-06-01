@@ -28,7 +28,11 @@ export function ProductCard({ product }: ProductCardProps) {
   const image = images[0];
 
   const formatEur = (amount: number) =>
-    new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
+    new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0,
+    }).format(amount);
 
   return (
     <Link href={`/products/${slug}`} className="group block">
@@ -92,7 +96,10 @@ export function ProductCard({ product }: ProductCardProps) {
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-3">
               {tags.slice(0, 3).map(({ tag }) => (
-                <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-zinc-500 border border-slate-200 dark:border-border">
+                <span
+                  key={tag}
+                  className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-zinc-500 border border-slate-200 dark:border-border"
+                >
                   {tag}
                 </span>
               ))}
@@ -110,9 +117,13 @@ export function ProductCard({ product }: ProductCardProps) {
             ) : (
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-display font-bold text-slate-900 dark:text-white">{formatEur(basePrice)}</span>
+                  <span className="text-xl font-display font-bold text-slate-900 dark:text-white">
+                    {formatEur(basePrice)}
+                  </span>
                   {compareAtPrice && (
-                    <span className="text-sm text-slate-400 dark:text-zinc-600 line-through">{formatEur(compareAtPrice)}</span>
+                    <span className="text-sm text-slate-400 dark:text-zinc-600 line-through">
+                      {formatEur(compareAtPrice)}
+                    </span>
                   )}
                 </div>
                 {leasePriceMonth && (

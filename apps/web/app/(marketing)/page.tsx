@@ -37,22 +37,22 @@ export default async function HomePage() {
 
       <section className="py-28 px-4 bg-white dark:bg-[#06060f]">
         <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
-            Catalogue
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Built for what comes next.
-          </h2>
-          <p className="mt-4 text-slate-500 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
-            Every system engineered to operate at the edge of what&apos;s possible —
-            in labs, on factory floors, and beyond.
-          </p>
-        </div>
+          <div className="text-center mb-16">
+            <p className="text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
+              Catalogue
+            </p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Built for what comes next.
+            </h2>
+            <p className="mt-4 text-slate-500 dark:text-zinc-400 max-w-2xl mx-auto text-lg">
+              Every system engineered to operate at the edge of what&apos;s possible — in labs, on
+              factory floors, and beyond.
+            </p>
+          </div>
 
-        <Suspense fallback={<ProductGridSkeleton />}>
-          <FeaturedProducts products={featuredProducts} />
-        </Suspense>
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <FeaturedProducts products={featuredProducts} />
+          </Suspense>
         </div>
       </section>
 
@@ -66,10 +66,7 @@ function ProductGridSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div
-          key={i}
-          className="h-96 rounded-2xl bg-muted animate-pulse"
-        />
+        <div key={i} className="h-96 rounded-2xl bg-muted animate-pulse" />
       ))}
     </div>
   );

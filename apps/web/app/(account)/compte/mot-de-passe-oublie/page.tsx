@@ -24,7 +24,9 @@ export default function MotDePasseOubliePage() {
         // Show success even if email not found (security: don't reveal existence)
         setSent(true);
       } else {
-        setError(Array.isArray(msg) ? msg[0] : (msg ?? 'Une erreur est survenue. Veuillez réessayer.'));
+        setError(
+          Array.isArray(msg) ? msg[0] : (msg ?? 'Une erreur est survenue. Veuillez réessayer.'),
+        );
       }
     } finally {
       setLoading(false);
@@ -39,7 +41,10 @@ export default function MotDePasseOubliePage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block font-display font-bold text-2xl tracking-tight text-slate-900 dark:text-white">
+          <Link
+            href="/"
+            className="inline-block font-display font-bold text-2xl tracking-tight text-slate-900 dark:text-white"
+          >
             Unitree<span className="text-blue-500">.</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
@@ -58,8 +63,10 @@ export default function MotDePasseOubliePage() {
                 Email envoyé !
               </h2>
               <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                Si un compte existe pour <span className="font-medium text-slate-700 dark:text-zinc-300">{email}</span>,
-                vous recevrez un email avec un lien pour réinitialiser votre mot de passe dans quelques minutes.
+                Si un compte existe pour{' '}
+                <span className="font-medium text-slate-700 dark:text-zinc-300">{email}</span>, vous
+                recevrez un email avec un lien pour réinitialiser votre mot de passe dans quelques
+                minutes.
               </p>
               <p className="text-xs text-slate-400 dark:text-zinc-500 mt-3">
                 Pensez à vérifier vos spams.
@@ -68,7 +75,10 @@ export default function MotDePasseOubliePage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5"
+                >
                   Adresse email
                 </label>
                 <input
@@ -97,7 +107,9 @@ export default function MotDePasseOubliePage() {
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
-                  <>Envoyer le lien <ArrowRight className="w-4 h-4" /></>
+                  <>
+                    Envoyer le lien <ArrowRight className="w-4 h-4" />
+                  </>
                 )}
               </button>
             </form>
@@ -105,7 +117,10 @@ export default function MotDePasseOubliePage() {
         </div>
 
         <p className="text-center mt-6 text-sm text-slate-500 dark:text-zinc-400">
-          <Link href="/compte/connexion" className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 font-medium hover:underline">
+          <Link
+            href="/compte/connexion"
+            className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 font-medium hover:underline"
+          >
             <ArrowLeft className="w-3.5 h-3.5" />
             Retour à la connexion
           </Link>

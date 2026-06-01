@@ -5,9 +5,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3001),
   API_URL: z.string().url(),
   FRONTEND_URL: z.string().url(),
-  ALLOWED_ORIGINS: z
-    .string()
-    .transform((v) => v.split(',').map((s) => s.trim())),
+  ALLOWED_ORIGINS: z.string().transform((v) => v.split(',').map((s) => s.trim())),
 
   DATABASE_URL: z.string().min(1),
   DIRECT_DATABASE_URL: z.string().min(1),
@@ -41,9 +39,7 @@ export function validate(config: Record<string, unknown>): EnvConfig {
   const result = envSchema.safeParse(config);
 
   if (!result.success) {
-    const errors = result.error.issues
-      .map((i) => `  ${i.path.join('.')}: ${i.message}`)
-      .join('\n');
+    const errors = result.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`).join('\n');
     throw new Error(`Environment validation failed:\n${errors}`);
   }
 

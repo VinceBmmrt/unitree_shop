@@ -22,26 +22,20 @@ export const useCartStore = create<CartState>()(
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.id === existing.id
-                  ? { ...i, quantity: i.quantity + item.quantity }
-                  : i,
+                i.id === existing.id ? { ...i, quantity: i.quantity + item.quantity } : i,
               ),
               isOpen: true,
             };
           }
 
           return {
-            items: [
-              ...state.items,
-              { ...item, id: `${key}-${Date.now()}` },
-            ],
+            items: [...state.items, { ...item, id: `${key}-${Date.now()}` }],
             isOpen: true,
           };
         });
       },
 
-      removeItem: (id) =>
-        set((state) => ({ items: state.items.filter((i) => i.id !== id) })),
+      removeItem: (id) => set((state) => ({ items: state.items.filter((i) => i.id !== id) })),
 
       updateQuantity: (id, quantity) => {
         if (quantity <= 0) {
@@ -59,8 +53,7 @@ export const useCartStore = create<CartState>()(
       toggleCart: () => set((s) => ({ isOpen: !s.isOpen })),
 
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
-      subtotal: () =>
-        get().items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
+      subtotal: () => get().items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
       hasQuoteItems: () => get().items.some((i) => i.requiresQuote),
     }),
     {

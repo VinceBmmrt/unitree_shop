@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Prisma, Product } from '@prisma/client';
 import { ProductFilterDto } from './dto/product-filter.dto';
@@ -87,9 +83,7 @@ export class ProductsService {
     return {
       data: products.map((p) => ({
         ...p,
-        inStock: p.inventoryItems.some(
-          (i) => i.quantityOnHand - i.quantityReserved > 0,
-        ),
+        inStock: p.inventoryItems.some((i) => i.quantityOnHand - i.quantityReserved > 0),
       })),
       meta: {
         total,
@@ -132,8 +126,7 @@ export class ProductsService {
       0,
     );
     const avgRating = product.reviews.length
-      ? product.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        product.reviews.length
+      ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
       : null;
 
     return { ...product, totalStock, avgRating };
@@ -183,12 +176,8 @@ export class ProductsService {
         modelUrl: dto.modelUrl,
         modelFormat: dto.modelFormat,
         videoUrl: dto.videoUrl,
-        images: dto.images
-          ? { create: dto.images }
-          : undefined,
-        tags: dto.tags
-          ? { create: dto.tags.map((tag) => ({ tag })) }
-          : undefined,
+        images: dto.images ? { create: dto.images } : undefined,
+        tags: dto.tags ? { create: dto.tags.map((tag) => ({ tag })) } : undefined,
       },
     });
   }
@@ -233,9 +222,7 @@ export class ProductsService {
       if (selectedValue) {
         const choice = option.choices.find((c) => c.id === selectedValue);
         if (!choice) {
-          throw new BadRequestException(
-            `Invalid choice for option "${option.name}"`,
-          );
+          throw new BadRequestException(`Invalid choice for option "${option.name}"`);
         }
         totalPrice += Number(choice.priceDelta);
         validatedSelections[option.id] = choice.id;

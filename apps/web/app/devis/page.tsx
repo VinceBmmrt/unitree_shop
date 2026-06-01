@@ -35,15 +35,13 @@ export default async function DevisPage({
       <div className="relative max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="mb-12">
-          <p className="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">
-            Devis
-          </p>
+          <p className="text-blue-400 text-sm font-medium uppercase tracking-widest mb-3">Devis</p>
           <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white">
             Parlons de votre projet.
           </h1>
           <p className="mt-4 text-slate-500 dark:text-zinc-400 text-lg max-w-xl">
-            Chaque déploiement est unique. Partagez votre cas d&apos;usage et notre équipe
-            vous proposera une solution adaptée avec un devis sous 48h ouvrées.
+            Chaque déploiement est unique. Partagez votre cas d&apos;usage et notre équipe vous
+            proposera une solution adaptée avec un devis sous 48h ouvrées.
           </p>
 
           <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">

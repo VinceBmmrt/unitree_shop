@@ -30,9 +30,7 @@ function Loader() {
             animate={{ width: `${progress}%` }}
           />
         </div>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {Math.round(progress)}%
-        </span>
+        <span className="text-xs text-muted-foreground tabular-nums">{Math.round(progress)}%</span>
       </div>
     </Html>
   );
@@ -60,9 +58,7 @@ export function Product3DViewer({ modelUrl }: Props) {
     <div className="relative">
       <div
         className={`rounded-2xl overflow-hidden bg-gradient-to-b from-muted/50 to-background border border-border transition-all duration-300 ${
-          isFullscreen
-            ? 'fixed inset-4 z-50 rounded-2xl shadow-2xl'
-            : 'h-[500px]'
+          isFullscreen ? 'fixed inset-4 z-50 rounded-2xl shadow-2xl' : 'h-[500px]'
         }`}
       >
         <Canvas
@@ -73,12 +69,7 @@ export function Product3DViewer({ modelUrl }: Props) {
           <Suspense fallback={<Loader />}>
             <Model url={modelUrl} />
             <Environment preset="city" />
-            <ContactShadows
-              position={[0, -1.5, 0]}
-              opacity={0.4}
-              scale={8}
-              blur={2}
-            />
+            <ContactShadows position={[0, -1.5, 0]} opacity={0.4} scale={8} blur={2} />
           </Suspense>
 
           <OrbitControls
@@ -96,9 +87,7 @@ export function Product3DViewer({ modelUrl }: Props) {
 
         {/* Controls overlay */}
         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-          <p className="text-xs text-muted-foreground">
-            Drag to rotate · Scroll to zoom
-          </p>
+          <p className="text-xs text-muted-foreground">Drag to rotate · Scroll to zoom</p>
           <button
             onClick={() => setIsFullscreen((v) => !v)}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded border border-border bg-background/80 backdrop-blur-sm"

@@ -18,9 +18,18 @@ interface ProductConfiguratorProps {
 }
 
 const formatEur = (n: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  }).format(n);
 
-export function ProductConfigurator({ options, basePrice, selected, onSelectionChange }: ProductConfiguratorProps) {
+export function ProductConfigurator({
+  options,
+  basePrice,
+  selected,
+  onSelectionChange,
+}: ProductConfiguratorProps) {
   if (!options?.length) return null;
 
   const totalModifier = options.reduce((sum, opt) => {

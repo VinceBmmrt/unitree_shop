@@ -27,24 +27,20 @@ export class AnalyticsService {
     const avgOrderValue = orderCount > 0 ? totalRevenue / orderCount : 0;
 
     // Group by day
-    const dailyRevenue = orders.reduce(
-      (acc: Record<string, number>, order) => {
-        const day = order.confirmedAt!.toISOString().split('T')[0];
-        acc[day] = (acc[day] ?? 0) + Number(order.total);
-        return acc;
-      },
-      {},
-    );
+    const dailyRevenue = orders.reduce((acc: Record<string, number>, order) => {
+      const day = order.confirmedAt!.toISOString().split('T')[0];
+      acc[day] = (acc[day] ?? 0) + Number(order.total);
+      return acc;
+    }, {});
 
     // Revenue by product category
-    const categoryRevenue = orders.flatMap((o) => o.items).reduce(
-      (acc: Record<string, number>, item) => {
+    const categoryRevenue = orders
+      .flatMap((o) => o.items)
+      .reduce((acc: Record<string, number>, item) => {
         const cat = item.product.category;
         acc[cat] = (acc[cat] ?? 0) + Number(item.totalPrice);
         return acc;
-      },
-      {},
-    );
+      }, {});
 
     return {
       totalRevenue,
@@ -103,22 +99,17 @@ export class AnalyticsService {
   }
 
   async getCustomerMetrics() {
-    const [totalUsers, newUsersThisMonth, enterpriseCount] =
-      await this.prisma.$transaction([
-        this.prisma.user.count(),
-        this.prisma.user.count({
-          where: {
-            createdAt: {
-              gte: new Date(
-                new Date().getFullYear(),
-                new Date().getMonth(),
-                1,
-              ),
-            },
+    const [totalUsers, newUsersThisMonth, enterpriseCount] = await this.prisma.$transaction([
+      this.prisma.user.count(),
+      this.prisma.user.count({
+        where: {
+          createdAt: {
+            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
           },
-        }),
-        this.prisma.enterprise.count(),
-      ]);
+        },
+      }),
+      this.prisma.enterprise.count(),
+    ]);
 
     // Repeat purchase rate
     const multiOrderUsers = await this.prisma.order.groupBy({

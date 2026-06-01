@@ -33,20 +33,20 @@ const FRAG = `
 `;
 
 // ── CONSTANTS ─────────────────────────────────────────────────────────────────
-const N           = 4500;   // particle count
-const WW          = 210;    // world width
-const WH          = 118;    // world height
-const MOUSE_R     = 22;     // repulsion radius (world units)
-const MOUSE_F     = 0.22;   // repulsion force
-const CLICK_R     = 35;     // click-burst radius
-const CLICK_F     = 0.55;   // click-burst force
-const DAMPING     = 0.955;
-const MAX_SPEED   = 1.1;
-const RISE_BASE   = 0.012;  // base upward velocity
+const N = 4500; // particle count
+const WW = 210; // world width
+const WH = 118; // world height
+const MOUSE_R = 22; // repulsion radius (world units)
+const MOUSE_F = 0.22; // repulsion force
+const CLICK_R = 35; // click-burst radius
+const CLICK_F = 0.55; // click-burst force
+const DAMPING = 0.955;
+const MAX_SPEED = 1.1;
+const RISE_BASE = 0.012; // base upward velocity
 
 export function HeroSection() {
-  const mountRef  = useRef<HTMLDivElement>(null);
-  const mouseRef  = useRef({ x: 0, y: 0, worldX: 0, worldY: 0 });
+  const mountRef = useRef<HTMLDivElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0, worldX: 0, worldY: 0 });
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -54,24 +54,26 @@ export function HeroSection() {
     if (!container) return;
 
     let disposed = false;
-    let rafId    = -1;
+    let rafId = -1;
 
     (async () => {
       const THREE = await import('three');
       if (disposed) return;
       // @ts-ignore
-      const { EffectComposer }  = await import('three/examples/jsm/postprocessing/EffectComposer.js');
+      const { EffectComposer } =
+        await import('three/examples/jsm/postprocessing/EffectComposer.js');
       if (disposed) return;
       // @ts-ignore
-      const { RenderPass }      = await import('three/examples/jsm/postprocessing/RenderPass.js');
+      const { RenderPass } = await import('three/examples/jsm/postprocessing/RenderPass.js');
       if (disposed) return;
       // @ts-ignore
-      const { UnrealBloomPass } = await import('three/examples/jsm/postprocessing/UnrealBloomPass.js');
+      const { UnrealBloomPass } =
+        await import('three/examples/jsm/postprocessing/UnrealBloomPass.js');
       if (disposed) return;
 
       // ── Renderer ──────────────────────────────────────────────────────────
-      const cW  = container.clientWidth  || window.innerWidth;
-      const cH  = container.clientHeight || window.innerHeight;
+      const cW = container.clientWidth || window.innerWidth;
+      const cH = container.clientHeight || window.innerHeight;
       const dpr = Math.min(window.devicePixelRatio, 2);
 
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
@@ -81,44 +83,47 @@ export function HeroSection() {
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.15;
       Object.assign(renderer.domElement.style, {
-        position: 'absolute', inset: '0', width: '100%', height: '100%',
+        position: 'absolute',
+        inset: '0',
+        width: '100%',
+        height: '100%',
       });
       container.appendChild(renderer.domElement);
 
-      const scene  = new THREE.Scene();
+      const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(65, cW / cH, 0.1, 1000);
       camera.position.z = 80;
 
       // ── CPU Physics buffers ───────────────────────────────────────────────
-      const px = new Float32Array(N);  // x pos
-      const py = new Float32Array(N);  // y pos
-      const pz = new Float32Array(N);  // z pos (static)
-      const vx = new Float32Array(N);  // x vel
-      const vy = new Float32Array(N);  // y vel
+      const px = new Float32Array(N); // x pos
+      const py = new Float32Array(N); // y pos
+      const pz = new Float32Array(N); // z pos (static)
+      const vx = new Float32Array(N); // x vel
+      const vy = new Float32Array(N); // y vel
       const brightness = new Float32Array(N);
-      const sizes      = new Float32Array(N);
+      const sizes = new Float32Array(N);
       // per-particle turbulence personality
-      const tPhase  = new Float32Array(N);
-      const tFreqX  = new Float32Array(N);
-      const tFreqY  = new Float32Array(N);
+      const tPhase = new Float32Array(N);
+      const tFreqX = new Float32Array(N);
+      const tFreqY = new Float32Array(N);
 
       for (let i = 0; i < N; i++) {
-        px[i]      = (Math.random() - 0.5) * WW;
-        py[i]      = (Math.random() - 0.5) * WH;
-        pz[i]      = (Math.random() - 0.5) * 50;
-        vx[i]      = (Math.random() - 0.5) * 0.06;
-        vy[i]      = Math.random() * RISE_BASE * 2 + RISE_BASE;
-        sizes[i]   = Math.random() * 2.0 + 0.8;
+        px[i] = (Math.random() - 0.5) * WW;
+        py[i] = (Math.random() - 0.5) * WH;
+        pz[i] = (Math.random() - 0.5) * 50;
+        vx[i] = (Math.random() - 0.5) * 0.06;
+        vy[i] = Math.random() * RISE_BASE * 2 + RISE_BASE;
+        sizes[i] = Math.random() * 2.0 + 0.8;
         brightness[i] = Math.random() * 0.35 + 0.55;
-        tPhase[i]  = Math.random() * Math.PI * 2;
-        tFreqX[i]  = Math.random() * 0.7 + 0.2;
-        tFreqY[i]  = Math.random() * 0.5 + 0.15;
+        tPhase[i] = Math.random() * Math.PI * 2;
+        tFreqX[i] = Math.random() * 0.7 + 0.2;
+        tFreqY[i] = Math.random() * 0.5 + 0.15;
       }
 
       // GPU position buffer (updated each frame)
       const posArr = new Float32Array(N * 3);
       for (let i = 0; i < N; i++) {
-        posArr[i * 3]     = px[i];
+        posArr[i * 3] = px[i];
         posArr[i * 3 + 1] = py[i];
         posArr[i * 3 + 2] = pz[i];
       }
@@ -126,17 +131,17 @@ export function HeroSection() {
       const geo = new THREE.BufferGeometry();
       const posAttr = new THREE.BufferAttribute(posArr, 3);
       posAttr.setUsage(THREE.DynamicDrawUsage);
-      geo.setAttribute('position',    posAttr);
-      geo.setAttribute('aSize',       new THREE.BufferAttribute(sizes, 1));
+      geo.setAttribute('position', posAttr);
+      geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
       geo.setAttribute('aBrightness', new THREE.BufferAttribute(brightness, 1));
 
       const mat = new THREE.ShaderMaterial({
         uniforms: { uDpr: { value: dpr } },
-        vertexShader:   VERT,
+        vertexShader: VERT,
         fragmentShader: FRAG,
         transparent: true,
-        blending:    THREE.AdditiveBlending,
-        depthWrite:  false,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
       });
       scene.add(new THREE.Points(geo, mat));
 
@@ -147,30 +152,30 @@ export function HeroSection() {
 
       // ── NDC → world converter (used for both mouse and click) ─────────────
       function ndcToWorld(ndcX: number, ndcY: number) {
-        const aspect  = camera.aspect;
-        const halfH   = Math.tan((65 / 2) * (Math.PI / 180)) * 80;
+        const aspect = camera.aspect;
+        const halfH = Math.tan((65 / 2) * (Math.PI / 180)) * 80;
         return { wx: ndcX * halfH * aspect, wy: ndcY * halfH };
       }
 
       // ── Event listeners ───────────────────────────────────────────────────
       const onMouseMove = (e: MouseEvent) => {
-        const r     = container.getBoundingClientRect();
-        const ndcX  =  (e.clientX - r.left) / r.width  * 2 - 1;
-        const ndcY  = -((e.clientY - r.top)  / r.height * 2 - 1);
+        const r = container.getBoundingClientRect();
+        const ndcX = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const ndcY = -(((e.clientY - r.top) / r.height) * 2 - 1);
         const { wx, wy } = ndcToWorld(ndcX, ndcY);
         mouseRef.current.worldX = wx;
         mouseRef.current.worldY = wy;
       };
 
       const onClick = (e: MouseEvent) => {
-        const r    = container.getBoundingClientRect();
-        const ndcX =  (e.clientX - r.left) / r.width  * 2 - 1;
-        const ndcY = -((e.clientY - r.top)  / r.height * 2 - 1);
+        const r = container.getBoundingClientRect();
+        const ndcX = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const ndcY = -(((e.clientY - r.top) / r.height) * 2 - 1);
         const { wx, wy } = ndcToWorld(ndcX, ndcY);
         // explosive burst
         for (let i = 0; i < N; i++) {
-          const dx   = px[i] - wx;
-          const dy   = py[i] - wy;
+          const dx = px[i] - wx;
+          const dy = py[i] - wy;
           const dist = Math.sqrt(dx * dx + dy * dy) + 0.01;
           if (dist < CLICK_R) {
             const f = (1 - dist / CLICK_R) * CLICK_F;
@@ -216,8 +221,8 @@ export function HeroSection() {
           vy[i] += 0.0006;
 
           // 3. Mouse repulsion
-          const dx   = px[i] - mx;
-          const dy   = py[i] - my;
+          const dx = px[i] - mx;
+          const dy = py[i] - my;
           const dist = Math.sqrt(dx * dx + dy * dy) + 0.001;
           if (dist < MOUSE_R) {
             const f = (1 - dist / MOUSE_R) * MOUSE_F;
@@ -229,25 +234,29 @@ export function HeroSection() {
           vx[i] *= DAMPING;
           vy[i] *= DAMPING;
           const spd = Math.sqrt(vx[i] * vx[i] + vy[i] * vy[i]);
-          if (spd > MAX_SPEED) { const s = MAX_SPEED / spd; vx[i] *= s; vy[i] *= s; }
+          if (spd > MAX_SPEED) {
+            const s = MAX_SPEED / spd;
+            vx[i] *= s;
+            vy[i] *= s;
+          }
 
           // 5. Integrate
           px[i] += vx[i];
           py[i] += vy[i];
 
           // 6. Boundary — wrap X, respawn at bottom when escaping top
-          if (px[i] >  HW) px[i] -= WW;
+          if (px[i] > HW) px[i] -= WW;
           if (px[i] < -HW) px[i] += WW;
-          if (py[i] >  HH) {
-            py[i]  = -HH + Math.random() * 8;
-            px[i]  = (Math.random() - 0.5) * WW;
-            vx[i]  = (Math.random() - 0.5) * 0.06;
-            vy[i]  = Math.random() * RISE_BASE * 2 + RISE_BASE;
+          if (py[i] > HH) {
+            py[i] = -HH + Math.random() * 8;
+            px[i] = (Math.random() - 0.5) * WW;
+            vx[i] = (Math.random() - 0.5) * 0.06;
+            vy[i] = Math.random() * RISE_BASE * 2 + RISE_BASE;
           }
           if (py[i] < -HH) py[i] = HH;
 
           // 7. Write to GPU buffer
-          posArr[i * 3]     = px[i];
+          posArr[i * 3] = px[i];
           posArr[i * 3 + 1] = py[i];
           // z is static, no need to write
         }
@@ -268,7 +277,8 @@ export function HeroSection() {
         window.removeEventListener('resize', onResize);
         container.removeEventListener('click', onClick);
         cancelAnimationFrame(rafId);
-        if (renderer.domElement.parentNode === container) container.removeChild(renderer.domElement);
+        if (renderer.domElement.parentNode === container)
+          container.removeChild(renderer.domElement);
         geo.dispose();
         mat.dispose();
         renderer.dispose();
@@ -285,11 +295,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-[#04040a]">
       {/* WebGL mount — fills the whole section */}
-      <div
-        ref={mountRef}
-        className="absolute inset-0 cursor-crosshair"
-        aria-hidden
-      />
+      <div ref={mountRef} className="absolute inset-0 cursor-crosshair" aria-hidden />
 
       {/* Radial vignette so text stays readable */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_50%_45%_at_28%_50%,transparent_40%,rgba(4,4,10,0.82)_85%)]" />
@@ -328,8 +334,8 @@ export function HeroSection() {
           </h1>
 
           <p className="mt-6 text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
-            Systèmes autonomes de nouvelle génération pour la recherche,
-            l&apos;industrie et l&apos;exploration. Livraison en France, support technique inclus.
+            Systèmes autonomes de nouvelle génération pour la recherche, l&apos;industrie et
+            l&apos;exploration. Livraison en France, support technique inclus.
           </p>
 
           {/* CTAs */}
@@ -356,8 +362,8 @@ export function HeroSection() {
             className="mt-14 flex gap-10 border-t border-white/8 pt-10"
           >
             {[
-              { value: '500+',  label: 'Unités déployées' },
-              { value: '30+',   label: 'Pays clients' },
+              { value: '500+', label: 'Unités déployées' },
+              { value: '30+', label: 'Pays clients' },
               { value: '99.6%', label: 'Fiabilité opérationnelle' },
             ].map((s, i) => (
               <motion.div

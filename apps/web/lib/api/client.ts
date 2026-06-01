@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { env } from '@/lib/env';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const API_URL = env.NEXT_PUBLIC_API_URL;
 
 export const apiClient = axios.create({
   baseURL: API_URL,
@@ -33,8 +34,7 @@ if (typeof window !== 'undefined') {
             refreshPromise = axios
               .post(`${API_URL}/auth/refresh`, {}, { withCredentials: true })
               .then((res) => {
-                const token: string =
-                  res.data?.data?.accessToken ?? res.data?.accessToken;
+                const token: string = res.data?.data?.accessToken ?? res.data?.accessToken;
                 if (!token) throw new Error('No token in refresh response');
                 return token;
               })

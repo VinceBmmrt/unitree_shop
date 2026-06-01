@@ -17,19 +17,30 @@ const STATIC_ROBOTS = [
     category: 'HUMANOID_ROBOT',
     requiresQuote: true,
     inStock: true,
-    images: [{ url: 'https://shop.unitree.com/cdn/shop/files/1_968fd08b-9aaf-4f32-b895-5c786285ee52.jpg?v=1717575256', altText: 'Unitree G1' }],
+    images: [
+      {
+        url: 'https://shop.unitree.com/cdn/shop/files/1_968fd08b-9aaf-4f32-b895-5c786285ee52.jpg?v=1717575256',
+        altText: 'Unitree G1',
+      },
+    ],
     tags: [{ tag: 'Recherche' }, { tag: '23 DoF' }],
   },
   {
     id: 'unitree-h1',
     slug: 'unitree-h1',
     name: 'Unitree H1',
-    shortDescription: 'Robot humanoïde industriel full-size — 43 DoF, 3.3 m/s, 30 kg de charge utile.',
+    shortDescription:
+      'Robot humanoïde industriel full-size — 43 DoF, 3.3 m/s, 30 kg de charge utile.',
     basePrice: 0,
     category: 'HUMANOID_ROBOT',
     requiresQuote: true,
     inStock: true,
-    images: [{ url: 'https://www.unitree.com/images/fdff7695f62b42b89b2459a3a4405118_400x400.png', altText: 'Unitree H1' }],
+    images: [
+      {
+        url: 'https://www.unitree.com/images/fdff7695f62b42b89b2459a3a4405118_400x400.png',
+        altText: 'Unitree H1',
+      },
+    ],
     tags: [{ tag: 'Industriel' }, { tag: '43 DoF' }],
   },
 ];
@@ -74,7 +85,8 @@ export default async function RobotsPage({
             Nos robots
           </h1>
           <p className="mt-4 text-slate-500 dark:text-zinc-400 max-w-xl text-lg">
-            Systèmes autonomes de nouvelle génération pour la recherche, l&apos;industrie et l&apos;exploration.
+            Systèmes autonomes de nouvelle génération pour la recherche, l&apos;industrie et
+            l&apos;exploration.
           </p>
         </div>
       </div>
@@ -105,7 +117,9 @@ export default async function RobotsPage({
         ) : (
           <div className="text-center py-24 border border-dashed border-slate-200 dark:border-border rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
             <p className="text-zinc-400 text-lg">Aucun produit disponible pour le moment.</p>
-            <p className="text-zinc-600 text-sm mt-2">Revenez bientôt ou contactez notre équipe commerciale.</p>
+            <p className="text-zinc-600 text-sm mt-2">
+              Revenez bientôt ou contactez notre équipe commerciale.
+            </p>
             <Link
               href="/devis"
               className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-colors shadow-lg shadow-blue-600/20"

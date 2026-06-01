@@ -20,7 +20,11 @@ interface ProductInfoProps {
 }
 
 const formatEur = (amount: number) =>
-  new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
+  new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0,
+  }).format(amount);
 
 export function ProductInfo({ product }: ProductInfoProps) {
   const tva = product.requiresQuote ? null : product.basePrice * 0.2;
@@ -63,7 +67,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
         ) : (
           <>
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-display font-bold">{formatEur(product.basePrice)}</span>
+              <span className="text-3xl font-display font-bold">
+                {formatEur(product.basePrice)}
+              </span>
               {product.compareAtPrice && (
                 <span className="text-base text-muted-foreground line-through">
                   {formatEur(product.compareAtPrice)}
@@ -116,7 +122,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
       {product.tags && product.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {product.tags.map(({ tag }) => (
-            <span key={tag} className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">
+            <span
+              key={tag}
+              className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground"
+            >
               {tag}
             </span>
           ))}
