@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Unitree Shop - Development Start Script
+# Unitree Shop - Development Start Script Mac and Linux
 # This script starts both API and Web in parallel.
 
 echo "🚀 Starting Unitree Shop Development Environment..."

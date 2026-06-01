@@ -130,7 +130,7 @@ When a user configures a robot and requests a quote:
 - TVA 20%: **always use `TAX_RATE` / `TAX_LABEL`** from `src/common/constants/tax.constants.ts` — never hardcode `0.20` or `'TVA 20%'`
 - Stripe webhook at `POST /api/v1/payments/webhook` — signature verified, idempotent (guarded by order status check before processing)
 - Admin endpoints decorated with `@Roles(Role.ADMIN)` guard
-- Quotes: `PENDING → REVIEWING → SENT → ACCEPTED → CONVERTED` (no skipping states)
+- Quotes: `DRAFT → SENT → VIEWED → NEGOTIATING → ACCEPTED → REJECTED / EXPIRED → CONVERTED` — see `QuoteStatus` enum in schema
 - `convertToOrder` uses **`Prisma.TransactionIsolationLevel.Serializable`** with a 15s timeout — prevents double-reservation races
 - Inventory reservation: always find a **single warehouse** with `quantityOnHand - quantityReserved >= quantity` before reserving — never spread across multiple warehouses
 - Order creation always re-fetches prices from the DB — never trust client-provided prices
@@ -268,3 +268,26 @@ When adding a new external image source in the seed or anywhere else, add its ho
 All Playwright screenshots must be saved to `screenshots/` at the repo root (already in `.gitignore`).
 Use relative paths from the Playwright working directory: `filename: "screenshots/<name>.png"`.
 Never save `.png` files to the repo root or any `apps/` subdirectory.
+
+---
+
+## Documentation
+
+All project docs live in `docs/` — keep `README.md` and `CLAUDE.md` at root only.
+
+| File | Purpose |
+|---|---|
+| `docs/AGENT.md` | AI agent navigation guide — where files live, invariants, common patterns |
+| `docs/SPEC.md` | Full technical spec — domain model, API surface, business flows, security |
+| `docs/STATUS.md` | Current build state — what's working, what's missing, sprint progress |
+| `docs/PLAN.md` | Improvement steps with checkboxes — update when a step is completed |
+| `docs/changelogs/` | One dated file per completed step — `YYYY-MM-DD-description.md` |
+
+### Changelog workflow
+
+Every time a feature or plan step is finished:
+1. Create `docs/changelogs/YYYY-MM-DD-step-N-name.md`
+2. Check off the step in `docs/PLAN.md`
+3. Update `docs/STATUS.md` (move item to "working", update sprint table)
+4. Update `docs/SPEC.md` if the API or data model changed
+5. Update `CLAUDE.md` if a convention or rule changed
