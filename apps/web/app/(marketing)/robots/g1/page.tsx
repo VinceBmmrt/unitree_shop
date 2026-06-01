@@ -16,7 +16,8 @@ const G1ModelViewer = dynamic(
 
 export const metadata: Metadata = {
   title: 'Unitree G1 — Plateforme de Recherche Humanoïde',
-  description: 'G1 : plateforme de recherche humanoïde compacte, 23 DoF, 2 m/s. Idéale pour les équipes universitaires et les startups robotique.',
+  description:
+    'G1 : plateforme de recherche humanoïde compacte, 23 DoF, 2 m/s. Idéale pour les équipes universitaires et les startups robotique.',
 };
 
 const specs = [
@@ -39,7 +40,7 @@ const features = [
   {
     icon: Cpu,
     title: 'NVIDIA Orin NX',
-    body: 'Processeur de bord haute performance pour le traitement temps réel de la vision et des algorithmes d\'apprentissage par renforcement.',
+    body: "Processeur de bord haute performance pour le traitement temps réel de la vision et des algorithmes d'apprentissage par renforcement.",
   },
   {
     icon: Zap,
@@ -49,7 +50,7 @@ const features = [
   {
     icon: GraduationCap,
     title: 'Accessible & évolutif',
-    body: 'Point d\'entrée abordable dans la robotique humanoïde, avec des modules d\'extension pour les bras et capteurs additionnels.',
+    body: "Point d'entrée abordable dans la robotique humanoïde, avec des modules d'extension pour les bras et capteurs additionnels.",
   },
 ];
 
@@ -84,8 +85,11 @@ export default function G1Page() {
               Plateforme de recherche
             </p>
             <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
-              Unitree<br />
-              <span className="bg-gradient-to-r from-blue-600 to-blue-400 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">G1</span>
+              Unitree
+              <br />
+              <span className="bg-gradient-to-r from-blue-600 to-blue-400 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+                G1
+              </span>
             </h1>
             <p className="mt-6 text-slate-500 dark:text-zinc-400 text-xl max-w-lg leading-relaxed">
               La plateforme de recherche humanoïde compacte d&apos;Unitree. 23 degrés de liberté,
@@ -98,8 +102,13 @@ export default function G1Page() {
                 { value: '23 DoF', label: 'Liberté' },
                 { value: '1.27 m', label: 'Hauteur' },
               ].map(({ value, label }) => (
-                <div key={label} className="p-3 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.03] text-center">
-                  <p className="font-display font-bold text-lg text-slate-900 dark:text-white">{value}</p>
+                <div
+                  key={label}
+                  className="p-3 rounded-xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.03] text-center"
+                >
+                  <p className="font-display font-bold text-lg text-slate-900 dark:text-white">
+                    {value}
+                  </p>
                   <p className="text-[11px] text-slate-400 dark:text-zinc-500 mt-0.5">{label}</p>
                 </div>
               ))}
@@ -133,17 +142,26 @@ export default function G1Page() {
       <section className="py-24 px-4 bg-slate-50 dark:bg-[#06060f]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">Capacités</p>
-            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Optimisé pour la recherche ouverte.</h2>
+            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
+              Capacités
+            </p>
+            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Optimisé pour la recherche ouverte.
+            </h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-white/[0.02] hover:border-blue-200 dark:hover:border-blue-500/20 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all">
+              <div
+                key={title}
+                className="p-6 rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-white/[0.02] hover:border-blue-200 dark:hover:border-blue-500/20 hover:bg-slate-50 dark:hover:bg-white/[0.04] transition-all"
+              >
                 <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 w-fit mb-4">
                   <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">{title}</h3>
-                <p className="text-sm text-slate-500 dark:text-zinc-400 mt-2 leading-relaxed">{body}</p>
+                <p className="text-sm text-slate-500 dark:text-zinc-400 mt-2 leading-relaxed">
+                  {body}
+                </p>
               </div>
             ))}
           </div>
@@ -154,8 +172,12 @@ export default function G1Page() {
       <section className="py-24 px-4 bg-white dark:bg-[#04040a]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">Spécifications</p>
-            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Caractéristiques techniques</h2>
+            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
+              Spécifications
+            </p>
+            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Caractéristiques techniques
+            </h2>
           </div>
           <div className="rounded-2xl border border-slate-200 dark:border-border bg-slate-50 dark:bg-white/[0.02] overflow-hidden">
             {specs.map(({ label, value }, i) => (
@@ -163,8 +185,12 @@ export default function G1Page() {
                 key={label}
                 className={`flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/50 dark:bg-white/[0.015]'}`}
               >
-                <span className="text-sm text-slate-400 dark:text-zinc-500 font-medium">{label}</span>
-                <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">{value}</span>
+                <span className="text-sm text-slate-400 dark:text-zinc-500 font-medium">
+                  {label}
+                </span>
+                <span className="text-sm font-semibold text-slate-700 dark:text-zinc-200">
+                  {value}
+                </span>
               </div>
             ))}
           </div>
@@ -175,13 +201,22 @@ export default function G1Page() {
       <section className="py-24 px-4 bg-slate-50 dark:bg-[#06060f]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">Galerie</p>
-            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Le G1 en action.</h2>
-            <p className="mt-3 text-slate-400 dark:text-zinc-500">Agilité, précision et compacité en situation réelle.</p>
+            <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
+              Galerie
+            </p>
+            <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Le G1 en action.
+            </h2>
+            <p className="mt-3 text-slate-400 dark:text-zinc-500">
+              Agilité, précision et compacité en situation réelle.
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             {gallery.map(({ src, alt }) => (
-              <div key={src} className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-slate-200 dark:border-border">
+              <div
+                key={src}
+                className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-slate-200 dark:border-border"
+              >
                 <Image
                   src={src}
                   alt={alt}
@@ -198,7 +233,9 @@ export default function G1Page() {
       {/* Compare with H1 */}
       <section className="py-16 px-4 bg-slate-50 dark:bg-[#06060f]">
         <div className="max-w-2xl mx-auto text-center">
-          <p className="text-slate-500 dark:text-zinc-500 text-sm mb-4">Besoin de plus de capacités ?</p>
+          <p className="text-slate-500 dark:text-zinc-500 text-sm mb-4">
+            Besoin de plus de capacités ?
+          </p>
           <Link
             href="/robots/h1"
             className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 font-semibold transition-colors"
@@ -212,8 +249,12 @@ export default function G1Page() {
       <section className="py-24 px-4 bg-white dark:bg-[#04040a] relative overflow-hidden">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[200px] bg-blue-600/8 blur-[80px] pointer-events-none" />
         <div className="relative max-w-2xl mx-auto text-center">
-          <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">Démarrez votre projet G1.</h2>
-          <p className="mt-4 text-slate-500 dark:text-zinc-400 text-lg">Notre équipe vous aide à configurer la plateforme optimale pour votre cas d&apos;usage.</p>
+          <h2 className="font-display text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Démarrez votre projet G1.
+          </h2>
+          <p className="mt-4 text-slate-500 dark:text-zinc-400 text-lg">
+            Notre équipe vous aide à configurer la plateforme optimale pour votre cas d&apos;usage.
+          </p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <Link
               href="/devis?product=unitree-g1"

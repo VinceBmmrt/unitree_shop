@@ -68,7 +68,13 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
       country: 'France',
       requestsFinancing: false,
       items: preselectedProductId
-        ? [{ productId: preselectedProductId, quantity: 1, configurationId: preselectedConfigId } as any]
+        ? [
+            {
+              productId: preselectedProductId,
+              quantity: 1,
+              configurationId: preselectedConfigId,
+            } as any,
+          ]
         : [],
     },
   });
@@ -90,7 +96,10 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
   }
 
   function removeProduct(productId: string) {
-    setValue('items', selectedItems.filter((i) => i.productId !== productId));
+    setValue(
+      'items',
+      selectedItems.filter((i) => i.productId !== productId),
+    );
   }
 
   function adjustQuantity(productId: string, delta: number) {
@@ -123,10 +132,12 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
       >
         <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-4" />
         <h2 className="font-display text-2xl font-semibold">Demande envoyée !</h2>
-        <p className="text-muted-foreground mt-2">Numéro de devis : <strong>{quoteNumber}</strong></p>
+        <p className="text-muted-foreground mt-2">
+          Numéro de devis : <strong>{quoteNumber}</strong>
+        </p>
         <p className="text-muted-foreground mt-3 text-sm">
-          Notre équipe vous contactera dans les 48h ouvrées pour discuter de votre projet.
-          Un email de confirmation vient de vous être envoyé.
+          Notre équipe vous contactera dans les 48h ouvrées pour discuter de votre projet. Un email
+          de confirmation vient de vous être envoyé.
         </p>
       </motion.div>
     );
@@ -138,9 +149,7 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
       {/* Product selection */}
       <section>
-        <h2 className="font-display font-semibold text-xl mb-1">
-          1. Produits souhaités
-        </h2>
+        <h2 className="font-display font-semibold text-xl mb-1">1. Produits souhaités</h2>
         <p className="text-sm text-muted-foreground mb-5">
           Sélectionnez les robots et systèmes qui vous intéressent.
         </p>
@@ -152,7 +161,7 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
               <button
                 key={product.id}
                 type="button"
-                onClick={() => selected ? removeProduct(product.id) : addProduct(product.id)}
+                onClick={() => (selected ? removeProduct(product.id) : addProduct(product.id))}
                 className={`text-left p-4 rounded-xl border transition-all ${
                   selected
                     ? 'border-primary bg-primary/10 ring-1 ring-primary'
@@ -170,7 +179,10 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
                     <div className="flex items-center gap-2 ml-3">
                       <button
                         type="button"
-                        onClick={(e) => { e.stopPropagation(); adjustQuantity(product.id, -1); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          adjustQuantity(product.id, -1);
+                        }}
                         className="w-6 h-6 rounded border border-border flex items-center justify-center bg-background"
                       >
                         <Minus className="w-3 h-3" />
@@ -178,7 +190,10 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
                       <span className="text-sm tabular-nums">{selected.quantity}</span>
                       <button
                         type="button"
-                        onClick={(e) => { e.stopPropagation(); adjustQuantity(product.id, 1); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          adjustQuantity(product.id, 1);
+                        }}
                         className="w-6 h-6 rounded border border-border flex items-center justify-center bg-background"
                       >
                         <Plus className="w-3 h-3" />
@@ -191,9 +206,7 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
           })}
         </div>
 
-        {errors.items && (
-          <p className="text-sm text-destructive">{errors.items.message}</p>
-        )}
+        {errors.items && <p className="text-sm text-destructive">{errors.items.message}</p>}
       </section>
 
       {/* Contact information */}
@@ -207,10 +220,20 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
             <input {...register('lastName')} placeholder="Dupont" className={inputCls} />
           </Field>
           <Field label="Email professionnel *" error={errors.email?.message}>
-            <input {...register('email')} type="email" placeholder="j.dupont@entreprise.fr" className={inputCls} />
+            <input
+              {...register('email')}
+              type="email"
+              placeholder="j.dupont@entreprise.fr"
+              className={inputCls}
+            />
           </Field>
           <Field label="Téléphone *" error={errors.phone?.message}>
-            <input {...register('phone')} type="tel" placeholder="+33 6 12 34 56 78" className={inputCls} />
+            <input
+              {...register('phone')}
+              type="tel"
+              placeholder="+33 6 12 34 56 78"
+              className={inputCls}
+            />
           </Field>
           <Field label="Entreprise / Organisation" error={undefined}>
             <input {...register('companyName')} placeholder="Acme Robotics" className={inputCls} />
@@ -261,7 +284,9 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
               className="mt-0.5 rounded border-border"
             />
             <label htmlFor="financing" className="text-sm cursor-pointer">
-              <span className="font-medium">Je suis intéressé par une solution de financement / leasing</span>
+              <span className="font-medium">
+                Je suis intéressé par une solution de financement / leasing
+              </span>
               <span className="block text-muted-foreground text-xs mt-0.5">
                 Notre équipe vous présentera les options disponibles.
               </span>

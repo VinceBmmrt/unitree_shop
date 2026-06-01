@@ -16,14 +16,8 @@ export class AdminController {
 
   @Get('analytics/revenue')
   @ApiOperation({ summary: 'Revenue summary for date range' })
-  getRevenue(
-    @Query('from') from: string,
-    @Query('to') to: string,
-  ) {
-    return this.analyticsService.getRevenueSummary(
-      new Date(from),
-      new Date(to),
-    );
+  getRevenue(@Query('from') from: string, @Query('to') to: string) {
+    return this.analyticsService.getRevenueSummary(new Date(from), new Date(to));
   }
 
   @Get('analytics/products')

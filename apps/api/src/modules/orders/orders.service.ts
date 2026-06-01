@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { nanoid } from 'nanoid';
@@ -15,136 +11,139 @@ export class OrdersService {
 
   async create(dto: CreateOrderDto, userId: string) {
     // Validate all items and lock inventory in a transaction
-    return this.prisma.$transaction(async (tx) => {
-      const lineItems: {
-        productId: string;
-        variantId?: string;
-        configurationId?: string;
-        sku: string;
-        name: string;
-        quantity: number;
-        unitPrice: number;
-        totalPrice: number;
-      }[] = [];
+    return this.prisma.$transaction(
+      async (tx) => {
+        const lineItems: {
+          productId: string;
+          variantId?: string;
+          configurationId?: string;
+          sku: string;
+          name: string;
+          quantity: number;
+          unitPrice: number;
+          totalPrice: number;
+        }[] = [];
 
-      let subtotal = 0;
+        let subtotal = 0;
 
-      for (const item of dto.items) {
-        if (item.configurationId) {
-          const config = await tx.configuration.findFirst({
-            where: { id: item.configurationId, userId },
-            include: { product: true },
+        for (const item of dto.items) {
+          if (item.configurationId) {
+            const config = await tx.configuration.findFirst({
+              where: { id: item.configurationId, userId },
+              include: { product: true },
+            });
+            if (!config)
+              throw new NotFoundException(`Configuration not found: ${item.configurationId}`);
+            const unitPrice = Number(config.totalPrice);
+            lineItems.push({
+              productId: config.productId,
+              configurationId: config.id,
+              sku: config.product.sku,
+              name: `${config.product.name} (Custom)`,
+              quantity: 1,
+              unitPrice,
+              totalPrice: unitPrice,
+            });
+            subtotal += unitPrice;
+            continue;
+          }
+
+          const product = await tx.product.findFirst({
+            where: { id: item.productId, isActive: true },
+            include: {
+              variants: { where: { id: item.variantId ?? undefined } },
+              inventoryItems: true,
+            },
           });
-          if (!config) throw new NotFoundException(`Configuration not found: ${item.configurationId}`);
-          const unitPrice = Number(config.totalPrice);
+
+          if (!product) throw new NotFoundException(`Product not found: ${item.productId}`);
+          if (product.requiresQuote) {
+            throw new BadRequestException(
+              `Product "${product.name}" requires a quote — use the quote request flow`,
+            );
+          }
+
+          const variant = item.variantId ? product.variants[0] : null;
+          if (item.variantId && !variant) {
+            throw new NotFoundException(`Variant not found: ${item.variantId}`);
+          }
+
+          // Find warehouse with sufficient stock
+          const suitableInventory = product.inventoryItems.find(
+            (inv) => inv.quantityOnHand - inv.quantityReserved >= item.quantity,
+          );
+
+          if (!suitableInventory) {
+            const totalAvailable = product.inventoryItems.reduce(
+              (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
+              0,
+            );
+            throw new BadRequestException(
+              `Insufficient stock for "${product.name}" (available: ${totalAvailable})`,
+            );
+          }
+
+          const unitPrice = Number(product.basePrice) + Number(variant?.priceDelta ?? 0);
+          const totalPrice = unitPrice * item.quantity;
+
           lineItems.push({
-            productId: config.productId,
-            configurationId: config.id,
-            sku: config.product.sku,
-            name: `${config.product.name} (Custom)`,
-            quantity: 1,
+            productId: product.id,
+            variantId: variant?.id,
+            sku: variant?.sku ?? product.sku,
+            name: variant ? `${product.name} — ${variant.name}` : product.name,
+            quantity: item.quantity,
             unitPrice,
-            totalPrice: unitPrice,
+            totalPrice,
           });
-          subtotal += unitPrice;
-          continue;
+          subtotal += totalPrice;
+
+          // Reserve inventory in the selected warehouse
+          await tx.inventoryItem.update({
+            where: { id: suitableInventory.id },
+            data: { quantityReserved: { increment: item.quantity } },
+          });
         }
 
-        const product = await tx.product.findFirst({
-          where: { id: item.productId, isActive: true },
-          include: {
-            variants: { where: { id: item.variantId ?? undefined } },
-            inventoryItems: true,
+        // French TVA
+        const taxTotal = subtotal * TAX_RATE;
+        const shippingTotal = this.calculateShipping(subtotal);
+        const total = subtotal + taxTotal + shippingTotal;
+
+        const order = await tx.order.create({
+          data: {
+            orderNumber: `UT-${Date.now()}-${nanoid(4).toUpperCase()}`,
+            userId,
+            status: 'PENDING_PAYMENT',
+            currency: 'EUR',
+            subtotal,
+            taxRate: TAX_RATE,
+            taxLabel: TAX_LABEL,
+            taxTotal,
+            shippingTotal,
+            total,
+            shippingAddressId: dto.shippingAddressId,
+            billingAddressId: dto.billingAddressId,
+            customerNotes: dto.customerNotes,
+            couponCode: dto.couponCode,
+            items: {
+              create: lineItems,
+            },
           },
+          include: { items: true },
         });
 
-        if (!product) throw new NotFoundException(`Product not found: ${item.productId}`);
-        if (product.requiresQuote) {
-          throw new BadRequestException(
-            `Product "${product.name}" requires a quote — use the quote request flow`,
-          );
-        }
-
-        const variant = item.variantId ? product.variants[0] : null;
-        if (item.variantId && !variant) {
-          throw new NotFoundException(`Variant not found: ${item.variantId}`);
-        }
-
-        // Find warehouse with sufficient stock
-        const suitableInventory = product.inventoryItems.find(
-          (inv) => inv.quantityOnHand - inv.quantityReserved >= item.quantity
-        );
-
-        if (!suitableInventory) {
-          const totalAvailable = product.inventoryItems.reduce(
-            (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
-            0,
-          );
-          throw new BadRequestException(
-            `Insufficient stock for "${product.name}" (available: ${totalAvailable})`,
-          );
-        }
-
-        const unitPrice =
-          Number(product.basePrice) + Number(variant?.priceDelta ?? 0);
-        const totalPrice = unitPrice * item.quantity;
-
-        lineItems.push({
-          productId: product.id,
-          variantId: variant?.id,
-          sku: variant?.sku ?? product.sku,
-          name: variant ? `${product.name} — ${variant.name}` : product.name,
-          quantity: item.quantity,
-          unitPrice,
-          totalPrice,
+        await tx.orderStatusHistory.create({
+          data: { orderId: order.id, status: 'PENDING_PAYMENT' },
         });
-        subtotal += totalPrice;
 
-        // Reserve inventory in the selected warehouse
-        await tx.inventoryItem.update({
-          where: { id: suitableInventory.id },
-          data: { quantityReserved: { increment: item.quantity } },
-        });
-      }
-
-      // French TVA
-      const taxTotal = subtotal * TAX_RATE;
-      const shippingTotal = this.calculateShipping(subtotal);
-      const total = subtotal + taxTotal + shippingTotal;
-
-      const order = await tx.order.create({
-        data: {
-          orderNumber: `UT-${Date.now()}-${nanoid(4).toUpperCase()}`,
-          userId,
-          status: 'PENDING_PAYMENT',
-          currency: 'EUR',
-          subtotal,
-          taxRate: TAX_RATE,
-          taxLabel: TAX_LABEL,
-          taxTotal,
-          shippingTotal,
-          total,
-          shippingAddressId: dto.shippingAddressId,
-          billingAddressId: dto.billingAddressId,
-          customerNotes: dto.customerNotes,
-          couponCode: dto.couponCode,
-          items: {
-            create: lineItems,
-          },
-        },
-        include: { items: true },
-      });
-
-      await tx.orderStatusHistory.create({
-        data: { orderId: order.id, status: 'PENDING_PAYMENT' },
-      });
-
-      return order;
-    }, {
-      // Serializable isolation prevents double-spending on inventory
-      isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-      timeout: 10_000,
-    });
+        return order;
+      },
+      {
+        // Serializable isolation prevents double-spending on inventory
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        timeout: 10_000,
+      },
+    );
   }
 
   async findByUser(userId: string, page = 1, limit = 20) {

@@ -15,7 +15,12 @@ interface ProductActionsProps {
 export function ProductActions({ product }: ProductActionsProps) {
   const router = useRouter();
   const [selections, setSelections] = useState<Record<string, string>>(() =>
-    Object.fromEntries((product.options ?? []).map((o: any) => [o.id, o.choices?.find((c: any) => c.isDefault)?.id || o.choices?.[0]?.id || ''])),
+    Object.fromEntries(
+      (product.options ?? []).map((o: any) => [
+        o.id,
+        o.choices?.find((c: any) => c.isDefault)?.id || o.choices?.[0]?.id || '',
+      ]),
+    ),
   );
   const [isConfiguring, setIsConfiguring] = useState(false);
 

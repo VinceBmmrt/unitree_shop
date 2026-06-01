@@ -31,16 +31,16 @@ packages/types   — shared TypeScript types (@unitree/types)
 
 ## Key Stack
 
-| Layer | Tech |
-|---|---|
-| Frontend | Next.js 14 App Router, Tailwind CSS, Framer Motion |
-| Backend | NestJS, Fastify, Prisma ORM |
-| Database | PostgreSQL via Supabase |
-| Auth | JWT (access token in memory, refresh in httpOnly cookie) + Google/GitHub OAuth |
-| Payments | Stripe (PaymentIntent + webhook) |
-| Email | Resend + BullMQ queue |
-| Cache | Redis via Upstash |
-| Storage | Cloudflare R2 (product images) — admin presigned upload via `StorageModule` |
+| Layer    | Tech                                                                           |
+| -------- | ------------------------------------------------------------------------------ |
+| Frontend | Next.js 14 App Router, Tailwind CSS, Framer Motion                             |
+| Backend  | NestJS, Fastify, Prisma ORM                                                    |
+| Database | PostgreSQL via Supabase                                                        |
+| Auth     | JWT (access token in memory, refresh in httpOnly cookie) + Google/GitHub OAuth |
+| Payments | Stripe (PaymentIntent + webhook)                                               |
+| Email    | Resend + BullMQ queue                                                          |
+| Cache    | Redis via Upstash                                                              |
+| Storage  | Cloudflare R2 (product images) — admin presigned upload via `StorageModule`    |
 
 ---
 
@@ -49,11 +49,13 @@ packages/types   — shared TypeScript types (@unitree/types)
 The `packages/types` workspace package is the single source of truth for all shared types. Both `apps/api` and `apps/web` import from it as `@unitree/types`.
 
 **What's exported:**
+
 - `Product`, `ProductImage`, `ProductOption`, `ProductConfigChoice`, `Review` — product domain
 - `CartItem`, `CartState` — cart store
 - `JwtPayload`, `User`, `AuthResponse` — auth
 
 **Rules:**
+
 - **Never re-declare a type locally** if it already exists in `@unitree/types`
 - Add types there when they are needed by both apps, or to replace a local duplicate
 - After editing `packages/types/src/`, run `pnpm --filter @unitree/types build` (or `pnpm dev` runs `tsc --watch` automatically)
@@ -64,6 +66,7 @@ The `packages/types` workspace package is the single source of truth for all sha
 ## Frontend conventions
 
 ### Dark/light theme
+
 - `defaultTheme="dark"` in providers, toggle in navbar
 - **Always use `dark:` Tailwind variants** — never hardcode dark colors without a light fallback
 - Pattern: `bg-white dark:bg-[#04040a]`, `text-slate-900 dark:text-white`, `border-slate-200 dark:border-white/8`
@@ -71,6 +74,7 @@ The `packages/types` workspace package is the single source of truth for all sha
 - CSS variables in `globals.css` use HSL matching these hex values (blue-tinted, not neutral gray) — dark bg is `240 43% 2.7%`, card is `240 40% 4.1%`
 
 ### Auth token
+
 - Access token lives in **`window.__unitreeAccessToken`** (memory only — not localStorage, not sessionStorage)
 - Refresh token is in an **httpOnly cookie** (`SameSite=None; Secure` in production for cross-origin Vercel → Render)
 - On 401: the `apiClient` interceptor in `lib/api/client.ts` auto-refreshes; on failure it redirects to **`/compte/connexion`** (NOT `/login` — that route does not exist)
@@ -79,18 +83,21 @@ The `packages/types` workspace package is the single source of truth for all sha
 - `initialize()` in `auth.store.ts` is skipped on `/auth/callback` — the OAuth callback page owns its own initialization via `setUser`
 
 ### OAuth flow
+
 - Google and GitHub OAuth — API exchanges code server-side, sets refresh cookie, redirects to `${FRONTEND_URL}/auth/callback#token=ACCESS_TOKEN`
 - The `#token=` hash is extracted client-side in `app/auth/callback/page.tsx`, then `setUser` is called to store it
 - `API_URL` env var on Render: `https://unitree-shop-api.onrender.com` (no `/api/v1` suffix — that's added by routes)
 - GitHub profile ID (`profile.id`) must be cast to `String` — GitHub returns it as a number, Prisma expects String
 
 ### Data fetching
+
 - Server components + ISR: `export const revalidate = 300` for catalog pages
 - API calls in server components go through `lib/api/client.ts` (axios)
 - `apiClient` handles JWT refresh automatically on 401 (client-side only)
 - Always `try/catch` API calls and return `[]` on failure — pages must render without data
 
 ### Route groups
+
 ```
 app/(marketing)/    — public landing pages (robots, about, services…)
 app/(shop)/         — product pages, cart, checkout
@@ -101,9 +108,11 @@ app/auth/callback/  — OAuth token exchange landing page
 ```
 
 ### Pages — fused / redirected
+
 - `/enterprise` → **redirects to `/services#enterprise`** — enterprise content lives in the services page
 
 ### Components
+
 - `components/layout/` — Navbar, Footer, HeroSection, providers
 - `components/product/` — ProductCard (takes `product: Product`), ProductActions, QuoteRequestForm, ProductGallery
 - `components/3d/` — G1ModelViewer (Sketchfab iframe embed)
@@ -115,6 +124,7 @@ app/auth/callback/  — OAuth token exchange landing page
 ## Configure → Quote flow
 
 When a user configures a robot and requests a quote:
+
 1. `ProductActions` (client) holds `selections` state and calls `POST /products/:id/configure` (public endpoint, no auth required)
 2. API saves a `Configuration` record (`userId` optional — works for guests) and returns its `id`
 3. Frontend redirects to `/devis?product=<productId>&config=<configId>`
@@ -137,6 +147,7 @@ When a user configures a robot and requests a quote:
 - `GET /products/compare` returns `[]` if `ids` param is missing (no crash)
 
 ### StorageModule
+
 - Located at `src/modules/storage/`
 - Admin-only endpoint: `POST /api/v1/admin/storage/upload-url` — returns a presigned R2 URL
 - The service is currently a **stub** (returns mock URL, logs a warning). To activate: install `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` and implement `getSignedUrl`
@@ -146,6 +157,7 @@ When a user configures a robot and requests a quote:
 ## Deployment
 
 ### Render (API)
+
 - Blueprint at `render.yaml` — free tier, Docker, Frankfurt
 - **`API_URL`** must be `https://unitree-shop-api.onrender.com` (no `/api/v1` — routes add that)
 - **`FRONTEND_URL`** must be `https://unitree-shop-web.vercel.app`
@@ -153,12 +165,14 @@ When a user configures a robot and requests a quote:
 - Render auto-deploys on push to `main` from GitHub
 
 ### Vercel (Frontend)
+
 - `vercel.json` at repo root — monorepo build targeting `@unitree/web`
 - `rootDirectory` set via Vercel REST API to `apps/web` (cannot be set in `vercel.json`)
 - **`NEXT_PUBLIC_API_URL`** must be `https://unitree-shop-api.onrender.com/api/v1` (with `/api/v1`)
 - Vercel auto-deploys on push to `main`
 
 ### Docker (API image)
+
 - Multi-stage Alpine build — OpenSSL 3 required (`apk add openssl` in both stages)
 - Prisma binary target: `linux-musl-openssl-3.0.x` in `schema.prisma`
 - `WORKDIR /app/apps/api` in runner so Node.js resolution finds pnpm workspace `node_modules`
@@ -185,6 +199,7 @@ Never run `prisma migrate dev` against the Supabase DB — it will always fail o
 ## Success criteria
 
 A feature is done when:
+
 1. It works in **both dark and light mode** without white-on-white or invisible text
 2. The page renders without crashing when the API is down (graceful empty state)
 3. Mobile layout is not broken at 375px
@@ -212,6 +227,7 @@ A feature is done when:
 ## Legal (France — required)
 
 Pages that must stay complete and accurate:
+
 - `/mentions-legales` — publisher identity, host info
 - `/cgv` — conditions générales de vente
 - `/privacy` — politique de confidentialité (RGPD)
@@ -222,6 +238,7 @@ Pages that must stay complete and accurate:
 ## Environment variables
 
 Minimum to run locally:
+
 ```
 # apps/web
 NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
@@ -244,6 +261,7 @@ GOOGLE_CLIENT_SECRET=...
 ```
 
 For R2 storage (StorageModule — currently stub):
+
 ```
 R2_ACCOUNT_ID=...
 R2_BUCKET_NAME=...
@@ -255,6 +273,7 @@ R2_SECRET_ACCESS_KEY=...
 ## Image hostnames
 
 External image domains must be allowlisted in `apps/web/next.config.mjs` under `images.remotePatterns`. Currently allowed:
+
 - `shop.unitree.com`, `oss-global-cdn.unitree.com`, `www.unitree.com`, `assets.unitreerobotics.com`
 - `www.realsenseai.com`
 - `*.supabase.co`, `images.unsplash.com`, `plus.unsplash.com`
@@ -275,17 +294,18 @@ Never save `.png` files to the repo root or any `apps/` subdirectory.
 
 All project docs live in `docs/` — keep `README.md` and `CLAUDE.md` at root only.
 
-| File | Purpose |
-|---|---|
-| `docs/AGENT.md` | AI agent navigation guide — where files live, invariants, common patterns |
-| `docs/SPEC.md` | Full technical spec — domain model, API surface, business flows, security |
-| `docs/STATUS.md` | Current build state — what's working, what's missing, sprint progress |
-| `docs/PLAN.md` | Improvement steps with checkboxes — update when a step is completed |
-| `docs/changelogs/` | One dated file per completed step — `YYYY-MM-DD-description.md` |
+| File               | Purpose                                                                   |
+| ------------------ | ------------------------------------------------------------------------- |
+| `docs/AGENT.md`    | AI agent navigation guide — where files live, invariants, common patterns |
+| `docs/SPEC.md`     | Full technical spec — domain model, API surface, business flows, security |
+| `docs/STATUS.md`   | Current build state — what's working, what's missing, sprint progress     |
+| `docs/PLAN.md`     | Improvement steps with checkboxes — update when a step is completed       |
+| `docs/changelogs/` | One dated file per completed step — `YYYY-MM-DD-description.md`           |
 
 ### Changelog workflow
 
 Every time a feature or plan step is finished:
+
 1. Create `docs/changelogs/YYYY-MM-DD-step-N-name.md`
 2. Check off the step in `docs/PLAN.md`
 3. Update `docs/STATUS.md` (move item to "working", update sprint table)

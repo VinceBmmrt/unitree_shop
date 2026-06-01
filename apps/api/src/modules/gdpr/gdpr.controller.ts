@@ -34,10 +34,7 @@ export class GdprController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Record user cookie consent (GDPR Art. 7)' })
-  async recordConsent(
-    @Body() dto: ConsentDto,
-    @Req() req: FastifyRequest & { user?: any },
-  ) {
+  async recordConsent(@Body() dto: ConsentDto, @Req() req: FastifyRequest & { user?: any }) {
     const userId = req.user?.id;
     await this.prisma.gdprConsent.create({
       data: {
@@ -59,42 +56,41 @@ export class GdprController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Export all personal data (GDPR portability)' })
   async exportData(@CurrentUser('id') userId: string) {
-    const [user, orders, quotes, tickets, consents] =
-      await this.prisma.$transaction([
-        this.prisma.user.findUnique({
-          where: { id: userId },
-          select: {
-            email: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
-            createdAt: true,
-            addresses: true,
-          },
-        }),
-        this.prisma.order.findMany({
-          where: { userId },
-          select: {
-            orderNumber: true,
-            status: true,
-            total: true,
-            currency: true,
-            createdAt: true,
-          },
-        }),
-        this.prisma.quote.findMany({
-          where: { customerId: userId },
-          select: { quoteNumber: true, status: true, total: true, createdAt: true },
-        }),
-        this.prisma.supportTicket.findMany({
-          where: { userId },
-          select: { ticketNumber: true, subject: true, status: true, createdAt: true },
-        }),
-        this.prisma.gdprConsent.findMany({
-          where: { userId },
-          select: { analytics: true, marketing: true, consentedAt: true, withdrawnAt: true },
-        }),
-      ]);
+    const [user, orders, quotes, tickets, consents] = await this.prisma.$transaction([
+      this.prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+          createdAt: true,
+          addresses: true,
+        },
+      }),
+      this.prisma.order.findMany({
+        where: { userId },
+        select: {
+          orderNumber: true,
+          status: true,
+          total: true,
+          currency: true,
+          createdAt: true,
+        },
+      }),
+      this.prisma.quote.findMany({
+        where: { customerId: userId },
+        select: { quoteNumber: true, status: true, total: true, createdAt: true },
+      }),
+      this.prisma.supportTicket.findMany({
+        where: { userId },
+        select: { ticketNumber: true, subject: true, status: true, createdAt: true },
+      }),
+      this.prisma.gdprConsent.findMany({
+        where: { userId },
+        select: { analytics: true, marketing: true, consentedAt: true, withdrawnAt: true },
+      }),
+    ]);
 
     return {
       exportedAt: new Date().toISOString(),
@@ -111,10 +107,7 @@ export class GdprController {
   @ApiBearerAuth()
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiOperation({ summary: 'Request account deletion (GDPR right to erasure)' })
-  async requestDeletion(
-    @CurrentUser('id') userId: string,
-    @Body('reason') reason?: string,
-  ) {
+  async requestDeletion(@CurrentUser('id') userId: string, @Body('reason') reason?: string) {
     // Create deletion request; admin processes it (can't instant-delete due to order records)
     await this.prisma.dataDeletionRequest.upsert({
       where: { userId },
@@ -123,7 +116,8 @@ export class GdprController {
     });
 
     return {
-      message: 'Votre demande de suppression a été enregistrée. Elle sera traitée dans les 30 jours conformément au RGPD.',
+      message:
+        'Votre demande de suppression a été enregistrée. Elle sera traitée dans les 30 jours conformément au RGPD.',
       requestedAt: new Date().toISOString(),
     };
   }

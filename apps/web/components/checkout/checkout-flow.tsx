@@ -116,17 +116,15 @@ export function CheckoutFlow() {
                 i < currentStepIndex
                   ? 'bg-primary text-primary-foreground cursor-pointer'
                   : i === currentStepIndex
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted text-muted-foreground cursor-default'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-muted-foreground cursor-default'
               }`}
             >
               {i < currentStepIndex ? '✓' : i + 1}
             </button>
             <span
               className={`text-sm hidden sm:block ${
-                i === currentStepIndex
-                  ? 'text-foreground font-medium'
-                  : 'text-muted-foreground'
+                i === currentStepIndex ? 'text-foreground font-medium' : 'text-muted-foreground'
               }`}
             >
               {stepConfig[s].title}
@@ -158,9 +156,7 @@ export function CheckoutFlow() {
           {step === 'payment' && clientSecret && (
             <div className="space-y-6">
               <PaymentElement />
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
+              {error && <p className="text-sm text-destructive">{error}</p>}
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting}

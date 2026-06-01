@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Loader2, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { useAuthStore } from '@/lib/store/auth.store';
+import { env } from '@/lib/env';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const API_URL = env.NEXT_PUBLIC_API_URL;
 
 export default function AuthCallbackPage() {
   const router = useRouter();

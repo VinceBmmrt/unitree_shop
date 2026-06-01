@@ -15,13 +15,15 @@ export class StorageService {
   async getUploadUrl(fileName: string, _contentType: string) {
     const bucket = this.config.get<string>('R2_BUCKET_NAME');
     const accountId = this.config.get<string>('R2_ACCOUNT_ID');
-    
+
     // Placeholder implementation as AWS SDK is not in package.json
     // The user should install @aws-sdk/client-s3 and @aws-sdk/s3-request-presigner
-    this.logger.warn('StorageService.getUploadUrl: Placeholder implementation used. Please install AWS SDK.');
+    this.logger.warn(
+      'StorageService.getUploadUrl: Placeholder implementation used. Please install AWS SDK.',
+    );
 
     const fileKey = `${Date.now()}-${nanoid(6)}-${fileName}`;
-    
+
     // This is a mock URL. In production, it would be a real pre-signed URL.
     const uploadUrl = `https://${accountId}.r2.cloudflarestorage.com/${bucket}/${fileKey}?X-Amz-Signature=...`;
     const publicUrl = `${this.config.get('R2_PUBLIC_DOMAIN')}/${fileKey}`;

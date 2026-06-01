@@ -1,8 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
@@ -38,9 +35,7 @@ async function bootstrap() {
 
   // CORS — tightly scoped; expand per environment
   app.enableCors({
-    origin: config.get<string[]>('ALLOWED_ORIGINS', [
-      'http://localhost:3000',
-    ]),
+    origin: config.get<string[]>('ALLOWED_ORIGINS', ['http://localhost:3000']),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
@@ -58,10 +53,7 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(
-    new LoggingInterceptor(),
-    new TransformInterceptor(),
-  );
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TransformInterceptor());
 
   // OpenAPI — only exposed in non-production (gate behind VPN in prod)
   if (config.get('NODE_ENV') !== 'production') {

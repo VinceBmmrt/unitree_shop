@@ -51,11 +51,7 @@ export class QuotesController {
   @Get('my')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'List my quotes' })
-  findMy(
-    @CurrentUser('id') userId: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 20,
-  ) {
+  findMy(@CurrentUser('id') userId: string, @Query('page') page = 1, @Query('limit') limit = 20) {
     return this.quotesService.findByUser(userId, +page, +limit);
   }
 
@@ -113,11 +109,7 @@ export class QuotesController {
   @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.SALES_REP)
   @ApiBearerAuth()
   @ApiOperation({ summary: '[Admin] Update quote — pricing, status, assignment' })
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateQuoteDto,
-    @CurrentUser('id') adminId: string,
-  ) {
+  update(@Param('id') id: string, @Body() dto: UpdateQuoteDto, @CurrentUser('id') adminId: string) {
     return this.quotesService.update(id, dto, adminId);
   }
 

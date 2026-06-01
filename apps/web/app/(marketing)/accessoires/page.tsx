@@ -45,7 +45,10 @@ export default async function AccessoiresPage() {
         ) : (
           <div className="text-center py-24 border border-dashed border-slate-200 dark:border-border rounded-2xl bg-slate-50 dark:bg-white/[0.02]">
             <p className="text-zinc-400 text-lg">Aucun accessoire disponible pour le moment.</p>
-            <p className="text-zinc-600 text-sm mt-2">Notre catalogue s&apos;enrichit régulièrement. Contactez-nous pour vos besoins spécifiques.</p>
+            <p className="text-zinc-600 text-sm mt-2">
+              Notre catalogue s&apos;enrichit régulièrement. Contactez-nous pour vos besoins
+              spécifiques.
+            </p>
             <Link
               href="/devis"
               className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-colors shadow-lg shadow-blue-600/20"

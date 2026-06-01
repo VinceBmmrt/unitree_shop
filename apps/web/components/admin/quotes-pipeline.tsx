@@ -19,10 +19,7 @@ import { apiClient } from '@/lib/api/client';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; icon: React.ElementType }
-> = {
+const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
   DRAFT: { label: 'Brouillon', color: 'text-muted-foreground', icon: Clock },
   SENT: { label: 'Envoyé', color: 'text-blue-500', icon: Send },
   VIEWED: { label: 'Consulté', color: 'text-yellow-500', icon: RefreshCw },
@@ -79,7 +76,11 @@ export function QuotesPipeline() {
   const quotes: any[] = data?.data ?? [];
 
   const formatEur = (n: any) =>
-    Number(n).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    Number(n).toLocaleString('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0,
+    });
 
   return (
     <div className="space-y-5">
@@ -110,9 +111,7 @@ export function QuotesPipeline() {
           </button>
         </div>
 
-        <div className="ml-auto text-sm text-muted-foreground">
-          {quotes.length} devis
-        </div>
+        <div className="ml-auto text-sm text-muted-foreground">{quotes.length} devis</div>
       </div>
 
       {isLoading ? (
@@ -158,13 +157,18 @@ export function QuotesPipeline() {
                       {formatEur(quote.total)}
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`flex items-center gap-1.5 text-xs font-medium ${statusCfg.color}`}>
+                      <span
+                        className={`flex items-center gap-1.5 text-xs font-medium ${statusCfg.color}`}
+                      >
                         <StatusIcon className="w-3.5 h-3.5" />
                         {statusCfg.label}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(quote.createdAt), { addSuffix: true, locale: fr })}
+                      {formatDistanceToNow(new Date(quote.createdAt), {
+                        addSuffix: true,
+                        locale: fr,
+                      })}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2 justify-end">
@@ -237,9 +241,7 @@ export function QuotesPipeline() {
                     </div>
                   ))}
                   {colQuotes.length === 0 && (
-                    <p className="text-xs text-muted-foreground/50 text-center py-6">
-                      Vide
-                    </p>
+                    <p className="text-xs text-muted-foreground/50 text-center py-6">Vide</p>
                   )}
                 </div>
               </div>

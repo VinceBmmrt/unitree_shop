@@ -53,7 +53,9 @@ export class AuthService {
       select: { id: true, email: true, role: true, firstName: true },
     });
 
-    this.emailService.send(templates.welcomeEmail({ firstName: user.firstName, email: user.email })).catch(() => {});
+    this.emailService
+      .send(templates.welcomeEmail({ firstName: user.firstName, email: user.email }))
+      .catch(() => {});
 
     const tokens = await this.tokenService.generateTokenPair(user.id, ipAddress);
     return { user, ...tokens };
@@ -91,11 +93,7 @@ export class AuthService {
       data: { lastLoginAt: new Date() },
     });
 
-    const tokens = await this.tokenService.generateTokenPair(
-      user.id,
-      ipAddress,
-      userAgent,
-    );
+    const tokens = await this.tokenService.generateTokenPair(user.id, ipAddress, userAgent);
 
     const { passwordHash: _, ...safeUser } = user;
     return { user: safeUser, ...tokens };
@@ -128,7 +126,9 @@ export class AuthService {
     const resetUrl = `${frontendUrl}/compte/reinitialiser-mot-de-passe?token=${token}`;
 
     this.emailService
-      .send(templates.passwordResetEmail({ email: user.email, firstName: user.firstName, resetUrl }))
+      .send(
+        templates.passwordResetEmail({ email: user.email, firstName: user.firstName, resetUrl }),
+      )
       .catch(() => {});
   }
 
@@ -311,10 +311,7 @@ export class AuthService {
       if (!oauthAccount.user.isActive) {
         throw new UnauthorizedException('Account suspended');
       }
-      const tokens = await this.tokenService.generateTokenPair(
-        oauthAccount.user.id,
-        ipAddress,
-      );
+      const tokens = await this.tokenService.generateTokenPair(oauthAccount.user.id, ipAddress);
       return { user: oauthAccount.user, ...tokens };
     }
 

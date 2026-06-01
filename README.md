@@ -16,17 +16,17 @@ The project covers the full stack: storefront, authentication, product catalog, 
 
 ## Stack
 
-| Layer | Tech |
-|---|---|
-| Frontend | Next.js 14 App Router, Tailwind CSS, Framer Motion |
-| Backend | NestJS, Fastify, Prisma ORM |
-| Database | PostgreSQL via Supabase |
-| Auth | JWT access token (in-memory) + httpOnly refresh cookie, Google & GitHub OAuth |
-| Payments | Stripe (PaymentIntent, invoices, lease schedules) |
-| Email | Resend + BullMQ async queue |
-| Cache | Redis via Upstash |
-| Storage | Cloudflare R2 (product images, presigned upload) |
-| Deploy | Frontend → Vercel · API → Render (Docker, Frankfurt) |
+| Layer    | Tech                                                                          |
+| -------- | ----------------------------------------------------------------------------- |
+| Frontend | Next.js 14 App Router, Tailwind CSS, Framer Motion                            |
+| Backend  | NestJS, Fastify, Prisma ORM                                                   |
+| Database | PostgreSQL via Supabase                                                       |
+| Auth     | JWT access token (in-memory) + httpOnly refresh cookie, Google & GitHub OAuth |
+| Payments | Stripe (PaymentIntent, invoices, lease schedules)                             |
+| Email    | Resend + BullMQ async queue                                                   |
+| Cache    | Redis via Upstash                                                             |
+| Storage  | Cloudflare R2 (product images, presigned upload)                              |
+| Deploy   | Frontend → Vercel · API → Render (Docker, Frankfurt)                          |
 
 ---
 
@@ -52,11 +52,11 @@ pnpm setup
 pnpm dev
 ```
 
-| Service | URL |
-|---|---|
-| Frontend | http://localhost:3000 |
-| API | http://localhost:3001/api/v1 |
-| Swagger | http://localhost:3001/api/docs |
+| Service  | URL                            |
+| -------- | ------------------------------ |
+| Frontend | http://localhost:3000          |
+| API      | http://localhost:3001/api/v1   |
+| Swagger  | http://localhost:3001/api/docs |
 
 Copy `.env.example` files and fill in your own keys before running.
 
@@ -65,6 +65,7 @@ Copy `.env.example` files and fill in your own keys before running.
 ## Key flows
 
 ### Robot configurator → Quote
+
 1. User picks a robot and selects options (`ProductActions` client component)
 2. `POST /products/:id/configure` saves a `Configuration` record (guest-friendly, no auth required)
 3. Frontend redirects to `/devis?product=…&config=…`
@@ -72,6 +73,7 @@ Copy `.env.example` files and fill in your own keys before running.
 5. Customer accepts → admin converts to order via `convertToOrder`
 
 ### Accessory checkout
+
 1. Cart persisted in Zustand + localStorage
 2. `POST /orders` creates the order (backend re-validates all prices from DB)
 3. `POST /payments/orders/:id/intent` creates a Stripe `PaymentIntent`

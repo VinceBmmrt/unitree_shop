@@ -31,7 +31,9 @@ export function EnterpriseSection() {
               Enterprise
             </p>
             <h2 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.08]">
-              Built for teams that<br />build the future.
+              Built for teams that
+              <br />
+              build the future.
             </h2>
             <p className="mt-5 text-slate-500 dark:text-zinc-400 text-lg max-w-lg leading-relaxed">
               From pilot programs to full-scale deployments, we provide the commercial
@@ -64,7 +66,9 @@ export function EnterpriseSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-slate-900 dark:text-white">{title}</h3>
-                  <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">{body}</p>
+                  <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                    {body}
+                  </p>
                 </div>
               </div>
             ))}

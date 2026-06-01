@@ -20,8 +20,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60_000,        // 1 minute
-            gcTime: 5 * 60_000,       // 5 minutes
+            staleTime: 60_000, // 1 minute
+            gcTime: 5 * 60_000, // 5 minutes
             retry: 1,
             refetchOnWindowFocus: false,
           },
@@ -42,9 +42,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <AuthInitializer />
         {children}
-        {process.env.NODE_ENV === 'development' && (
-          <ReactQueryDevtools initialIsOpen={false} />
-        )}
+        {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </ThemeProvider>
   );

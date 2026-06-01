@@ -35,9 +35,7 @@ import { validate } from './config/env.validation';
 
     // Global rate limiting: 100 req / 60s per IP
     // Sensitive routes (auth, payments) apply stricter limits via @Throttle()
-    ThrottlerModule.forRoot([
-      { name: 'global', ttl: 60000, limit: 100 },
-    ]),
+    ThrottlerModule.forRoot([{ name: 'global', ttl: 60000, limit: 100 }]),
 
     ScheduleModule.forRoot(),
     PrismaModule,
@@ -55,8 +53,6 @@ import { validate } from './config/env.validation';
     GdprModule,
     StorageModule,
   ],
-  providers: [
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
-  ],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

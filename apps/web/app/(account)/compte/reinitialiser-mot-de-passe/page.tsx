@@ -38,7 +38,11 @@ function ResetForm() {
       setTimeout(() => router.push('/compte/connexion'), 3000);
     } catch (err: any) {
       const msg = err.response?.data?.message;
-      setError(Array.isArray(msg) ? msg[0] : (msg ?? 'Lien expiré ou invalide. Veuillez refaire une demande.'));
+      setError(
+        Array.isArray(msg)
+          ? msg[0]
+          : (msg ?? 'Lien expiré ou invalide. Veuillez refaire une demande.'),
+      );
     } finally {
       setLoading(false);
     }
@@ -60,14 +64,20 @@ function ResetForm() {
         <div className="text-center py-4">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <p className="text-sm text-slate-600 dark:text-zinc-400">{error}</p>
-          <Link href="/compte/mot-de-passe-oublie" className="mt-4 inline-block text-sm text-blue-600 dark:text-blue-400 hover:underline">
+          <Link
+            href="/compte/mot-de-passe-oublie"
+            className="mt-4 inline-block text-sm text-blue-600 dark:text-blue-400 hover:underline"
+          >
             Nouvelle demande
           </Link>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5"
+            >
               Nouveau mot de passe
             </label>
             <div className="relative">
@@ -97,7 +107,10 @@ function ResetForm() {
           </div>
 
           <div>
-            <label htmlFor="confirm" className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5">
+            <label
+              htmlFor="confirm"
+              className="block text-sm font-medium text-slate-700 dark:text-zinc-300 mb-1.5"
+            >
               Confirmer le mot de passe
             </label>
             <input
@@ -126,7 +139,9 @@ function ResetForm() {
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <>Réinitialiser <ArrowRight className="w-4 h-4" /></>
+              <>
+                Réinitialiser <ArrowRight className="w-4 h-4" />
+              </>
             )}
           </button>
         </form>
@@ -144,7 +159,10 @@ export default function ReinitialiserMotDePassePage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-block font-display font-bold text-2xl tracking-tight text-slate-900 dark:text-white">
+          <Link
+            href="/"
+            className="inline-block font-display font-bold text-2xl tracking-tight text-slate-900 dark:text-white"
+          >
             Unitree<span className="text-blue-500">.</span>
           </Link>
           <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
@@ -155,16 +173,21 @@ export default function ReinitialiserMotDePassePage() {
           </p>
         </div>
 
-        <Suspense fallback={
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="flex justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            </div>
+          }
+        >
           <ResetForm />
         </Suspense>
 
         <p className="text-center mt-6 text-sm text-slate-500 dark:text-zinc-400">
-          <Link href="/compte/connexion" className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
+          <Link
+            href="/compte/connexion"
+            className="text-blue-600 dark:text-blue-400 font-medium hover:underline"
+          >
             Retour à la connexion
           </Link>
         </p>

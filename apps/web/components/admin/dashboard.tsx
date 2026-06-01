@@ -12,14 +12,7 @@ import {
   Pie,
   Cell,
 } from 'recharts';
-import {
-  TrendingUp,
-  ShoppingBag,
-  FileText,
-  Users,
-  AlertTriangle,
-  Loader2,
-} from 'lucide-react';
+import { TrendingUp, ShoppingBag, FileText, Users, AlertTriangle, Loader2 } from 'lucide-react';
 import { apiClient } from '@/lib/api/client';
 import { subDays, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -63,14 +56,18 @@ export function AdminDashboard() {
   });
 
   const formatEur = (n: number) =>
-    new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+    new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0,
+    }).format(n);
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="font-display text-3xl font-semibold">Tableau de bord</h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          30 derniers jours · {format(new Date(), "d MMMM yyyy", { locale: fr })}
+          30 derniers jours · {format(new Date(), 'd MMMM yyyy', { locale: fr })}
         </p>
       </div>
 
@@ -238,23 +235,23 @@ export function AdminDashboard() {
                   <p className="text-xs text-muted-foreground">{q.quoteNumber}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium tabular-nums">
-                    {formatEur(q.total)}
-                  </p>
-                  <p className={`text-xs ${
-                    q.status === 'ACCEPTED' ? 'text-green-500' :
-                    q.status === 'REJECTED' ? 'text-red-500' :
-                    'text-muted-foreground'
-                  }`}>
+                  <p className="text-sm font-medium tabular-nums">{formatEur(q.total)}</p>
+                  <p
+                    className={`text-xs ${
+                      q.status === 'ACCEPTED'
+                        ? 'text-green-500'
+                        : q.status === 'REJECTED'
+                          ? 'text-red-500'
+                          : 'text-muted-foreground'
+                    }`}
+                  >
                     {q.status}
                   </p>
                 </div>
               </a>
             ))}
             {!quotesData?.length && (
-              <p className="text-sm text-muted-foreground py-6 text-center">
-                Aucun devis récent
-              </p>
+              <p className="text-sm text-muted-foreground py-6 text-center">Aucun devis récent</p>
             )}
           </div>
         </div>
@@ -279,9 +276,11 @@ export function AdminDashboard() {
                     {alert.warehouse.name} · SKU {alert.product.sku}
                   </p>
                 </div>
-                <span className={`text-sm font-bold tabular-nums ${
-                  alert.quantityOnHand === 0 ? 'text-destructive' : 'text-orange-500'
-                }`}>
+                <span
+                  className={`text-sm font-bold tabular-nums ${
+                    alert.quantityOnHand === 0 ? 'text-destructive' : 'text-orange-500'
+                  }`}
+                >
                   {alert.quantityOnHand} restants
                 </span>
               </div>

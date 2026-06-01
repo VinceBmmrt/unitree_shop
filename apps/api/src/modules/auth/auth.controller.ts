@@ -47,8 +47,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: FastifyReply,
   ) {
     const ipAddress = req.ip;
-    const { user, accessToken, refreshToken } =
-      await this.authService.register(dto, ipAddress);
+    const { user, accessToken, refreshToken } = await this.authService.register(dto, ipAddress);
 
     res.setCookie('refresh_token', refreshToken, COOKIE_OPTIONS);
     return { user, accessToken };
@@ -76,13 +75,8 @@ export class AuthController {
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   @Throttle({ global: { limit: 20, ttl: 60000 } })
-  async refresh(
-    @Req() req: FastifyRequest,
-    @Res({ passthrough: true }) res: FastifyReply,
-  ) {
-    const rawToken =
-      req.cookies?.['refresh_token'] ||
-      (req.body as RefreshTokenDto)?.refreshToken;
+  async refresh(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
+    const rawToken = req.cookies?.['refresh_token'] || (req.body as RefreshTokenDto)?.refreshToken;
 
     const { accessToken, refreshToken } = await this.authService.refreshTokens(
       rawToken ?? '',
@@ -96,10 +90,7 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(JwtAuthGuard)
-  async logout(
-    @Req() req: FastifyRequest,
-    @Res({ passthrough: true }) res: FastifyReply,
-  ) {
+  async logout(@Req() req: FastifyRequest, @Res({ passthrough: true }) res: FastifyReply) {
     const rawToken = req.cookies?.['refresh_token'];
     if (rawToken) {
       await this.authService.logout(rawToken);

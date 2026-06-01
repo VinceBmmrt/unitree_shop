@@ -37,10 +37,7 @@ export class TokenService {
 
     // Refresh token is an opaque random token stored hashed in DB
     const rawRefreshToken = crypto.randomBytes(48).toString('base64url');
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawRefreshToken)
-      .digest('hex');
+    const tokenHash = crypto.createHash('sha256').update(rawRefreshToken).digest('hex');
 
     await this.prisma.refreshToken.create({
       data: {
@@ -56,10 +53,7 @@ export class TokenService {
   }
 
   async rotateRefreshToken(rawToken: string, ipAddress?: string) {
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
 
     const stored = await this.prisma.refreshToken.findUnique({
       where: { token: tokenHash },
@@ -91,10 +85,7 @@ export class TokenService {
   }
 
   async revokeRefreshToken(rawToken: string) {
-    const tokenHash = crypto
-      .createHash('sha256')
-      .update(rawToken)
-      .digest('hex');
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex');
 
     await this.prisma.refreshToken.updateMany({
       where: { token: tokenHash },

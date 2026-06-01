@@ -15,12 +15,8 @@ export function ComingSoon({ title, description, label = 'Page' }: ComingSoonPro
         <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
           {label}
         </p>
-        <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight">
-          {title}
-        </h1>
-        <p className="mt-4 text-slate-500 dark:text-zinc-400 max-w-xl text-lg">
-          {description}
-        </p>
+        <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight">{title}</h1>
+        <p className="mt-4 text-slate-500 dark:text-zinc-400 max-w-xl text-lg">{description}</p>
       </div>
 
       <div className="relative max-w-7xl mx-auto">

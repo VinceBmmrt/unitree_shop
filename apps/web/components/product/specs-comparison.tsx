@@ -4,9 +4,39 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 const robots = [
-  { name: 'H1', height: '1.8m', weight: '47kg', payload: '30kg', speed: '3.3 m/s', battery: '2h+', dof: '43 DoF', price: 'Sur devis', href: '/products/unitree-h1' },
-  { name: 'G1', height: '1.27m', weight: '35kg', payload: '3kg', speed: '2 m/s', battery: '2h', dof: '23 DoF', price: 'Sur devis', href: '/products/unitree-g1' },
-  { name: 'B2', height: '0.65m', weight: '60kg', payload: '40kg', speed: '6 m/s', battery: '4h', dof: '12 DoF', price: 'Sur devis', href: '/products/unitree-b2' },
+  {
+    name: 'H1',
+    height: '1.8m',
+    weight: '47kg',
+    payload: '30kg',
+    speed: '3.3 m/s',
+    battery: '2h+',
+    dof: '43 DoF',
+    price: 'Sur devis',
+    href: '/products/unitree-h1',
+  },
+  {
+    name: 'G1',
+    height: '1.27m',
+    weight: '35kg',
+    payload: '3kg',
+    speed: '2 m/s',
+    battery: '2h',
+    dof: '23 DoF',
+    price: 'Sur devis',
+    href: '/products/unitree-g1',
+  },
+  {
+    name: 'B2',
+    height: '0.65m',
+    weight: '60kg',
+    payload: '40kg',
+    speed: '6 m/s',
+    battery: '4h',
+    dof: '12 DoF',
+    price: 'Sur devis',
+    href: '/products/unitree-b2',
+  },
 ];
 
 const specs = [
@@ -43,17 +73,27 @@ export function SpecsComparison() {
                 </th>
                 {robots.map((r) => (
                   <th key={r.name} className="px-6 py-5 text-center">
-                    <span className="font-display text-2xl font-bold text-slate-900 dark:text-white">{r.name}</span>
+                    <span className="font-display text-2xl font-bold text-slate-900 dark:text-white">
+                      {r.name}
+                    </span>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {specs.map(({ key, label }, i) => (
-                <tr key={key} className={`border-b border-slate-100 dark:border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/80 dark:bg-white/[0.015]'}`}>
-                  <td className="px-6 py-4 text-sm text-slate-400 dark:text-zinc-500 font-medium">{label}</td>
+                <tr
+                  key={key}
+                  className={`border-b border-slate-100 dark:border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-slate-50/80 dark:bg-white/[0.015]'}`}
+                >
+                  <td className="px-6 py-4 text-sm text-slate-400 dark:text-zinc-500 font-medium">
+                    {label}
+                  </td>
                   {robots.map((r) => (
-                    <td key={r.name} className="px-6 py-4 text-center font-semibold text-sm text-slate-700 dark:text-zinc-200">
+                    <td
+                      key={r.name}
+                      className="px-6 py-4 text-center font-semibold text-sm text-slate-700 dark:text-zinc-200"
+                    >
                       {r[key as keyof typeof r] === 'Sur devis' ? (
                         <span className="text-blue-600 dark:text-blue-400">Sur devis</span>
                       ) : (
@@ -64,7 +104,9 @@ export function SpecsComparison() {
                 </tr>
               ))}
               <tr className="bg-slate-50 dark:bg-white/[0.02]">
-                <td className="px-6 py-5 text-sm text-slate-400 dark:text-zinc-600">Voir la fiche</td>
+                <td className="px-6 py-5 text-sm text-slate-400 dark:text-zinc-600">
+                  Voir la fiche
+                </td>
                 {robots.map((r) => (
                   <td key={r.name} className="px-6 py-5 text-center">
                     <Link

@@ -50,11 +50,11 @@ export function ProductReviews({ reviews = [], avgRating }: ProductReviewsProps)
               <Stars rating={review.rating} />
             </div>
 
-            {review.title && (
-              <p className="text-sm font-medium">{review.title}</p>
-            )}
+            {review.title && <p className="text-sm font-medium">{review.title}</p>}
             {review.body && (
-              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{review.body}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
+                {review.body}
+              </p>
             )}
 
             <p className="text-xs text-muted-foreground">

@@ -26,6 +26,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: pnpm --filter @unitree/api run db:generate
+
       - run: pnpm turbo run lint typecheck
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

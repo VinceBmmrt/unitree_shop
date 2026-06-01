@@ -59,9 +59,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <nav className="flex-1 px-3 py-4 space-y-0.5">
           {NAV.map((item) => {
-            const isActive = item.exact
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
+            const isActive = item.exact ? pathname === item.href : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
@@ -82,10 +80,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="px-5 py-4 border-t border-border">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
-              {user.firstName[0]}{user.lastName?.[0] ?? ''}
+              {user.firstName[0]}
+              {user.lastName?.[0] ?? ''}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-foreground truncate">{user.firstName} {user.lastName}</p>
+              <p className="text-xs font-medium text-foreground truncate">
+                {user.firstName} {user.lastName}
+              </p>
               <p className="text-[10px] text-muted-foreground">v1.0 · Admin</p>
             </div>
           </div>

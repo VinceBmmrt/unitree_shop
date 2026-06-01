@@ -4,7 +4,17 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, ChevronDown, Sun, Moon, User, LogOut, Settings } from 'lucide-react';
+import {
+  ShoppingCart,
+  Menu,
+  X,
+  ChevronDown,
+  Sun,
+  Moon,
+  User,
+  LogOut,
+  Settings,
+} from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart.store';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { CartDrawer } from '@/components/product/cart-drawer';
@@ -53,7 +63,9 @@ function UserMenu() {
         <span className="hidden lg:block text-sm font-medium text-slate-700 dark:text-zinc-300 max-w-[100px] truncate">
           {user.firstName}
         </span>
-        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
       </button>
 
       <AnimatePresence>
@@ -69,8 +81,12 @@ function UserMenu() {
             >
               <div className="bg-white dark:bg-[#10101e] rounded-xl p-1.5 shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07]">
                 <div className="px-3 py-2 border-b border-slate-100 dark:border-white/[0.05] mb-1">
-                  <p className="text-xs font-medium text-slate-900 dark:text-white truncate">{user.firstName} {user.lastName}</p>
-                  <p className="text-xs text-slate-400 dark:text-zinc-500 truncate mt-0.5">{user.email}</p>
+                  <p className="text-xs font-medium text-slate-900 dark:text-white truncate">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-xs text-slate-400 dark:text-zinc-500 truncate mt-0.5">
+                    {user.email}
+                  </p>
                 </div>
                 <Link
                   href="/compte"
@@ -193,8 +209,12 @@ export function Navbar() {
                             href={child.href}
                             className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
                           >
-                            <span className="text-sm font-medium text-slate-900 dark:text-white">{child.label}</span>
-                            <span className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">{child.desc}</span>
+                            <span className="text-sm font-medium text-slate-900 dark:text-white">
+                              {child.label}
+                            </span>
+                            <span className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                              {child.desc}
+                            </span>
                           </Link>
                         ))}
                       </div>
@@ -235,7 +255,8 @@ export function Navbar() {
               className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors text-slate-500 dark:text-zinc-400"
               aria-label="Toggle theme"
             >
-              {mounted && (theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+              {mounted &&
+                (theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
             </button>
 
             <button
@@ -292,7 +313,9 @@ export function Navbar() {
                   <>
                     <div className="pt-2 border-t border-border/50 mt-2">
                       <div className="px-3 py-2">
-                        <p className="text-xs font-medium text-foreground">{user.firstName} {user.lastName}</p>
+                        <p className="text-xs font-medium text-foreground">
+                          {user.firstName} {user.lastName}
+                        </p>
                         <p className="text-xs text-muted-foreground">{user.email}</p>
                       </div>
                       <Link

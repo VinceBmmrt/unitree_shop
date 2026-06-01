@@ -31,11 +31,7 @@ export class OrdersController {
 
   @Get()
   @ApiOperation({ summary: 'List current user orders' })
-  findAll(
-    @CurrentUser('id') userId: string,
-    @Query('page') page = 1,
-    @Query('limit') limit = 20,
-  ) {
+  findAll(@CurrentUser('id') userId: string, @Query('page') page = 1, @Query('limit') limit = 20) {
     return this.ordersService.findByUser(userId, +page, +limit);
   }
 

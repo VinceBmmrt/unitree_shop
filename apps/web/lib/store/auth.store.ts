@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import { User } from '@unitree/types';
+import { env } from '@/lib/env';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const API_URL = env.NEXT_PUBLIC_API_URL;
 
 interface AuthState {
   user: User | null;
@@ -50,11 +51,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     if (typeof window !== 'undefined' && window.location.pathname === '/auth/callback') return;
     set({ isLoading: true });
     try {
-      const refreshRes = await axios.post(
-        `${API_URL}/auth/refresh`,
-        {},
-        { withCredentials: true },
-      );
+      const refreshRes = await axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
       const accessToken: string =
         refreshRes.data?.data?.accessToken ?? refreshRes.data?.accessToken;
 

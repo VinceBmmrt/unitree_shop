@@ -7,7 +7,6 @@ import { JwtPayload } from '@unitree/types';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
   constructor(
     config: ConfigService,
     private readonly prisma: PrismaService,

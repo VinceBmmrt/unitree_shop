@@ -66,10 +66,7 @@ export default async function ProductPage({ params }: Props) {
         <div className="space-y-4">
           {product.modelUrl ? (
             <Suspense fallback={<div className="h-[500px] bg-muted rounded-2xl animate-pulse" />}>
-              <Product3DViewer
-                modelUrl={product.modelUrl}
-                modelFormat={product.modelFormat}
-              />
+              <Product3DViewer modelUrl={product.modelUrl} modelFormat={product.modelFormat} />
             </Suspense>
           ) : (
             <ProductGallery images={product.images} />

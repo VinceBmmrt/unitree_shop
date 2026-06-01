@@ -53,7 +53,7 @@ Each step is self-contained and can be done in isolation. When you **complete a 
 
 ## Phase 2 — Developer Experience (2–3 hours total)
 
-- [ ] **Step 7** — Add `.prettierrc` and wire the format script
+- [x] **Step 7** — Add `.prettierrc` and wire the format script
   - **Problem:** `prettier` is installed at root but no config file, no `format` script. Style drifts silently.
   - **Files:** Create `.prettierrc`, add `format` and `format:check` to root `package.json` scripts.
   - **`.prettierrc`:**
@@ -68,7 +68,7 @@ Each step is self-contained and can be done in isolation. When you **complete a 
     2. Add `"@unitree/config-eslint": "workspace:*"` to both apps' devDependencies
     3. Point each app's `.eslintrc.js` to `extends: ['@unitree/config-eslint']`
 
-- [ ] **Step 9** — Add pre-commit hooks (husky + lint-staged)
+- [x] **Step 9** — Add pre-commit hooks (husky + lint-staged)
   - **Problem:** TypeScript errors only surface in CI. Catches issues too late.
   - **Steps:**
     1. `pnpm add -wD husky lint-staged`
@@ -82,7 +82,7 @@ Each step is self-contained and can be done in isolation. When you **complete a 
        }
        ```
 
-- [ ] **Step 10** — Add Zod env validation to the frontend
+- [x] **Step 10** — Add Zod env validation to the frontend
   - **Problem:** `apps/api` validates env vars at startup; `apps/web` has none — wrong `NEXT_PUBLIC_API_URL` gives cryptic Axios errors.
   - **File to create:** `apps/web/lib/env.ts`
     ```ts
@@ -122,11 +122,11 @@ Each step is self-contained and can be done in isolation. When you **complete a 
       postgres:
         image: postgres:16-alpine
         environment: { POSTGRES_DB: unitree, POSTGRES_USER: postgres, POSTGRES_PASSWORD: dev }
-        ports: ["5432:5432"]
+        ports: ['5432:5432']
         volumes: [postgres_data:/var/lib/postgresql/data]
       redis:
         image: redis:7-alpine
-        ports: ["6379:6379"]
+        ports: ['6379:6379']
     volumes:
       postgres_data:
     ```
@@ -231,11 +231,11 @@ Each step is self-contained and can be done in isolation. When you **complete a 
 
 ## Execution order
 
-| Phase | When to do it |
-|---|---|
-| 1 — Bug fixes | Immediately, ~30 min |
-| 2 — DX | Before next feature, ~3h |
-| 3 — Docker Compose | Alongside Phase 2, ~30 min |
-| 4 — Shared packages | When starting admin pages |
-| 5 — Testing | Before pre-launch sprint |
-| 6 — Production | Launch sprint |
+| Phase               | When to do it              |
+| ------------------- | -------------------------- |
+| 1 — Bug fixes       | Immediately, ~30 min       |
+| 2 — DX              | Before next feature, ~3h   |
+| 3 — Docker Compose  | Alongside Phase 2, ~30 min |
+| 4 — Shared packages | When starting admin pages  |
+| 5 — Testing         | Before pre-launch sprint   |
+| 6 — Production      | Launch sprint              |
