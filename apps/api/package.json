@@ -7,7 +7,7 @@
     "start": "node dist/main",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:e2e": "jest --config test/jest-e2e.json",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",

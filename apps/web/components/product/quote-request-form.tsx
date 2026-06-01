@@ -305,12 +305,12 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
             )}
           />
           <label htmlFor="gdpr" className="text-sm cursor-pointer">
-            J'accepte que mes données soient utilisées pour traiter ma demande de devis,
+            J&apos;accepte que mes données soient utilisées pour traiter ma demande de devis,
             conformément à la{' '}
             <a href="/privacy" className="text-primary hover:underline" target="_blank">
               politique de confidentialité
             </a>{' '}
-            d'Unitree Robotics (RGPD). *
+            d&apos;Unitree Robotics (RGPD). *
           </label>
         </div>
         {errors.gdprConsent && (
@@ -320,7 +320,7 @@ export function QuoteRequestForm({ products, preselectedProductId, preselectedCo
         {status === 'error' && (
           <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
             <AlertCircle className="w-4 h-4 shrink-0" />
-            Une erreur s'est produite. Veuillez réessayer ou nous contacter directement.
+            Une erreur s&apos;est produite. Veuillez réessayer ou nous contacter directement.
           </div>
         )}
 
