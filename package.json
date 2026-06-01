@@ -12,7 +12,10 @@
     "typecheck": "turbo run typecheck",
     "db:generate": "turbo run db:generate",
     "db:migrate": "turbo run db:migrate",
-    "db:studio": "cd packages/database && npx prisma studio"
+    "db:studio": "pnpm --filter @unitree/api exec prisma studio",
+    "db:seed": "pnpm --filter @unitree/api db:seed",
+    "check": "turbo run typecheck lint",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\" --ignore-path .gitignore"
   },
   "devDependencies": {
     "turbo": "^2.0.0",

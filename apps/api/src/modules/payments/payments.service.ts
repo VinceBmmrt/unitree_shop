@@ -7,7 +7,6 @@ import {
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { PrismaService } from '../../prisma/prisma.service';
-import { OrderStatus, PaymentStatus } from '@prisma/client';
 import { CreatePaymentIntentDto } from './dto/create-payment-intent.dto';
 import { CreateLeaseDto } from './dto/create-lease.dto';
 
@@ -106,7 +105,7 @@ export class PaymentsService {
     }
 
     // Get or create Stripe customer
-    let customerId = await this.getStripeCustomerId(userId);
+    const customerId = await this.getStripeCustomerId(userId);
 
     const invoice = await this.stripe.invoices.create({
       customer: customerId,
@@ -326,8 +325,7 @@ export class PaymentsService {
 
   private async getStripeCustomerId(userId: string): Promise<string> {
     // Cache Stripe customer ID in user metadata — check if already created
-    const stripeMetaKey = `stripe_customer_id:${userId}`;
-    // In production, use Redis cache here instead of DB round-trip
+    // In production, use Redis cache here: key = `stripe_customer_id:${userId}`
     const user = await this.prisma.user.findUniqueOrThrow({
       where: { id: userId },
       select: { email: true, firstName: true, lastName: true },

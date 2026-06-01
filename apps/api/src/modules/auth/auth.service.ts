@@ -302,7 +302,7 @@ export class AuthService {
     ipAddress: string,
   ) {
     // Find or create via OAuth account link
-    let oauthAccount = await this.prisma.oAuthAccount.findUnique({
+    const oauthAccount = await this.prisma.oAuthAccount.findUnique({
       where: { provider_providerId: { provider, providerId: profile.providerId } },
       include: { user: { select: { id: true, isActive: true, role: true } } },
     });

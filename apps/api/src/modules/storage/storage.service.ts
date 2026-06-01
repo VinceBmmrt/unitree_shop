@@ -12,7 +12,7 @@ export class StorageService {
    * Generates a pre-signed URL for uploading a file to Cloudflare R2 (S3 compatible)
    * In a real implementation, this would use @aws-sdk/client-s3 and getSignedUrl
    */
-  async getUploadUrl(fileName: string, contentType: string) {
+  async getUploadUrl(fileName: string, _contentType: string) {
     const bucket = this.config.get<string>('R2_BUCKET_NAME');
     const accountId = this.config.get<string>('R2_ACCOUNT_ID');
     
