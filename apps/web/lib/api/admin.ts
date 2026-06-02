@@ -77,3 +77,75 @@ export async function adminUpdateProduct(id: string, data: ProductPayload): Prom
   const res = await apiClient.patch(`/products/${id}`, data);
   return res.data.data;
 }
+
+// ── Quotes ────────────────────────────────────────────────────────────────────
+
+export interface AdminQuote {
+  id: string;
+  quoteNumber: string;
+  status: string;
+  currency: string;
+  subtotal: number;
+  discount: number;
+  taxTotal: number;
+  total: number;
+  validUntil: string;
+  notes?: string;
+  internalNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+  customer: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+  };
+  salesRep?: { id: string; firstName: string; lastName: string; email: string };
+  items: {
+    id: string;
+    quantity: number;
+    unitPrice: number;
+    discount: number;
+    totalPrice: number;
+    notes?: string;
+    product: {
+      id: string;
+      name: string;
+      sku: string;
+      images: { url: string; isPrimary: boolean }[];
+    };
+  }[];
+  orders: { id: string; orderNumber: string; status: string }[];
+}
+
+export async function adminGetQuotes(
+  page = 1,
+  status?: string,
+  search?: string,
+): Promise<{ data: AdminQuote[]; meta: { total: number; totalPages: number } }> {
+  const res = await apiClient.get('/quotes', { params: { page, limit: 50, status, search } });
+  return res.data.data;
+}
+
+export async function adminGetQuote(id: string): Promise<AdminQuote> {
+  const res = await apiClient.get(`/quotes/${id}`);
+  return res.data.data;
+}
+
+export interface QuoteUpdatePayload {
+  status?: string;
+  notes?: string;
+  internalNotes?: string;
+  discount?: number;
+  validUntil?: string;
+}
+
+export async function adminUpdateQuote(id: string, data: QuoteUpdatePayload): Promise<void> {
+  await apiClient.patch(`/quotes/${id}`, data);
+}
+
+export async function adminConvertQuote(id: string): Promise<{ orderNumber: string }> {
+  const res = await apiClient.post(`/quotes/${id}/convert`);
+  return res.data.data;
+}
