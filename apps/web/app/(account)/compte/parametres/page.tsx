@@ -72,11 +72,7 @@ export default function ParametresPage() {
   }
 
   if (!isInitialized || !user) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <div className="min-h-screen bg-white dark:bg-[#04040a]" />;
   }
 
   return (

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Loader2,
   AlertCircle,
+  Loader2,
   ArrowLeft,
   Send,
   CheckCircle,
@@ -21,6 +21,7 @@ import {
   adminConvertQuote,
   type AdminQuote,
 } from '@/lib/api/admin';
+import { SkeletonDetailPage } from '@/components/ui/skeleton';
 
 const STATUS_CONFIG: Record<
   string,
@@ -129,11 +130,7 @@ export default function AdminQuoteDetailPage() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-32">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <SkeletonDetailPage cards={3} />;
   }
 
   if (error || !quote) {
@@ -357,7 +354,7 @@ export default function AdminQuoteDetailPage() {
 
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5">
-                  Valide jusqu'au
+                  Valide jusqu&apos;au
                 </label>
                 <input
                   type="date"

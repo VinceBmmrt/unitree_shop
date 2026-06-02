@@ -6,7 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { getOrder, cancelOrder, type Order } from '@/lib/api/account';
-import { Loader2, AlertCircle, Package, Truck, MapPin, X } from 'lucide-react';
+import { AlertCircle, Package, Truck, MapPin, X, Loader2 } from 'lucide-react';
+import { SkeletonDetailPage } from '@/components/ui/skeleton';
 
 const STATUS_LABELS: Record<string, string> = {
   PENDING_PAYMENT: 'En attente de paiement',
@@ -68,11 +69,7 @@ export default function OrderDetailPage() {
   }
 
   if (!isInitialized || !user) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <div className="min-h-screen bg-white dark:bg-[#04040a]" />;
   }
 
   return (
@@ -87,11 +84,7 @@ export default function OrderDetailPage() {
           </Link>
         </div>
 
-        {loading && (
-          <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-          </div>
-        )}
+        {loading && <SkeletonDetailPage cards={3} />}
 
         {error && (
           <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm">
