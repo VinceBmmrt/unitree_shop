@@ -101,18 +101,18 @@ jobs:
     name: Deploy API (Render)
     needs: [lint-typecheck, test]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    environment: production
+    # Only runs on direct pushes to main (not on PRs — skipped there is expected)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - name: Trigger Render deploy
+      - name: Confirm auto-deploy
         run: echo "Render auto-deploys on push to main via GitHub integration"
 
   deploy-web:
     name: Deploy Web (Vercel)
     needs: [lint-typecheck, test]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    environment: production
+    # Only runs on direct pushes to main (not on PRs — skipped there is expected)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - name: Trigger Vercel deploy
+      - name: Confirm auto-deploy
         run: echo "Vercel auto-deploys on push to main via GitHub integration"
