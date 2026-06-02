@@ -42,7 +42,7 @@ function ConnexionForm() {
       const res = await apiClient.post('/auth/login', { email, password });
       const { accessToken, user } = res.data.data;
       setUser(user, accessToken);
-      router.push('/');
+      router.push(searchParams.get('redirect') ?? '/');
       router.refresh();
     } catch (err: any) {
       setError(err.response?.data?.message ?? 'Email ou mot de passe incorrect.');

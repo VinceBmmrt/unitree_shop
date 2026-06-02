@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { CreateAddressDto } from './dto/create-address.dto';
 
 @Injectable()
 export class UsersService {
@@ -31,5 +32,26 @@ export class UsersService {
     data: Partial<{ firstName: string; lastName: string; phone: string; avatar: string }>,
   ) {
     return this.prisma.user.update({ where: { id }, data });
+  }
+
+  async getAddresses(userId: string) {
+    return this.prisma.address.findMany({
+      where: { userId },
+      orderBy: [{ isDefault: 'desc' }, { createdAt: 'desc' }],
+    });
+  }
+
+  async createAddress(userId: string, dto: CreateAddressDto) {
+    return this.prisma.$transaction(async (tx) => {
+      if (dto.isDefault) {
+        await tx.address.updateMany({
+          where: { userId },
+          data: { isDefault: false },
+        });
+      }
+      return tx.address.create({
+        data: { ...dto, userId },
+      });
+    });
   }
 }
