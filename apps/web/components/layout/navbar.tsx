@@ -25,8 +25,50 @@ const NAV_LINKS = [
     label: 'Robots',
     href: '/robots',
     children: [
-      { label: 'H1 — Humanoid', href: '/robots/h1', desc: 'Robot humanoïde autonome' },
-      { label: 'G1 — Research', href: '/robots/g1', desc: 'Plateforme de recherche' },
+      { label: 'H1 — Humanoïde', href: '/robots/h1', desc: 'Robot humanoïde industriel full-size' },
+      {
+        label: 'H1-2 — Nouvelle génération',
+        href: '/products/unitree-h1-2',
+        desc: 'Humanoïde avec mains Dex3-1',
+      },
+      { label: 'G1 — Recherche', href: '/robots/g1', desc: 'Plateforme humanoïde compacte' },
+      {
+        label: 'B2 — Quadrupède industriel',
+        href: '/products/unitree-b2',
+        desc: 'IP67, 40 kg, 6 m/s',
+      },
+      {
+        label: 'B2-W — Hybride roues',
+        href: '/products/unitree-b2-w',
+        desc: 'Quadrupède + roues, 7 m/s',
+      },
+      {
+        label: 'Go2 Pro — Éducation',
+        href: '/products/unitree-go2-pro',
+        desc: '4G/LTE, IA avancée',
+      },
+      {
+        label: 'Go2 — Entrée de gamme',
+        href: '/products/unitree-go2',
+        desc: 'Quadrupède éducatif',
+      },
+      {
+        label: 'Go2 Air — Ultra léger',
+        href: '/products/unitree-go2-air',
+        desc: '10 kg, Wi-Fi, débutant',
+      },
+      { label: 'A1 — Labo & ROS2', href: '/products/unitree-a1', desc: 'Plateforme de recherche' },
+      {
+        label: 'Z1 Pro — Bras 6 axes',
+        href: '/products/unitree-z1-pro',
+        desc: 'Manipulation précise ±0.1 mm',
+      },
+      {
+        label: 'Dex3-1 — Main dextre',
+        href: '/products/unitree-dex3-1',
+        desc: '15 DoF, capteurs tactiles',
+      },
+      { label: 'Voir tout →', href: '/robots', desc: 'Catalogue complet' },
     ],
   },
   { label: 'Accessoires', href: '/accessoires' },
@@ -163,7 +205,9 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-display font-bold text-lg tracking-tight shrink-0 text-slate-900 dark:text-white"
+            className={`font-display font-bold text-lg tracking-tight shrink-0 transition-colors ${
+              isScrolled ? 'text-slate-900 dark:text-white' : 'text-white'
+            }`}
           >
             Unitree<span className="text-blue-500">.</span>
           </Link>
@@ -173,18 +217,33 @@ export function Navbar() {
             {NAV_LINKS.map((link) => (
               <li key={link.href} className="relative">
                 {link.children ? (
-                  <button
+                  <div
                     onMouseEnter={() => setOpenDropdown(link.label)}
                     onMouseLeave={() => setOpenDropdown(null)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/80 dark:hover:bg-zinc-800"
+                    className="flex items-center"
                   >
-                    {link.label}
-                    <ChevronDown className="w-3.5 h-3.5" />
-                  </button>
+                    <Link
+                      href={link.href}
+                      className={`flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-lg ${
+                        isScrolled
+                          ? 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-zinc-800'
+                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                      }`}
+                    >
+                      {link.label}
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === link.label ? 'rotate-180' : ''}`}
+                      />
+                    </Link>
+                  </div>
                 ) : (
                   <Link
                     href={link.href}
-                    className="px-3 py-2 text-sm text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors rounded-lg hover:bg-slate-100/80 dark:hover:bg-white/8 block"
+                    className={`px-3 py-2 text-sm transition-colors rounded-lg block ${
+                      isScrolled
+                        ? 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`}
                   >
                     {link.label}
                   </Link>
@@ -200,14 +259,14 @@ export function Navbar() {
                       transition={{ duration: 0.15 }}
                       onMouseEnter={() => setOpenDropdown(link.label)}
                       onMouseLeave={() => setOpenDropdown(null)}
-                      className="absolute top-full left-0 pt-2"
+                      className="absolute top-full left-0 pt-2 z-50"
                     >
-                      <div className="bg-white dark:bg-[#10101e] rounded-xl p-2 min-w-[220px] shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07] backdrop-blur-xl">
+                      <div className="bg-white dark:bg-[#10101e] rounded-xl p-2 min-w-[260px] max-h-[70vh] overflow-y-auto shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07] backdrop-blur-xl">
                         {link.children.map((child) => (
                           <Link
                             key={child.href}
                             href={child.href}
-                            className="flex flex-col px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
+                            className="flex flex-col px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
                           >
                             <span className="text-sm font-medium text-slate-900 dark:text-white">
                               {child.label}
