@@ -146,6 +146,37 @@ export class OrdersService {
     );
   }
 
+  async findAllAdmin(page = 1, limit = 20, status?: string) {
+    const where = status ? { status: status as any } : {};
+    const [orders, total] = await this.prisma.$transaction([
+      this.prisma.order.findMany({
+        where,
+        include: {
+          user: { select: { firstName: true, lastName: true, email: true } },
+          items: { select: { quantity: true, totalPrice: true } },
+          payments: { select: { status: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.order.count({ where }),
+    ]);
+    return { data: orders, meta: { total, page, limit } };
+  }
+
+  async updateStatus(id: string, status: string) {
+    await this.prisma.order.findUniqueOrThrow({ where: { id } });
+    return this.prisma.$transaction(async (tx) => {
+      const updated = await tx.order.update({
+        where: { id },
+        data: { status: status as any },
+      });
+      await tx.orderStatusHistory.create({ data: { orderId: id, status: status as any } });
+      return updated;
+    });
+  }
+
   async findByUser(userId: string, page = 1, limit = 20) {
     const [orders, total] = await this.prisma.$transaction([
       this.prisma.order.findMany({

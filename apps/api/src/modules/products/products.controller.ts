@@ -51,6 +51,14 @@ export class ProductsController {
   }
 
   // Admin-only routes
+  @Get('admin/:id')
+  @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '[Admin] Get any product by ID (includes inactive)' })
+  findById(@Param('id') id: string) {
+    return this.productsService.findById(id);
+  }
+
   @Post()
   @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   @ApiBearerAuth()
