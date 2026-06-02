@@ -24,51 +24,33 @@ const NAV_LINKS = [
   {
     label: 'Robots',
     href: '/robots',
-    children: [
-      { label: 'H1 — Humanoïde', href: '/robots/h1', desc: 'Robot humanoïde industriel full-size' },
+    groups: [
       {
-        label: 'H1-2 — Nouvelle génération',
-        href: '/products/unitree-h1-2',
-        desc: 'Humanoïde avec mains Dex3-1',
-      },
-      { label: 'G1 — Recherche', href: '/robots/g1', desc: 'Plateforme humanoïde compacte' },
-      {
-        label: 'B2 — Quadrupède industriel',
-        href: '/products/unitree-b2',
-        desc: 'IP67, 40 kg, 6 m/s',
+        title: 'Humanoïdes',
+        items: [
+          { label: 'Unitree H1', href: '/robots/h1' },
+          { label: 'Unitree H1-2', href: '/products/unitree-h1-2' },
+          { label: 'Unitree G1', href: '/robots/g1' },
+        ],
       },
       {
-        label: 'B2-W — Hybride roues',
-        href: '/products/unitree-b2-w',
-        desc: 'Quadrupède + roues, 7 m/s',
+        title: 'Quadrupèdes',
+        items: [
+          { label: 'Unitree B2', href: '/products/unitree-b2' },
+          { label: 'Unitree B2-W', href: '/products/unitree-b2-w' },
+          { label: 'Unitree Go2 Pro', href: '/products/unitree-go2-pro' },
+          { label: 'Unitree Go2', href: '/products/unitree-go2' },
+          { label: 'Unitree Go2 Air', href: '/products/unitree-go2-air' },
+          { label: 'Unitree A1', href: '/products/unitree-a1' },
+        ],
       },
       {
-        label: 'Go2 Pro — Éducation',
-        href: '/products/unitree-go2-pro',
-        desc: '4G/LTE, IA avancée',
+        title: 'Bras & Mains',
+        items: [
+          { label: 'Unitree Z1 Pro', href: '/products/unitree-z1-pro' },
+          { label: 'Unitree Dex3-1', href: '/products/unitree-dex3-1' },
+        ],
       },
-      {
-        label: 'Go2 — Entrée de gamme',
-        href: '/products/unitree-go2',
-        desc: 'Quadrupède éducatif',
-      },
-      {
-        label: 'Go2 Air — Ultra léger',
-        href: '/products/unitree-go2-air',
-        desc: '10 kg, Wi-Fi, débutant',
-      },
-      { label: 'A1 — Labo & ROS2', href: '/products/unitree-a1', desc: 'Plateforme de recherche' },
-      {
-        label: 'Z1 Pro — Bras 6 axes',
-        href: '/products/unitree-z1-pro',
-        desc: 'Manipulation précise ±0.1 mm',
-      },
-      {
-        label: 'Dex3-1 — Main dextre',
-        href: '/products/unitree-dex3-1',
-        desc: '15 DoF, capteurs tactiles',
-      },
-      { label: 'Voir tout →', href: '/robots', desc: 'Catalogue complet' },
     ],
   },
   { label: 'Accessoires', href: '/accessoires' },
@@ -216,7 +198,7 @@ export function Navbar() {
           <ul className="hidden md:flex items-center gap-1 flex-1">
             {NAV_LINKS.map((link) => (
               <li key={link.href} className="relative">
-                {link.children ? (
+                {link.groups ? (
                   <div
                     onMouseEnter={() => setOpenDropdown(link.label)}
                     onMouseLeave={() => setOpenDropdown(null)}
@@ -249,9 +231,9 @@ export function Navbar() {
                   </Link>
                 )}
 
-                {/* Dropdown */}
+                {/* Grouped dropdown */}
                 <AnimatePresence>
-                  {link.children && openDropdown === link.label && (
+                  {link.groups && openDropdown === link.label && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -261,21 +243,33 @@ export function Navbar() {
                       onMouseLeave={() => setOpenDropdown(null)}
                       className="absolute top-full left-0 pt-2 z-50"
                     >
-                      <div className="bg-white dark:bg-[#10101e] rounded-xl p-2 min-w-[260px] max-h-[70vh] overflow-y-auto shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07] backdrop-blur-xl">
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className="flex flex-col px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors"
-                          >
-                            <span className="text-sm font-medium text-slate-900 dark:text-white">
-                              {child.label}
-                            </span>
-                            <span className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
-                              {child.desc}
-                            </span>
-                          </Link>
+                      <div className="bg-white dark:bg-[#10101e] rounded-xl shadow-2xl shadow-black/20 dark:shadow-black/60 border border-slate-200 dark:border-white/[0.07] overflow-hidden min-w-[200px]">
+                        {link.groups.map((group, gi) => (
+                          <div key={group.title}>
+                            {gi > 0 && (
+                              <div className="mx-3 border-t border-slate-100 dark:border-white/[0.06]" />
+                            )}
+                            <p className="px-3 pt-2.5 pb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400 dark:text-zinc-500">
+                              {group.title}
+                            </p>
+                            {group.items.map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="block px-3 py-1.5 text-sm text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-white/[0.06] hover:text-slate-900 dark:hover:text-white transition-colors"
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
                         ))}
+                        <div className="mx-3 border-t border-slate-100 dark:border-white/[0.06]" />
+                        <Link
+                          href="/robots"
+                          className="flex items-center gap-1 px-3 py-2.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors"
+                        >
+                          Voir tout le catalogue →
+                        </Link>
                       </div>
                     </motion.div>
                   )}
