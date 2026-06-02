@@ -13,6 +13,7 @@ import {
   Loader2,
   Package,
   Settings,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store/auth.store';
 
@@ -115,6 +116,22 @@ export default function ComptePage() {
               <p className="text-sm font-semibold text-slate-900 dark:text-white">Paramètres</p>
               <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
                 Profil & coordonnées
+              </p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
+          </Link>
+
+          <Link
+            href="/compte/donnees"
+            className="group flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] hover:border-blue-300 dark:hover:border-blue-500/30 transition-all col-span-2"
+          >
+            <ShieldCheck className="w-6 h-6 text-blue-500" />
+            <div>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                Mes données personnelles
+              </p>
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
+                Export RGPD & suppression du compte
               </p>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />

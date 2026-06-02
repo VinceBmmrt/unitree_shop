@@ -567,6 +567,15 @@ export function CheckoutFlow() {
                     </p>
                   </div>
                 )}
+                {/* Droit de rétractation — French consumer law (art. L221-18 Code conso) */}
+                <p className="text-xs text-muted-foreground leading-relaxed border border-border rounded-xl px-4 py-3">
+                  Conformément à l&apos;article L221-18 du Code de la consommation, vous disposez
+                  d&apos;un délai de <strong className="text-foreground">14 jours</strong> à compter
+                  de la réception de votre commande pour exercer votre droit de rétractation, sans
+                  avoir à justifier de motifs. Les frais de retour sont à votre charge. Ce droit ne
+                  s&apos;applique pas aux produits personnalisés ou configurés sur mesure.
+                </p>
+
                 <button
                   onClick={handleProceedToPayment}
                   disabled={isSubmitting}
