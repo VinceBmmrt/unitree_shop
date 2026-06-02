@@ -59,8 +59,40 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.slug);
   if (!product) notFound();
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.shortDescription ?? product.description,
+    sku: product.sku,
+    image: product.images?.map((img: { url: string }) => img.url) ?? [],
+    brand: { '@type': 'Brand', name: 'Unitree Robotics' },
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'EUR',
+      price: product.basePrice,
+      availability: product.isActive
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      seller: { '@type': 'Organization', name: 'Unitree Robotics France' },
+    },
+    ...(product.avgRating
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: product.avgRating,
+            reviewCount: product.reviews?.length ?? 0,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
         {/* Left: Visual */}
         <div className="space-y-4">

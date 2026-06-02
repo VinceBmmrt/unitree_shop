@@ -12,7 +12,8 @@ import {
   Pie,
   Cell,
 } from 'recharts';
-import { TrendingUp, ShoppingBag, FileText, Users, AlertTriangle, Loader2 } from 'lucide-react';
+import { TrendingUp, ShoppingBag, FileText, Users, AlertTriangle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { apiClient } from '@/lib/api/client';
 import { subDays, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -117,7 +118,7 @@ export function AdminDashboard() {
               </span>
             </div>
             <p className="font-display text-2xl font-bold tabular-nums">
-              {revLoading ? <Loader2 className="w-5 h-5 animate-spin inline" /> : kpi.value}
+              {revLoading ? <Skeleton className="h-7 w-24 mt-1" /> : kpi.value}
             </p>
             <p className="text-xs text-muted-foreground mt-1">{kpi.sub}</p>
           </div>

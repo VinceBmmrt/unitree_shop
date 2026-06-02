@@ -13,8 +13,8 @@ import {
   RefreshCw,
   Send,
   ArrowRightCircle,
-  Loader2,
 } from 'lucide-react';
+import { SkeletonTableRow } from '@/components/ui/skeleton';
 import { apiClient } from '@/lib/api/client';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -115,8 +115,23 @@ export function QuotesPipeline() {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+        <div className="rounded-xl border border-border overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="bg-muted/30 border-b border-border">
+              <tr>
+                {['Numéro', 'Client', 'Produits', 'Montant', 'Statut', 'Date', ''].map((h) => (
+                  <th key={h} className="text-left px-4 py-3 font-medium text-muted-foreground">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonTableRow key={i} cols={7} />
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : view === 'table' ? (
         /* Table view */

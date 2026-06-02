@@ -14,7 +14,7 @@ When you finish a feature or step:
 3. Update `Last updated` date at the top
 4. Create a changelog entry in `docs/changelogs/YYYY-MM-DD-description.md`
 
-**Last updated:** 2026-06-02 — Sprint 8 done: sitemap.xml, robots.txt, GDPR data page, withdrawal notice on checkout
+**Last updated:** 2026-06-02 — Sprint 9 done: loading skeletons, error boundary, Schema.org Product JSON-LD, mobile audit
 
 ---
 
@@ -86,10 +86,7 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 
 ### Polish / gaps
 
-- Loading skeletons on data-fetching components
-- Error boundaries (graceful fallback when API is down)
-- Schema.org `Product` markup on product pages
-- Mobile audit at 375px not done for all pages
+- All resolved in Sprint 9
 
 ---
 
@@ -141,6 +138,6 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 | 6 — Authentication & Account | Full account experience         | Done        |
 | 7 — Admin Quote Pipeline     | Quote detail + convert to order | Done        |
 | 8 — Legal & SEO              | sitemap, GDPR, withdrawal       | Done        |
-| 9 — Polish & Performance     | Skeletons, error boundaries     | Not started |
+| 9 — Polish & Performance     | Skeletons, error boundaries     | Done        |
 | 10 — Pre-launch              | R2 storage, Stripe live         | Not started |
 | 11 — Launch                  | Custom domain, monitoring       | Not started |

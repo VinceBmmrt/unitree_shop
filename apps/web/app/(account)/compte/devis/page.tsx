@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { getQuotes, type Quote } from '@/lib/api/account';
-import { Loader2, FileText, ChevronRight, AlertCircle } from 'lucide-react';
+import { FileText, ChevronRight, AlertCircle } from 'lucide-react';
+import { SkeletonCard } from '@/components/ui/skeleton';
 
 const STATUS_LABELS: Record<string, string> = {
   DRAFT: 'Brouillon',
@@ -53,9 +54,7 @@ export default function DevisPage() {
 
   if (!isInitialized || !user) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
+      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center" />
     );
   }
 
@@ -73,8 +72,10 @@ export default function DevisPage() {
         </div>
 
         {loading && (
-          <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
         )}
 
