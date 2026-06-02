@@ -67,6 +67,12 @@ export class ProductFilterDto {
   @IsBoolean()
   isFeatured?: boolean;
 
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === true)
+  @IsBoolean()
+  isActive?: boolean;
+
   @ApiPropertyOptional({ type: [String] })
   @IsOptional()
   @IsArray()

@@ -48,7 +48,7 @@ const STATIC_ROBOTS = [
 async function getProducts(category?: string) {
   try {
     const res = await apiClient.get('/products', {
-      params: { category, limit: 20, isActive: true },
+      params: { category, limit: 20 },
     });
     const data = res.data.data.data ?? [];
     return data.length > 0 ? data : STATIC_ROBOTS;
