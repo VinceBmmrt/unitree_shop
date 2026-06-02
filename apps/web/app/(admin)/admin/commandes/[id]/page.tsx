@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { apiClient } from '@/lib/api/client';
 import { adminUpdateOrderStatus } from '@/lib/api/admin';
 import { Loader2, AlertCircle, Package, MapPin } from 'lucide-react';
+import { SkeletonDetailPage } from '@/components/ui/skeleton';
 
 const STATUSES = [
   'PENDING_PAYMENT',
@@ -68,11 +69,7 @@ export default function AdminOrderDetailPage() {
         </Link>
       </div>
 
-      {loading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-        </div>
-      )}
+      {loading && <SkeletonDetailPage cards={3} />}
 
       {error && (
         <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm">

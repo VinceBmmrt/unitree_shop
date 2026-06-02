@@ -5,7 +5,8 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { getQuote, acceptQuote, rejectQuote, type Quote } from '@/lib/api/account';
-import { Loader2, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import { SkeletonDetailPage } from '@/components/ui/skeleton';
 
 const STATUS_LABELS: Record<string, string> = {
   DRAFT: 'Brouillon',
@@ -80,11 +81,7 @@ export default function QuoteDetailPage() {
   }
 
   if (!isInitialized || !user) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <div className="min-h-screen bg-white dark:bg-[#04040a]" />;
   }
 
   const canAct = quote?.status === 'SENT' || quote?.status === 'VIEWED';
@@ -101,11 +98,7 @@ export default function QuoteDetailPage() {
           </Link>
         </div>
 
-        {loading && (
-          <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-          </div>
-        )}
+        {loading && <SkeletonDetailPage cards={2} />}
 
         {error && (
           <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm">
