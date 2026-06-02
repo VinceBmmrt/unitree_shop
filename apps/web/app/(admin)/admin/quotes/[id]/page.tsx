@@ -357,7 +357,7 @@ export default function AdminQuoteDetailPage() {
 
               <div>
                 <label className="block text-xs text-muted-foreground mb-1.5">
-                  Valide jusqu'au
+                  Valide jusqu&apos;au
                 </label>
                 <input
                   type="date"
