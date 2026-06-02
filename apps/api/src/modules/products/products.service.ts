@@ -94,6 +94,23 @@ export class ProductsService {
     };
   }
 
+  async findById(id: string) {
+    const product = await this.prisma.product.findUniqueOrThrow({
+      where: { id },
+      include: {
+        images: { orderBy: { sortOrder: 'asc' } },
+        tags: true,
+        options: { include: { choices: true }, orderBy: { sortOrder: 'asc' } },
+        inventoryItems: { select: { quantityOnHand: true, quantityReserved: true } },
+      },
+    });
+    const totalStock = product.inventoryItems.reduce(
+      (sum, i) => sum + i.quantityOnHand - i.quantityReserved,
+      0,
+    );
+    return { ...product, inStock: totalStock > 0 };
+  }
+
   async findBySlug(slug: string) {
     const product = await this.prisma.product.findFirst({
       where: { slug, isActive: true },
