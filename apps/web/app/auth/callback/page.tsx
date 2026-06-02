@@ -33,7 +33,9 @@ export default function AuthCallbackPage() {
       .then((res) => {
         const user = res.data?.data ?? res.data;
         setUser(user, token);
-        router.replace('/');
+        const redirect = sessionStorage.getItem('oauth_redirect');
+        sessionStorage.removeItem('oauth_redirect');
+        router.replace(redirect ?? '/');
       })
       .catch(() => {
         window.__unitreeAccessToken = undefined;

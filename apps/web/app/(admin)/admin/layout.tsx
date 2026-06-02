@@ -31,8 +31,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isInitialized && (!user || user.role !== 'ADMIN')) {
-      router.replace('/compte/connexion');
+    if (isInitialized && (!user || (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN'))) {
+      router.replace(`/compte/connexion?redirect=${encodeURIComponent(pathname)}`);
     }
   }, [user, isInitialized, router]);
 
@@ -44,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  if (!user || user.role !== 'ADMIN') return null;
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN')) return null;
 
   return (
     <div className="flex min-h-screen">

@@ -79,6 +79,10 @@ function ConnexionForm() {
           <div className="grid grid-cols-2 gap-3 mb-6">
             <a
               href={`${API_URL}/auth/google`}
+              onClick={() => {
+                const redirect = searchParams.get('redirect');
+                if (redirect) sessionStorage.setItem('oauth_redirect', redirect);
+              }}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -103,6 +107,10 @@ function ConnexionForm() {
             </a>
             <a
               href={`${API_URL}/auth/github`}
+              onClick={() => {
+                const redirect = searchParams.get('redirect');
+                if (redirect) sessionStorage.setItem('oauth_redirect', redirect);
+              }}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.06] text-sm font-medium text-slate-700 dark:text-zinc-300 transition-colors"
             >
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
