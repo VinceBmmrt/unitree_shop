@@ -14,7 +14,7 @@ When you finish a feature or step:
 3. Update `Last updated` date at the top
 4. Create a changelog entry in `docs/changelogs/YYYY-MM-DD-description.md`
 
-**Last updated:** 2026-06-02 — Sprint 5 (admin) + Sprint 6 (account) done; bug fixes (CI, OAuth redirect, hydration)
+**Last updated:** 2026-06-02 — Sprint 7 done: admin quote detail page (status, pricing, notes, convert to order)
 
 ---
 
@@ -79,12 +79,12 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 
 ### Not yet built
 
-| Route              | Description                               | Priority |
-| ------------------ | ----------------------------------------- | -------- |
-| `/compte/donnees`  | GDPR data export + deletion request       | Medium   |
-| `/admin/quotes`    | Admin quote pipeline (placeholder exists) | High     |
-| `/admin/analytics` | Analytics dashboard                       | Low      |
-| `/admin/clients`   | Customer list                             | Low      |
+| Route                | Description                         | Priority |
+| -------------------- | ----------------------------------- | -------- |
+| `/compte/donnees`    | GDPR data export + deletion request | Medium   |
+| `/admin/quotes/[id]` | ~~Admin quote pipeline~~ Done       | —        |
+| `/admin/analytics`   | Analytics dashboard                 | Low      |
+| `/admin/clients`     | Customer list                       | Low      |
 
 ### Polish / gaps
 
@@ -136,14 +136,15 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 
 ## Sprint progress
 
-| Sprint                       | Goal                           | Status      |
-| ---------------------------- | ------------------------------ | ----------- |
-| 1 — Foundation               | Local E2E running              | Done        |
-| 2 — Product Catalog          | Full product experience        | Done        |
-| 3 — Quote Flow               | Submit → pipeline → convert    | Done        |
-| 4 — Checkout (Accessories)   | Buy accessory end-to-end       | Done        |
-| 5 — Admin Management         | Catalog/order management in UI | Done        |
-| 6 — Authentication & Account | Full account experience        | Done        |
-| 7 — Polish & Performance     | Production-ready UX            | In progress |
-| 8 — Pre-launch               | E2E tests, Sentry, security    | Not started |
-| 9 — Launch                   | Custom domain, live Stripe     | Not started |
+| Sprint                       | Goal                            | Status      |
+| ---------------------------- | ------------------------------- | ----------- |
+| 1 — Foundation               | Local E2E running               | Done        |
+| 2 — Product Catalog          | Full product experience         | Done        |
+| 3 — Quote Flow               | Submit → pipeline → convert     | Done        |
+| 4 — Checkout (Accessories)   | Buy accessory end-to-end        | Done        |
+| 5 — Admin Management         | Catalog/order management in UI  | Done        |
+| 6 — Authentication & Account | Full account experience         | Done        |
+| 7 — Admin Quote Pipeline     | Quote detail + convert to order | Done        |
+| 8 — Polish & Performance     | Production-ready UX             | Not started |
+| 9 — Pre-launch               | E2E tests, Sentry, security     | Not started |
+| 10 — Launch                  | Custom domain, live Stripe      | Not started |
