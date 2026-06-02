@@ -3,7 +3,17 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Shield, FileText, ShoppingBag, ChevronRight, Loader2 } from 'lucide-react';
+import {
+  User,
+  Mail,
+  Shield,
+  FileText,
+  ShoppingBag,
+  ChevronRight,
+  Loader2,
+  Package,
+  Settings,
+} from 'lucide-react';
 import { useAuthStore } from '@/lib/store/auth.store';
 
 export default function ComptePage() {
@@ -57,14 +67,24 @@ export default function ComptePage() {
         {/* Quick actions */}
         <div className="grid grid-cols-2 gap-4 mb-8">
           <Link
-            href="/devis"
+            href="/compte/commandes"
+            className="group flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] hover:border-blue-300 dark:hover:border-blue-500/30 transition-all"
+          >
+            <Package className="w-6 h-6 text-blue-500" />
+            <div>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">Mes commandes</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">Historique & suivi</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
+          </Link>
+
+          <Link
+            href="/compte/devis"
             className="group flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] hover:border-blue-300 dark:hover:border-blue-500/30 transition-all"
           >
             <FileText className="w-6 h-6 text-blue-500" />
             <div>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                Demander un devis
-              </p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">Mes devis</p>
               <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
                 Robots & configurations
               </p>
@@ -81,6 +101,20 @@ export default function ComptePage() {
               <p className="text-sm font-semibold text-slate-900 dark:text-white">Boutique</p>
               <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
                 Accessoires & pièces
+              </p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
+          </Link>
+
+          <Link
+            href="/compte/parametres"
+            className="group flex flex-col gap-3 p-5 rounded-2xl border border-slate-200 dark:border-white/[0.07] bg-slate-50 dark:bg-white/[0.02] hover:bg-slate-100 dark:hover:bg-white/[0.04] hover:border-blue-300 dark:hover:border-blue-500/30 transition-all"
+          >
+            <Settings className="w-6 h-6 text-blue-500" />
+            <div>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">Paramètres</p>
+              <p className="text-xs text-slate-500 dark:text-zinc-500 mt-0.5">
+                Profil & coordonnées
               </p>
             </div>
             <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform self-end" />
