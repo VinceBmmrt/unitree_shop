@@ -42,7 +42,7 @@ export default function AuthCallbackPage() {
         setError(true);
         setTimeout(() => router.replace('/compte/connexion'), 2500);
       });
-  }, []);
+  }, [router, setUser]);
 
   if (error) {
     return (

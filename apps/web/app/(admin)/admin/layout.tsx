@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isInitialized && (!user || (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN'))) {
       router.replace(`/compte/connexion?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [user, isInitialized, router]);
+  }, [user, isInitialized, router, pathname]);
 
   if (!isInitialized) {
     return (
