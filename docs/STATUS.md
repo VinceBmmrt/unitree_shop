@@ -14,7 +14,7 @@ When you finish a feature or step:
 3. Update `Last updated` date at the top
 4. Create a changelog entry in `docs/changelogs/YYYY-MM-DD-description.md`
 
-**Last updated:** 2026-06-02 — Sprint 7 done: admin quote detail page (status, pricing, notes, convert to order)
+**Last updated:** 2026-06-02 — Sprint 8 done: sitemap.xml, robots.txt, GDPR data page, withdrawal notice on checkout
 
 ---
 
@@ -79,22 +79,19 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 
 ### Not yet built
 
-| Route                | Description                         | Priority |
-| -------------------- | ----------------------------------- | -------- |
-| `/compte/donnees`    | GDPR data export + deletion request | Medium   |
-| `/admin/quotes/[id]` | ~~Admin quote pipeline~~ Done       | —        |
-| `/admin/analytics`   | Analytics dashboard                 | Low      |
-| `/admin/clients`     | Customer list                       | Low      |
+| Route              | Description         | Priority |
+| ------------------ | ------------------- | -------- |
+| `/admin/analytics` | Analytics dashboard | Low      |
+| `/admin/clients`   | Customer list       | Low      |
+| `/admin/analytics` | Analytics dashboard | Low      |
+| `/admin/clients`   | Customer list       | Low      |
 
 ### Polish / gaps
 
 - Loading skeletons on data-fetching components
 - Error boundaries (graceful fallback when API is down)
-- `generateMetadata` on product pages (SEO)
-- `sitemap.xml` + `robots.txt`
 - Schema.org `Product` markup on product pages
 - Mobile audit at 375px not done for all pages
-- Right of withdrawal notice on checkout (French law — 14-day droit de rétractation)
 
 ---
 
@@ -145,6 +142,7 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 | 5 — Admin Management         | Catalog/order management in UI  | Done        |
 | 6 — Authentication & Account | Full account experience         | Done        |
 | 7 — Admin Quote Pipeline     | Quote detail + convert to order | Done        |
-| 8 — Polish & Performance     | Production-ready UX             | Not started |
-| 9 — Pre-launch               | E2E tests, Sentry, security     | Not started |
-| 10 — Launch                  | Custom domain, live Stripe      | Not started |
+| 8 — Legal & SEO              | sitemap, GDPR, withdrawal       | Done        |
+| 9 — Polish & Performance     | Skeletons, error boundaries     | Not started |
+| 10 — Pre-launch              | R2 storage, Stripe live         | Not started |
+| 11 — Launch                  | Custom domain, monitoring       | Not started |
