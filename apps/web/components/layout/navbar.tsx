@@ -265,7 +265,7 @@ export function Navbar() {
               aria-label={`Panier (${count} articles)`}
             >
               <ShoppingCart className="w-5 h-5" />
-              {count > 0 && (
+              {mounted && count > 0 && (
                 <motion.span
                   key={count}
                   initial={{ scale: 0 }}
