@@ -8,6 +8,7 @@ import { ProductActions } from '@/components/product/product-actions';
 import { Product3DViewer } from '@/components/3d/product-3d-viewer';
 import { ProductReviews } from '@/components/product/product-reviews';
 import { RelatedProducts } from '@/components/product/related-products';
+import { SkeletonProductGrid } from '@/components/ui/skeleton';
 
 interface Props {
   params: { slug: string };
@@ -116,7 +117,14 @@ export default async function ProductPage({ params }: Props) {
       {/* Specs & Reviews */}
       <div className="border-t border-border pt-16 space-y-16">
         <ProductReviews reviews={product.reviews} avgRating={product.avgRating} />
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <section className="space-y-6">
+              <div className="h-7 w-40 bg-slate-200 dark:bg-white/[0.06] animate-pulse rounded-md" />
+              <SkeletonProductGrid count={3} />
+            </section>
+          }
+        >
           <RelatedProducts category={product.category} currentId={product.id} />
         </Suspense>
       </div>
