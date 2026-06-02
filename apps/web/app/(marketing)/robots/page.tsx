@@ -48,9 +48,10 @@ const STATIC_ROBOTS = [
 async function getProducts(category?: string) {
   try {
     const res = await apiClient.get('/products', {
-      params: { category, limit: 20, isActive: true },
+      params: { category, limit: 50 },
     });
-    const data = res.data.data.data ?? [];
+    const all = res.data.data.data ?? [];
+    const data = all.filter((p: { category: string }) => p.category !== 'ACCESSORY');
     return data.length > 0 ? data : STATIC_ROBOTS;
   } catch {
     return STATIC_ROBOTS;

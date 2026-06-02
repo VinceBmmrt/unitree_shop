@@ -270,6 +270,212 @@ async function main() {
         create: [{ tag: 'quadrupède' }, { tag: '4G/LTE' }, { tag: 'IA' }, { tag: 'pro' }],
       },
     },
+    // ─── NEW ROBOTS ────────────────────────────────────────────────
+    {
+      sku: 'UT-H1-2-001',
+      name: 'Unitree H1-2',
+      slug: 'unitree-h1-2',
+      shortDescription: "Robot humanoïde nouvelle génération — 43 DoF, manipulation avancée.",
+      description: `L'H1-2 est la seconde génération du robot humanoïde H1. Il intègre des mains dextres Dex3-1, un système de vision amélioré et une IA embarquée plus puissante pour des tâches de manipulation bimanuelles en environnement industriel. Avec ses 47 kg et ses 43 degrés de liberté, il est conçu pour des missions longue durée dans l'industrie, la logistique et la recherche.`,
+      category: 'HUMANOID_ROBOT' as const,
+      basePrice: 130000,
+      leasePriceMonth: 3900,
+      requiresQuote: true,
+      isFeatured: true,
+      isActive: true,
+      specifications: {
+        height: '1.8 m',
+        weight: '47 kg',
+        payload: '30 kg',
+        speed: '3.3 m/s',
+        battery: '2h+',
+        dof: '43 DoF + mains Dex3-1',
+        processor: 'NVIDIA Jetson Orin + Intel NUC',
+        sensors: 'LiDAR 3D, RGB-D stéréo, IMU 9-axis',
+        hands: 'Dex3-1 (15 DoF par main)',
+      },
+      images: {
+        create: [
+          {
+            url: 'https://www.unitree.com/images/fdff7695f62b42b89b2459a3a4405118_400x400.png',
+            altText: 'Unitree H1-2 Robot humanoïde nouvelle génération',
+            isPrimary: true,
+            sortOrder: 0,
+          },
+          {
+            url: 'https://www.unitree.com/images/d01aae29f6ed4165b0b2e01c811fb3b8_1419x852.png',
+            altText: 'Unitree H1-2 — manipulation bimanuelles',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+        ],
+      },
+      tags: {
+        create: [{ tag: 'humanoïde' }, { tag: 'manipulation' }, { tag: 'industrie' }, { tag: 'nouvelle génération' }],
+      },
+    },
+    {
+      sku: 'UT-B2W-001',
+      name: 'Unitree B2-W',
+      slug: 'unitree-b2-w',
+      shortDescription: 'Robot quadrupède industriel à locomotion hybride pattes + roues.',
+      description: `Le B2-W est la version hybride du B2 industriel d'Unitree, combinant locomotion quadrupède et roues motorisées pour une vitesse maximale de 7 m/s sur terrain plat. Il peut alterner entre marche sur 4 pattes pour les obstacles et roulage sur roues pour les longues distances. Certifié IP67, charge utile 40 kg, autonomie 4h. Idéal pour l'inspection industrielle, la sécurité de périmètre et la logistique large site.`,
+      category: 'QUADRUPED_ROBOT' as const,
+      basePrice: 45000,
+      leasePriceMonth: 1400,
+      requiresQuote: true,
+      isFeatured: true,
+      isActive: true,
+      specifications: {
+        height: '0.65 m',
+        weight: '63 kg',
+        payload: '40 kg',
+        speedWheels: '7 m/s (roues)',
+        speedLegs: '6 m/s (pattes)',
+        battery: '4h',
+        dof: '12 DoF + 4 roues',
+        protection: 'IP67',
+        sensors: 'LiDAR 3D, Caméra 360°, IMU',
+        locomotion: 'Quadrupède + roues (hybride)',
+      },
+      images: {
+        create: [
+          {
+            url: 'https://www.unitree.com/images/dd1fc7c2cc4d45518a38a04b84a46e8d_1529x883.png',
+            altText: 'Unitree B2-W Robot hybride pattes et roues',
+            isPrimary: true,
+            sortOrder: 0,
+          },
+          {
+            url: 'https://www.unitree.com/images/0f744c68717d4b21a874f0983f0e40db_1708x866.png',
+            altText: 'Unitree B2-W — mode roulage terrain plat',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+        ],
+      },
+      tags: {
+        create: [{ tag: 'quadrupède' }, { tag: 'roues' }, { tag: 'hybride' }, { tag: 'IP67' }, { tag: 'inspection' }],
+      },
+    },
+    {
+      sku: 'UT-GO2-AIR-001',
+      name: 'Unitree Go2 Air',
+      slug: 'unitree-go2-air',
+      shortDescription: 'Robot quadrupède léger — la porte d\'entrée vers la robotique Unitree.',
+      description: `Le Go2 Air est la version allégée et abordable du Go2 d'Unitree. Avec seulement 10 kg, il est conçu pour l'apprentissage, les démonstrations et les projets éducatifs. Moins de capteurs que le Go2 standard, mais il conserve les 12 degrés de liberté, la vitesse de 2,5 m/s et la robustesse mécanique de la gamme Go. Interface Bluetooth/Wi-Fi, application mobile Unitree incluse.`,
+      category: 'QUADRUPED_ROBOT' as const,
+      basePrice: 950,
+      compareAtPrice: 1100,
+      leasePriceMonth: 39,
+      requiresQuote: false,
+      isFeatured: false,
+      isActive: true,
+      specifications: {
+        height: '0.28 m',
+        weight: '10 kg',
+        payload: '1.5 kg',
+        speed: '2.5 m/s',
+        battery: '1-2h',
+        dof: '12 DoF',
+        connectivity: 'Wi-Fi + Bluetooth',
+        sensors: 'Caméra frontale, IMU',
+        app: 'Application mobile iOS/Android',
+      },
+      images: {
+        create: [
+          {
+            url: 'https://oss-global-cdn.unitree.com/static/3f119f752fdf41b0a70544dbe06e31f6_2606x1376.png',
+            altText: 'Unitree Go2 Air — robot quadrupède léger',
+            isPrimary: true,
+            sortOrder: 0,
+          },
+          {
+            url: 'https://oss-global-cdn.unitree.com/static/870d4ddd10d741e6b79e456982e3aa28_2606x1376.png',
+            altText: 'Unitree Go2 Air — vue arrière',
+            isPrimary: false,
+            sortOrder: 1,
+          },
+        ],
+      },
+      tags: {
+        create: [{ tag: 'quadrupède' }, { tag: 'éducation' }, { tag: 'léger' }, { tag: 'débutant' }],
+      },
+    },
+    {
+      sku: 'UT-A1-001',
+      name: 'Unitree A1',
+      slug: 'unitree-a1',
+      shortDescription: 'Robot quadrupède de recherche — plateforme agile et programmable.',
+      description: `L'A1 est le robot quadrupède de recherche polyvalent d'Unitree, reconnu dans les laboratoires du monde entier. Agile et rapide (3,3 m/s), il embarque un ordinateur Intel NUC, un SDK ROS/ROS2 complet et une API bas niveau ouverte. Conçu pour la recherche en locomotion, planification de mouvement et apprentissage par renforcement. Plusieurs milliers d'unités en service dans des universités de 50+ pays.`,
+      category: 'QUADRUPED_ROBOT' as const,
+      basePrice: 9500,
+      leasePriceMonth: 320,
+      requiresQuote: false,
+      isFeatured: false,
+      isActive: true,
+      specifications: {
+        height: '0.40 m',
+        weight: '12 kg',
+        payload: '5 kg',
+        speed: '3.3 m/s',
+        battery: '1-2.5h',
+        dof: '12 DoF',
+        processor: 'Intel NUC i5 embarqué',
+        sensors: 'Caméra stéréo, LiDAR optionnel, IMU',
+        sdk: 'ROS / ROS2, Python, C++',
+      },
+      images: {
+        create: [
+          {
+            url: 'https://oss-global-cdn.unitree.com/static/3f119f752fdf41b0a70544dbe06e31f6_2606x1376.png',
+            altText: 'Unitree A1 — robot quadrupède de recherche',
+            isPrimary: true,
+            sortOrder: 0,
+          },
+        ],
+      },
+      tags: {
+        create: [{ tag: 'quadrupède' }, { tag: 'recherche' }, { tag: 'ROS2' }, { tag: 'laboratoire' }],
+      },
+    },
+    {
+      sku: 'UT-DEX3-001',
+      name: 'Unitree Dex3-1',
+      slug: 'unitree-dex3-1',
+      shortDescription: 'Main robotique dextre 3 doigts — manipulation tactile avancée.',
+      description: `La Dex3-1 est la main robotique dextre d'Unitree, conçue pour une manipulation fine d'objets. Elle embarque 15 degrés de liberté répartis sur 3 doigts, des capteurs de pression tactile sur chaque phalange et une commande en couple. Compatible avec les robots H1 et H1-2 en configuration bimanuelle. Idéale pour la recherche en manipulation, le tri industriel et les tâches d'assemblage précis.`,
+      category: 'ROBOTIC_ARM' as const,
+      basePrice: 5500,
+      leasePriceMonth: 180,
+      requiresQuote: false,
+      isFeatured: false,
+      isActive: true,
+      specifications: {
+        fingers: '3 doigts',
+        dof: '15 DoF total',
+        payload: '3 kg (prise)',
+        sensors: 'Capteurs tactiles pression × 15',
+        control: 'Couple + position',
+        interface: 'Ethernet / CAN',
+        compatibility: 'H1, H1-2 (montage poignet)',
+        weight: '0.9 kg',
+      },
+      images: {
+        create: [
+          {
+            url: 'https://oss-global-cdn.unitree.com/static/2897c79a27ff4e0984f8cc3ea0448af6_1920x1097.png',
+            altText: 'Unitree Dex3-1 — main robotique dextre 3 doigts',
+            isPrimary: true,
+            sortOrder: 0,
+          },
+        ],
+      },
+      tags: {
+        create: [{ tag: 'main robotique' }, { tag: 'manipulation' }, { tag: 'tactile' }, { tag: 'H1' }],
+      },
+    },
+    // ─── END NEW ROBOTS ────────────────────────────────────────────
     {
       sku: 'UT-LIDAR-001',
       name: 'Kit LiDAR L1',
@@ -562,7 +768,7 @@ async function main() {
       await prisma.productImage.create({ data: { ...img, productId: record.id } });
     }
 
-    // Seed inventory — robots get 3 units, accessories get 50
+    // Seed inventory — accessories get 50 units, everything else (robots, arms) get 3
     const qty = product.category === 'ACCESSORY' ? 50 : 3;
     const existing = await prisma.inventoryItem.findFirst({
       where: { productId: record.id, variantId: null, warehouseId: warehouse.id },
