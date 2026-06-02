@@ -535,6 +535,18 @@ async function main() {
     },
   ];
 
+  // Ensure a default warehouse exists
+  const warehouse = await prisma.warehouse.upsert({
+    where: { code: 'FR-PARIS-01' },
+    update: {},
+    create: {
+      name: 'Entrepôt Paris',
+      code: 'FR-PARIS-01',
+      address: { street: '1 Rue de la Robotique', city: 'Paris', postalCode: '75001', country: 'FR' },
+      isActive: true,
+    },
+  });
+
   for (const product of products) {
     const { images, tags, ...fields } = product as any;
 
@@ -548,6 +560,19 @@ async function main() {
     await prisma.productImage.deleteMany({ where: { productId: record.id } });
     for (const img of images.create) {
       await prisma.productImage.create({ data: { ...img, productId: record.id } });
+    }
+
+    // Seed inventory — robots get 3 units, accessories get 50
+    const qty = product.category === 'ACCESSORY' ? 50 : 3;
+    const existing = await prisma.inventoryItem.findFirst({
+      where: { productId: record.id, variantId: null, warehouseId: warehouse.id },
+    });
+    if (existing) {
+      await prisma.inventoryItem.update({ where: { id: existing.id }, data: { quantityOnHand: qty } });
+    } else {
+      await prisma.inventoryItem.create({
+        data: { productId: record.id, warehouseId: warehouse.id, quantityOnHand: qty, quantityReserved: 0 },
+      });
     }
 
     console.log(`  ✓ ${product.name}`);

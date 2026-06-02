@@ -3,16 +3,7 @@
 import { useState } from 'react';
 import { ShoppingBag, Check } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart.store';
-
-interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  basePrice: number;
-  inStock: boolean;
-  requiresQuote: boolean;
-  images?: { url: string }[];
-}
+import type { Product } from '@unitree/types';
 
 interface AddToCartButtonProps {
   product: Product;
@@ -22,7 +13,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
-  if (product.requiresQuote || !product.inStock) return null;
+  if (product.requiresQuote || product.inStock === false) return null;
 
   const handleAdd = () => {
     addItem({

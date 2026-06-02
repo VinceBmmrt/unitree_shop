@@ -15,7 +15,9 @@ import { useAuthStore } from '@/lib/store/auth.store';
 import { env } from '@/lib/env';
 import { createAddress, createOrder, createPaymentIntent } from '@/lib/api/checkout';
 
-const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n);
@@ -250,9 +252,7 @@ export function CheckoutFlow() {
       setClientSecret(secret);
       setStep('paiement');
     } catch (e: any) {
-      setError(
-        e.response?.data?.message ?? 'Impossible de créer la commande. Veuillez réessayer.',
-      );
+      setError(e.response?.data?.message ?? 'Impossible de créer la commande. Veuillez réessayer.');
     } finally {
       setIsSubmitting(false);
     }
@@ -466,11 +466,7 @@ export function CheckoutFlow() {
                       autoComplete="postal-code"
                     />
                   </Field>
-                  <Field
-                    label="Ville"
-                    required
-                    error={shippingForm.formState.errors.city?.message}
-                  >
+                  <Field label="Ville" required error={shippingForm.formState.errors.city?.message}>
                     <input
                       {...shippingForm.register('city')}
                       className={inputCls}

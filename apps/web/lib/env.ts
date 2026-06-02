@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const schema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url(),
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith('pk_'),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith('pk_').optional(),
 });
 
 export const env = schema.parse({

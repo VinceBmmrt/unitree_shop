@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Product } from '@unitree/types';
+import { AddToCartButton } from './add-to-cart-button';
 
 interface ProductCardProps {
   product: Product;
@@ -106,7 +107,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          <div className="mt-auto pt-4">
+          <div className="mt-auto pt-4 space-y-3">
             {requiresQuote ? (
               <div className="flex items-center justify-between">
                 <p className="text-sm text-slate-400 dark:text-zinc-500">Prix sur demande</p>
@@ -115,7 +116,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 </span>
               </div>
             ) : (
-              <div>
+              <>
                 <div className="flex items-baseline gap-2">
                   <span className="text-xl font-display font-bold text-slate-900 dark:text-white">
                     {formatEur(basePrice)}
@@ -131,7 +132,10 @@ export function ProductCard({ product }: ProductCardProps) {
                     ou {formatEur(leasePriceMonth)}/mois
                   </p>
                 )}
-              </div>
+                <div onClick={(e) => e.preventDefault()}>
+                  <AddToCartButton product={product} />
+                </div>
+              </>
             )}
           </div>
         </div>
