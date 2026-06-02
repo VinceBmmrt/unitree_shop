@@ -28,11 +28,7 @@ export default function ComptePage() {
   }, [user, isInitialized, router]);
 
   if (!isInitialized || !user) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-[#04040a] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
-      </div>
-    );
+    return <div className="min-h-screen bg-white dark:bg-[#04040a]" />;
   }
 
   const initials = `${user.firstName[0]}${user.lastName?.[0] ?? ''}`.toUpperCase();

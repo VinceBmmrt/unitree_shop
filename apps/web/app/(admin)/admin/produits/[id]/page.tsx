@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { apiClient } from '@/lib/api/client';
 import { adminUpdateProduct, type AdminProduct, type ProductPayload } from '@/lib/api/admin';
 import { ProductForm, type ProductFormValues } from '@/components/admin/product-form';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import { SkeletonDetailPage } from '@/components/ui/skeleton';
 
 export default function EditProduitPage() {
   const { id } = useParams<{ id: string }>();
@@ -56,11 +57,7 @@ export default function EditProduitPage() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-      </div>
-    );
+    return <SkeletonDetailPage cards={4} />;
   }
 
   if (error || !product) {
