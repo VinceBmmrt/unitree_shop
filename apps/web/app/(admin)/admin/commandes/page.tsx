@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { adminGetOrders, adminUpdateOrderStatus, type AdminOrder } from '@/lib/api/admin';
-import { Loader2, AlertCircle, ChevronRight } from 'lucide-react';
+import { AlertCircle, ChevronRight } from 'lucide-react';
+import { SkeletonTableRow } from '@/components/ui/skeleton';
 
 const STATUSES = [
   'PENDING_PAYMENT',
@@ -83,16 +84,32 @@ export default function AdminCommandesPage() {
         </select>
       </div>
 
-      {loading && (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 className="w-6 h-6 animate-spin text-blue-500" />
-        </div>
-      )}
-
       {error && (
         <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm">
           <AlertCircle className="w-4 h-4 shrink-0" />
           Impossible de charger les commandes.
+        </div>
+      )}
+
+      {loading && (
+        <div className="bg-card border border-border rounded-2xl overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-xs text-muted-foreground uppercase tracking-wider">
+                <th className="text-left px-5 py-3">Commande</th>
+                <th className="text-left px-5 py-3">Client</th>
+                <th className="text-left px-5 py-3">Date</th>
+                <th className="text-left px-5 py-3">Total</th>
+                <th className="text-left px-5 py-3">Statut</th>
+                <th className="px-5 py-3" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <SkeletonTableRow key={i} cols={6} />
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 

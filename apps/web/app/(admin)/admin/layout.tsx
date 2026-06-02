@@ -14,6 +14,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store/auth.store';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 const NAV = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -94,7 +95,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main */}
-      <main className="flex-1 min-w-0 p-8 overflow-y-auto">{children}</main>
+      <main className="flex-1 min-w-0 p-8 overflow-y-auto">
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </main>
     </div>
   );
 }
