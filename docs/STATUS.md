@@ -83,8 +83,6 @@ Backend is feature-complete at scaffold level. Frontend has marketing pages, aut
 | ------------------ | ------------------- | -------- |
 | `/admin/analytics` | Analytics dashboard | Low      |
 | `/admin/clients`   | Customer list       | Low      |
-| `/admin/analytics` | Analytics dashboard | Low      |
-| `/admin/clients`   | Customer list       | Low      |
 
 ### Polish / gaps
 
