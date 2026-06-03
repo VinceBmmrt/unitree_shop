@@ -180,16 +180,14 @@ export function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
             ? 'bg-white/95 dark:bg-[#04040a]/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-border shadow-lg shadow-black/10 dark:shadow-black/40'
-            : 'bg-transparent border-b border-transparent'
+            : 'bg-white/80 dark:bg-transparent backdrop-blur-sm border-b border-transparent'
         }`}
       >
         <nav className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-8">
           {/* Logo */}
           <Link
             href="/"
-            className={`font-display font-bold text-lg tracking-tight shrink-0 transition-colors ${
-              isScrolled ? 'text-slate-900 dark:text-white' : 'text-white'
-            }`}
+            className="font-display font-bold text-lg tracking-tight shrink-0 text-slate-900 dark:text-white transition-colors"
           >
             Unitree<span className="text-blue-500">.</span>
           </Link>
@@ -206,11 +204,7 @@ export function Navbar() {
                   >
                     <Link
                       href={link.href}
-                      className={`flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-lg ${
-                        isScrolled
-                          ? 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-zinc-800'
-                          : 'text-white/80 hover:text-white hover:bg-white/10'
-                      }`}
+                      className="flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-lg text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8"
                     >
                       {link.label}
                       <ChevronDown
@@ -221,11 +215,7 @@ export function Navbar() {
                 ) : (
                   <Link
                     href={link.href}
-                    className={`px-3 py-2 text-sm transition-colors rounded-lg block ${
-                      isScrolled
-                        ? 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`}
+                    className="px-3 py-2 text-sm transition-colors rounded-lg block text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/8"
                   >
                     {link.label}
                   </Link>
