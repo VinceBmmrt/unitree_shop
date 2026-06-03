@@ -2,7 +2,7 @@ services:
   - type: web
     name: unitree-shop-api
     runtime: docker
-    dockerfilePath: ./apps/api/Dockerfile
+    dockerfilePath: ./apps/backend/Dockerfile
     dockerContext: .
     plan: free
     region: frankfurt

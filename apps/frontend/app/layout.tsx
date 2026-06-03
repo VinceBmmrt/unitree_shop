@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import { Providers } from '@/components/layout/providers';
 import { Toaster } from '@/components/ui/toaster';
 import { CookieBanner } from '@/components/layout/cookie-banner';
+import { ScrollProgress } from '@/components/ui/scroll-progress';
 import './globals.css';
 
 const inter = Inter({
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+        <ScrollProgress />
         <Providers>
           {children}
           <CookieBanner />

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Product } from '@unitree/types';
 import { AddToCartButton } from './add-to-cart-button';
@@ -35,13 +35,38 @@ export function ProductCard({ product }: ProductCardProps) {
       maximumFractionDigits: 0,
     }).format(amount);
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springConfig = { stiffness: 150, damping: 20, mass: 0.5 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
+  const rotateX = useTransform(springY, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-8, 8]);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function handleMouseLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
+
   return (
-    <Link href={`/products/${slug}`} className="group block">
+    <Link href={`/products/${slug}`} className="group block h-full">
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          transformPerspective: 1000,
+        }}
         className="rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-[#09090f] overflow-hidden h-full flex flex-col hover:border-blue-300 dark:hover:border-blue-500/30 transition-colors duration-300 shadow-sm hover:shadow-md dark:shadow-none"
-        style={{ boxShadow: undefined }}
       >
         {/* Image */}
         <div className="relative aspect-[4/3] bg-gradient-to-b from-slate-50 dark:from-[#0d0d18] to-white dark:to-[#09090f] overflow-hidden">
