@@ -1,3 +1,3 @@
 'use client';
 
-export { G1ModelViewer } from './g1-model';
+export { RobotModelViewer, G1ModelViewer } from './g1-model';

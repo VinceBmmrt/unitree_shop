@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, Zap, Shield, Cpu, Activity } from 'lucide-react';
+import { H1HeroImage } from '@/components/3d/h1-hero-image';
 
 export const metadata: Metadata = {
   title: 'Unitree H1 — Robot Humanoïde Industriel',
@@ -104,18 +104,8 @@ export default function H1Page() {
             </div>
           </div>
 
-          {/* Image */}
-          <div className="relative flex items-center justify-center">
-            <div className="absolute w-80 h-80 rounded-full bg-blue-600/10 blur-[80px]" />
-            <Image
-              src="https://www.unitree.com/images/fdff7695f62b42b89b2459a3a4405118_400x400.png"
-              alt="Unitree H1 — Robot humanoïde industriel"
-              width={500}
-              height={500}
-              className="relative z-10 object-contain drop-shadow-2xl"
-              priority
-            />
-          </div>
+          {/* Animated hero image */}
+          <H1HeroImage />
         </div>
       </section>
 
