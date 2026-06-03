@@ -13,6 +13,7 @@ interface UseCase {
   href: string;
   colSpan: 1 | 2 | 3;
   minHeight: string;
+  objectPosition?: string;
 }
 
 const cases: UseCase[] = [
@@ -25,6 +26,7 @@ const cases: UseCase[] = [
     href: '/services',
     colSpan: 2,
     minHeight: 'min-h-[420px]',
+    objectPosition: '50% 30%',
   },
   {
     image: '/images/robot-nuclear-fuel-fabrication.webp',
@@ -35,6 +37,7 @@ const cases: UseCase[] = [
     href: '/services',
     colSpan: 1,
     minHeight: 'min-h-[420px]',
+    objectPosition: '60% 20%',
   },
   {
     image: '/images/robot-healthcare-corridor.png',
@@ -45,6 +48,7 @@ const cases: UseCase[] = [
     href: '/services',
     colSpan: 1,
     minHeight: 'min-h-[360px]',
+    objectPosition: '40% 15%',
   },
   {
     image: '/images/robot-quality-control.png',
@@ -55,6 +59,7 @@ const cases: UseCase[] = [
     href: '/services',
     colSpan: 2,
     minHeight: 'min-h-[360px]',
+    objectPosition: '50% 20%',
   },
   {
     image: '/images/robot-security-patrol.png',
@@ -65,6 +70,7 @@ const cases: UseCase[] = [
     href: '/services',
     colSpan: 3,
     minHeight: 'min-h-[300px]',
+    objectPosition: '50% 35%',
   },
 ];
 
@@ -109,6 +115,7 @@ export function UseCases() {
                 alt={c.title}
                 fill
                 className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+                style={{ objectPosition: c.objectPosition ?? '50% 50%' }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
               />
 

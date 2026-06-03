@@ -26,7 +26,7 @@ The project covers the full stack: storefront, authentication, product catalog, 
 | Email    | Resend + BullMQ async queue                                                   |
 | Cache    | Redis via Upstash                                                             |
 | Storage  | Cloudflare R2 (product images, presigned upload)                              |
-| Deploy   | Frontend → Vercel · API → Render (Docker, Frankfurt)                          |
+| Deploy   | Frontend → Vercel · Backend → Render (Docker, Frankfurt)                      |
 
 ---
 
@@ -34,8 +34,8 @@ The project covers the full stack: storefront, authentication, product catalog, 
 
 ```
 apps/
-  web/          Next.js frontend
-  api/          NestJS + Fastify backend
+  frontend/     Next.js frontend
+  backend/      NestJS + Fastify backend
 packages/
   types/        Shared TypeScript types (@unitree/types)
 ```
@@ -55,7 +55,7 @@ pnpm dev
 | Service  | URL                            |
 | -------- | ------------------------------ |
 | Frontend | http://localhost:3000          |
-| API      | http://localhost:3001/api/v1   |
+| Backend  | http://localhost:3001/api/v1   |
 | Swagger  | http://localhost:3001/api/docs |
 
 Copy `.env.example` files and fill in your own keys before running.
@@ -86,10 +86,10 @@ Copy `.env.example` files and fill in your own keys before running.
 Minimum set to run locally — see `.env.example` in each app for the full list.
 
 ```
-# apps/web
+# apps/frontend
 NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
 
-# apps/api
+# apps/backend
 DATABASE_URL=postgresql://...
 JWT_ACCESS_SECRET=...
 JWT_REFRESH_SECRET=...
@@ -105,8 +105,8 @@ FRONTEND_URL=http://localhost:3000
 
 ## Deployment
 
-- **Frontend** → Vercel (auto-deploy on push to `main`)
-- **API** → Render via Docker (`render.yaml` Blueprint at repo root)
+- **Frontend** → Vercel (auto-deploy on push to `main`, root directory: `apps/frontend`)
+- **Backend** → Render via Docker (`render.yaml` Blueprint at repo root, Dockerfile at `apps/backend/Dockerfile`)
 
 The `vercel.json` at repo root configures the monorepo build. `API_URL` on Render must be set to the Render service URL **without** `/api/v1`.
 
