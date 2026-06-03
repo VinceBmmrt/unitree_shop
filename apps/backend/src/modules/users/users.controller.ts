@@ -31,10 +31,7 @@ export class UsersController {
 
   @Post('me/addresses')
   @ApiOperation({ summary: 'Create a new address' })
-  createAddress(
-    @CurrentUser('id') id: string,
-    @Body() dto: CreateAddressDto,
-  ) {
+  createAddress(@CurrentUser('id') id: string, @Body() dto: CreateAddressDto) {
     return this.usersService.createAddress(id, dto);
   }
 }

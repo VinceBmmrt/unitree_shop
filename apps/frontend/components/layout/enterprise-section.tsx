@@ -1,7 +1,16 @@
-import Link from 'next/link';
-import { ArrowRight, Building2, FileText, HeadphonesIcon } from 'lucide-react';
+'use client';
 
-const features = [
+import Link from 'next/link';
+import { ArrowRight, Building2, FileText, HeadphonesIcon, type LucideIcon } from 'lucide-react';
+import { AnimateIn } from '@/components/ui/animate-in';
+
+interface Feature {
+  icon: LucideIcon;
+  title: string;
+  body: string;
+}
+
+const features: Feature[] = [
   {
     icon: Building2,
     title: 'Tailored volume pricing',
@@ -26,7 +35,7 @@ export function EnterpriseSection() {
 
       <div className="relative max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
+          <AnimateIn variant="fade-left">
             <p className="text-blue-600 dark:text-blue-400 font-medium text-sm uppercase tracking-widest mb-3">
               Enterprise
             </p>
@@ -53,24 +62,23 @@ export function EnterpriseSection() {
                 Enterprise overview
               </Link>
             </div>
-          </div>
+          </AnimateIn>
 
           <div className="space-y-4">
-            {features.map(({ icon: Icon, title, body }) => (
-              <div
-                key={title}
-                className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-white/[0.03] hover:bg-slate-50 dark:hover:bg-white/[0.05] hover:border-blue-300 dark:hover:border-blue-500/20 transition-all group"
-              >
-                <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 h-fit shrink-0 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
-                  <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            {features.map(({ icon: Icon, title, body }, i) => (
+              <AnimateIn key={title} variant="fade-right" delay={i * 0.12}>
+                <div className="flex gap-4 p-5 rounded-2xl border border-slate-200 dark:border-border bg-white dark:bg-white/[0.03] hover:bg-slate-50 dark:hover:bg-white/[0.05] hover:border-blue-300 dark:hover:border-blue-500/20 transition-all group">
+                  <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 h-fit shrink-0 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-colors">
+                    <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">{title}</h3>
+                    <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                      {body}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">{title}</h3>
-                  <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">
-                    {body}
-                  </p>
-                </div>
-              </div>
+              </AnimateIn>
             ))}
           </div>
         </div>

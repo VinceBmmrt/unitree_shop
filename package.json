@@ -31,11 +31,11 @@
     "typescript": "^5.4.0"
   },
   "lint-staged": {
-    "apps/api/src/**/*.ts": [
+    "apps/backend/src/**/*.ts": [
       "eslint --fix",
       "prettier --write"
     ],
-    "apps/web/**/*.{ts,tsx}": [
+    "apps/frontend/**/*.{ts,tsx}": [
       "prettier --write"
     ],
     "packages/**/*.ts": [

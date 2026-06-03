@@ -5,4 +5,4 @@ build
 coverage
 pnpm-lock.yaml
 *.min.js
-apps/api/prisma/migrations
+apps/backend/prisma/migrations
